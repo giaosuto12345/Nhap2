@@ -7,6 +7,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Chấm Công Đội</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f4f8; padding-bottom: 90px; color: #333; }
@@ -150,8 +152,8 @@
     </div>
 
     <div class="flex-row" style="margin-bottom: 12px;">
-      <button class="btn btn-info" style="margin: 0; box-shadow: 0 4px 10px rgba(0,188,212,0.3);" onclick="moModal('modal-hoctap')">📘 HỌC TẬP/C.TÁC</button>
-      <button class="btn btn-warning" style="margin: 0; box-shadow: 0 4px 10px rgba(243,156,18,0.3);" onclick="moModal('modal-tang-cuong')">⚡ TĂNG CƯỜNG</button>
+      <button class="btn btn-info" style="margin: 0;" onclick="moModal('modal-hoctap')">📘 HỌC TẬP/C.TÁC</button>
+      <button class="btn btn-warning" style="margin: 0;" onclick="moModal('modal-tang-cuong')">⚡ TĂNG CƯỜNG</button>
     </div>
 
     <div class="card">
@@ -178,9 +180,11 @@
       <div class="quick-actions">
         <button class="quick-btn" id="btn-tuan-truoc" onclick="chonTuanTruoc()">Tuần trước</button>
         <button class="quick-btn" id="btn-tuan-nay" onclick="chonTuanNay()">Tuần này</button>
-        <button class="quick-btn" id="btn-thang-truoc" onclick="chonThangTruoc()">Tháng trước</button>
-        <button class="quick-btn" id="btn-thang-nay" onclick="chonThangNay()">Tháng này</button>
       </div>
+
+      <select id="sel-thang-nhanh" onchange="chonThang(this.value)" style="margin-bottom: 12px; font-weight:bold; color:#1976d2; font-size: 14px;">
+        <option value="">-- Hoặc chọn nhanh 12 tháng gần nhất --</option>
+        </select>
 
       <div class="date-group">
         <div class="date-row"><label>Từ ngày:</label><input type="date" id="cycle-start" onchange="clearQuickActive(); autoCalcEndDate();"></div>
@@ -188,6 +192,8 @@
       </div>
       
       <button class="btn btn-primary" onclick="xemTongHop()" style="margin-top: 10px;">📊 TẠO BẢNG TỔNG HỢP</button>
+      <button class="btn" style="background:#27ae60; margin-top: 10px;" onclick="xuatExcel()">📥 XUẤT RA FILE EXCEL</button>
+      <p style="font-size:11px; text-align:center; color:#888; margin-top:8px;">File Excel tải về có thể copy/paste lên Google Sheets hoặc Zalo dễ dàng.</p>
     </div>
 
     <div id="cycle-summary-box" class="summary-day-box" style="display:none; margin-bottom: 15px;">
@@ -275,7 +281,10 @@
       </div>
       <div class="checkbox-grid" id="grid-user-hoctap" style="margin-top: 8px;"></div>
 
-      <button class="btn btn-info" style="margin-top:15px;" onclick="luuRecordDaily('hoctap')">LƯU GHI NHẬN</button>
+      <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="btn" style="background:#bdc3c7; color:#333;" onclick="dongModal('modal-hoctap')">HỦY</button>
+        <button class="btn btn-info" onclick="luuRecordDaily('hoctap')">LƯU GHI NHẬN</button>
+      </div>
     </div>
   </div>
 
@@ -303,7 +312,10 @@
       </div>
       <div class="checkbox-grid" id="grid-user-viec" style="margin-top: 8px;"></div>
 
-      <button class="btn btn-warning" style="margin-top:15px;" onclick="luuRecordDaily('viec')">LƯU TĂNG CƯỜNG</button>
+      <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="btn" style="background:#bdc3c7; color:#333;" onclick="dongModal('modal-tang-cuong')">HỦY</button>
+        <button class="btn btn-warning" onclick="luuRecordDaily('viec')">LƯU TĂNG CƯỜNG</button>
+      </div>
     </div>
   </div>
 
@@ -342,7 +354,10 @@
       </div>
       <div class="checkbox-grid" id="grid-user-nghi" style="margin-top: 8px;"></div>
 
-      <button class="btn btn-danger" style="margin-top:15px;" onclick="luuRecordLeave()">TẠO LỊCH NGHỈ</button>
+      <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="btn" style="background:#bdc3c7; color:#333;" onclick="dongModal('modal-nghi')">HỦY</button>
+        <button class="btn btn-danger" onclick="luuRecordLeave()">TẠO LỊCH NGHỈ</button>
+      </div>
     </div>
   </div>
 
@@ -518,17 +533,17 @@
     let users = []; checkboxes.forEach(cb => users.push(cb.value)); return users;
   }
 
-  // Hàm gộp Text tóm tắt chi tiết (cho tab ngày)
+  // Hàm gộp Text tóm tắt chi tiết (cho tab ngày) - Hiển thị tên người sau việc
   function formatGroupedUsers(records, categoryField, isLeave = false) {
       let groups = {};
       records.forEach(r => {
           let cat = r[categoryField];
           if(!groups[cat]) groups[cat] = [];
           
-          let sessTag = (r.session === 'all' || (isLeave && r.start !== r.end)) ? '' : ` ${SES_LABELS[r.session]}`;
+          let sessTag = (r.session === 'all' || (isLeave && r.start !== r.end)) ? '' : ` - ${SES_LABELS_FULL[r.session]}`;
           r.users.forEach(u => { groups[cat].push(`${u}${sessTag}`); });
       });
-      return Object.keys(groups).map(k => `&bull; <b>${k}</b>: ${groups[k].join(', ')}`).join('<br>');
+      return Object.keys(groups).map(k => `&bull; <b>${k}</b> (${groups[k].join(', ')})`).join('<br>');
   }
 
   // ==========================================
@@ -575,11 +590,11 @@
 
     // Chi tiết Văn bản (Ghi rõ Tăng cường, Học, Nghỉ)
     let detailText = [];
-    if (recordsLeave.length > 0) { detailText.push(`<span style="color:#e74c3c;">⛱️ Nghỉ:</span><br>${formatGroupedUsers(recordsLeave, 'category', true)}`); }
     let tcRecords = recordsDaily.filter(r => r.type === 'viec');
-    if (tcRecords.length > 0) { detailText.push(`<span style="color:#f39c12;">⚡ Tăng cường:</span><br>${formatGroupedUsers(tcRecords, 'taskName', false)}`); }
+    if (tcRecords.length > 0) { detailText.push(`<span style="color:#f39c12; font-weight:bold;">⚡ Tăng cường:</span><br>${formatGroupedUsers(tcRecords, 'taskName', false)}`); }
     let htRecords = recordsDaily.filter(r => r.type === 'hoctap');
-    if (htRecords.length > 0) { detailText.push(`<span style="color:#00bcd4;">📘 Học tập/CT:</span><br>${formatGroupedUsers(htRecords, 'taskName', false)}`); }
+    if (htRecords.length > 0) { detailText.push(`<span style="color:#00bcd4; font-weight:bold;">📘 Học tập/CT:</span><br>${formatGroupedUsers(htRecords, 'taskName', false)}`); }
+    if (recordsLeave.length > 0) { detailText.push(`<span style="color:#e74c3c; font-weight:bold;">⛱️ Nghỉ:</span><br>${formatGroupedUsers(recordsLeave, 'category', true)}`); }
     
     document.getElementById('summary-details-text').innerHTML = detailText.length > 0 ? detailText.join('<br><br>') : '<i>Chưa có phân công chi tiết</i>';
 
@@ -686,10 +701,11 @@
   function xoaLeave(id) { if(confirm('Xóa lịch nghỉ phép này?')) { dsLeaves = dsLeaves.filter(r => r.id !== id); saveData('cc_leaves_data', dsLeaves); loadDanhSachNghi(); } }
 
   // ==========================================
-  // TAB TỔNG HỢP CHU KỲ - GHI RÕ TRONG BẢNG KIỂU "Trạm KA: 8 [Công: 2...]"
+  // TAB TỔNG HỢP CHU KỲ - XUẤT EXCEL - HIỂN THỊ KIỂU Trạm KA: 8 [Công: 2]
   // ==========================================
   function clearQuickActive() {
     document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('sel-thang-nhanh').value = "";
   }
   
   function chonTuanTruoc() {
@@ -707,18 +723,26 @@
     document.getElementById('cycle-end').value = new Date(curr.setDate(last)).toISOString().split('T')[0];
   }
 
-  function chonThangTruoc() {
-    clearQuickActive(); document.getElementById('btn-thang-truoc').classList.add('active');
-    let date = new Date();
-    document.getElementById('cycle-start').value = new Date(date.getFullYear(), date.getMonth() - 1, 1).toISOString().split('T')[0];
-    document.getElementById('cycle-end').value = new Date(date.getFullYear(), date.getMonth(), 0).toISOString().split('T')[0];
+  // Khởi tạo List 12 tháng gần nhất
+  function initThangNhanh() {
+      let sel = document.getElementById('sel-thang-nhanh');
+      let curr = new Date();
+      for(let i=0; i<12; i++) {
+          let d = new Date(curr.getFullYear(), curr.getMonth() - i, 1);
+          let m = d.getMonth() + 1;
+          let y = d.getFullYear();
+          let val = `${y}-${('0'+m).slice(-2)}`;
+          sel.innerHTML += `<option value="${val}">Tháng ${m}/${y}</option>`;
+      }
   }
 
-  function chonThangNay() {
-    clearQuickActive(); document.getElementById('btn-thang-nay').classList.add('active');
-    let date = new Date();
-    document.getElementById('cycle-start').value = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0];
-    document.getElementById('cycle-end').value = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0];
+  function chonThang(val) {
+      if(!val) return;
+      document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+      let parts = val.split('-');
+      let y = parseInt(parts[0]); let m = parseInt(parts[1]) - 1;
+      document.getElementById('cycle-start').value = new Date(y, m, 1).toISOString().split('T')[0];
+      document.getElementById('cycle-end').value = new Date(y, m + 1, 0).toISOString().split('T')[0];
   }
 
   function initChuKy() {
@@ -727,7 +751,6 @@
       let nextStart = new Date(savedEnd); nextStart.setDate(nextStart.getDate() + 1); 
       document.getElementById('cycle-start').value = nextStart.toISOString().split('T')[0]; autoCalcEndDate(); 
     } 
-    else { chonThangNay(); }
   }
 
   function autoCalcEndDate() {
@@ -735,7 +758,7 @@
     if(startVal) { let end = new Date(startVal); end.setMonth(end.getMonth() + 1); end.setDate(end.getDate() - 1); document.getElementById('cycle-end').value = end.toISOString().split('T')[0]; }
   }
 
-  // Hàm chuyển Object chi tiết thành chuỗi String đẹp
+  // Hàm chuyển Object chi tiết thành chuỗi String "Trạm KA: 8 [Công: 2...]"
   function formatGlobalStat(statsObj) {
       return Object.keys(statsObj).map(key => {
           let item = statsObj[key];
@@ -755,15 +778,13 @@
     let curDate = new Date(start); let endDate = new Date(end);
     let sumNghi = 0, sumHoc = 0, sumViec = 0;
     
-    // Object lưu Data để sinh Text Trạm KA: 8 [Công: 2...]
-    let globalTaskStats = {};
-    let globalHocStats = {};
-    let globalNghiStats = {};
+    // Object lưu Data tổng
+    let globalTaskStats = {}; let globalHocStats = {}; let globalNghiStats = {};
 
     while(curDate <= endDate) {
         let dStr = curDate.toISOString().split('T')[0];
 
-        // DAILY (Tăng cường & Học tập)
+        // DAILY
         dsDaily.filter(r => r.date === dStr).forEach(r => {
             let val = r.session === 'all' ? 1 : 0.5;
             r.users.forEach(u => { 
@@ -788,7 +809,7 @@
             });
         });
 
-        // LEAVE (Nghỉ phép)
+        // LEAVE
         dsLeaves.filter(l => dStr >= l.start && dStr <= l.end).forEach(l => {
             let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1; 
             l.users.forEach(u => { 
@@ -805,16 +826,16 @@
         curDate.setDate(curDate.getDate() + 1);
     }
 
-    // In Box Tóm tắt Toàn đội chi tiết
+    // In Box Tóm tắt Toàn đội
     let textSummary = [];
-    if(Object.keys(globalNghiStats).length > 0) { textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ:</span><br>${formatGlobalStat(globalNghiStats)}`); }
     if(Object.keys(globalTaskStats).length > 0) { textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG:</span><br>${formatGlobalStat(globalTaskStats)}`); }
     if(Object.keys(globalHocStats).length > 0) { textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT:</span><br>${formatGlobalStat(globalHocStats)}`); }
+    if(Object.keys(globalNghiStats).length > 0) { textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ:</span><br>${formatGlobalStat(globalNghiStats)}`); }
     
     document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><br>') : '<i>Không có dữ liệu trong chu kỳ này</i>';
     document.getElementById('cycle-summary-box').style.display = 'block';
 
-    // In Bảng Table
+    // In Bảng
     let tbody = '';
     dsNhanVien.forEach(u => {
       let st = stats[u.name];
@@ -833,7 +854,20 @@
     document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td>${sumNghi}</td><td>${sumHoc}</td><td>${sumViec}</td></tr>`;
   }
 
-  window.onload = () => { loadDuLieuNgay(); };
+  // Hàm Xuất ra Excel thông qua thư viện XLSX đã import ở <head>
+  function xuatExcel() {
+      let table = document.getElementById('table-tong-hop');
+      if(!table || document.querySelector('#table-tong-hop tbody').innerText.includes("Vui lòng bấm")) {
+          alert("Bạn cần bấm 'TẠO BẢNG TỔNG HỢP' trước khi tải Excel!"); return;
+      }
+      let wb = XLSX.utils.table_to_book(table, {sheet: "BaoCao"});
+      XLSX.writeFile(wb, "BaoCao_ChamCong.xlsx");
+  }
+
+  window.onload = () => { 
+      initThangNhanh();
+      loadDuLieuNgay(); 
+  };
 </script>
 </body>
 </html>
