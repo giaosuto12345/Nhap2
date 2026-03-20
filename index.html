@@ -95,7 +95,7 @@
     .list-item.type-viec { border-left-color: #f39c12; }
     .list-item.type-nghi-auto { border-left-color: #e74c3c; background: #fffcfc; }
     .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; padding-right: 65px;}
-    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4;}
+    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; padding-right: 65px; }
     .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #eee; font-weight: bold; color: #555; white-space: nowrap; margin-left: 8px; }
     .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
     
@@ -392,15 +392,15 @@
       </select>
       <input type="text" id="txt-hoctap-moi" placeholder="Nhập lý do cụ thể..." style="display:none; margin-top:10px; font-size:14px;">
 
-      <label>2. Thời lượng:</label>
+      <label>2. Thời lượng (Kích hoạt lọc người bận):</label>
       <div class="toggle-group">
-        <input type="radio" id="h-all" name="sess_hoctap" value="all" checked><label for="h-all">Cả ngày</label>
-        <input type="radio" id="h-mor" name="sess_hoctap" value="morning"><label for="h-mor">Sáng</label>
-        <input type="radio" id="h-aft" name="sess_hoctap" value="afternoon"><label for="h-aft">Chiều</label>
+        <input type="radio" id="h-all" name="sess_hoctap" value="all" onchange="updateCheckboxes('hoctap')" checked><label for="h-all">Cả ngày</label>
+        <input type="radio" id="h-mor" name="sess_hoctap" value="morning" onchange="updateCheckboxes('hoctap')"><label for="h-mor">Sáng</label>
+        <input type="radio" id="h-aft" name="sess_hoctap" value="afternoon" onchange="updateCheckboxes('hoctap')"><label for="h-aft">Chiều</label>
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top: 15px;">
-        <label style="margin:0;">3. Chọn nhân sự:</label>
+        <label style="margin:0;">3. Chọn nhân sự (Đã lọc người bận):</label>
         <button class="btn-small" onclick="selectAll('grid-user-hoctap')">☑ Chọn hết</button>
       </div>
       <div class="checkbox-grid" id="grid-user-hoctap"></div>
@@ -423,15 +423,15 @@
         <input type="text" id="txt-viec-moi" placeholder="Nhập việc cụ thể..." style="font-size:14px;">
       </div>
 
-      <label>2. Thời lượng:</label>
+      <label>2. Thời lượng (Kích hoạt lọc người bận):</label>
       <div class="toggle-group">
-        <input type="radio" id="t-all" name="sess_viec" value="all" checked><label for="t-all">Cả ngày</label>
-        <input type="radio" id="t-mor" name="sess_viec" value="morning"><label for="t-mor">Sáng</label>
-        <input type="radio" id="t-aft" name="sess_viec" value="afternoon"><label for="t-aft">Chiều</label>
+        <input type="radio" id="t-all" name="sess_viec" value="all" onchange="updateCheckboxes('viec')" checked><label for="t-all">Cả ngày</label>
+        <input type="radio" id="t-mor" name="sess_viec" value="morning" onchange="updateCheckboxes('viec')"><label for="t-mor">Sáng</label>
+        <input type="radio" id="t-aft" name="sess_viec" value="afternoon" onchange="updateCheckboxes('viec')"><label for="t-aft">Chiều</label>
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top: 15px;">
-        <label style="margin:0;">3. Chọn nhân sự:</label>
+        <label style="margin:0;">3. Chọn nhân sự (Đã lọc người bận):</label>
         <button class="btn-small" onclick="selectAll('grid-user-viec')">☑ Chọn hết</button>
       </div>
       <div class="checkbox-grid" id="grid-user-viec"></div>
@@ -453,21 +453,21 @@
 
       <label>2. Thời gian nghỉ:</label>
       <div class="date-group">
-        <div class="date-row"><label style="color:#888;">Từ ngày:</label><input type="date" id="nghi-tu" onchange="kiemTraHienThiBuoiNghi()" style="font-size:14px;"></div>
-        <div class="date-row"><label style="color:#888;">Đến ngày:</label><input type="date" id="nghi-den" onchange="kiemTraHienThiBuoiNghi()" style="font-size:14px;"></div>
+        <div class="date-row"><label style="color:#888;">Từ ngày:</label><input type="date" id="nghi-tu" onchange="kiemTraHienThiBuoiNghi(); updateCheckboxes('nghi');" style="font-size:14px;"></div>
+        <div class="date-row"><label style="color:#888;">Đến ngày:</label><input type="date" id="nghi-den" onchange="kiemTraHienThiBuoiNghi(); updateCheckboxes('nghi');" style="font-size:14px;"></div>
       </div>
 
       <div id="wrap-buoi-nghi" style="margin-top: 12px;">
-        <span style="font-size:12px; color:#888; font-weight:bold;">Nghỉ theo buổi (Chỉ áp dụng khi chọn 1 ngày):</span>
+        <span style="font-size:12px; color:#888; font-weight:bold;">Nghỉ theo buổi (Kích hoạt lọc người bận):</span>
         <div class="toggle-group">
-          <input type="radio" id="n-all" name="sess_nghi" value="all" checked><label for="n-all">Cả ngày</label>
-          <input type="radio" id="n-mor" name="sess_nghi" value="morning"><label for="n-mor">Sáng</label>
-          <input type="radio" id="n-aft" name="sess_nghi" value="afternoon"><label for="n-aft">Chiều</label>
+          <input type="radio" id="n-all" name="sess_nghi" value="all" onchange="updateCheckboxes('nghi')" checked><label for="n-all">Cả ngày</label>
+          <input type="radio" id="n-mor" name="sess_nghi" value="morning" onchange="updateCheckboxes('nghi')"><label for="n-mor">Sáng</label>
+          <input type="radio" id="n-aft" name="sess_nghi" value="afternoon" onchange="updateCheckboxes('nghi')"><label for="n-aft">Chiều</label>
         </div>
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top: 15px;">
-        <label style="margin:0;">3. Chọn nhân sự:</label>
+        <label style="margin:0;">3. Chọn nhân sự (Đã lọc người bận):</label>
         <button class="btn-small" onclick="selectAll('grid-user-nghi')">☑ Chọn hết</button>
       </div>
       <div class="checkbox-grid" id="grid-user-nghi"></div>
@@ -508,8 +508,8 @@
   let dsViecTangCuong = JSON.parse(localStorage.getItem('cc_tasks')) || [...DEFAULT_TASKS];
   let dsDaily = JSON.parse(localStorage.getItem('cc_daily')) || [];
   let dsLeaves = JSON.parse(localStorage.getItem('cc_leaves_data')) || [];
-  
   let dsWeekendWork = JSON.parse(localStorage.getItem('cc_weekend_work')) || [];
+  
   let editingId = null; 
 
   let today = new Date();
@@ -523,6 +523,91 @@
   function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
   // ==========================================
+  // THUẬT TOÁN KIỂM TRA XUNG ĐỘT (CONFLICT) LỊCH
+  // ==========================================
+  function isSessionConflict(sess1, sess2) {
+      if (sess1 === 'all' || sess2 === 'all') return true;
+      return sess1 === sess2;
+  }
+
+  function getBusyUsers(startDate, endDate, targetSession, excludeIdStr) {
+      let excludeIds = excludeIdStr ? excludeIdStr.split(',') : [];
+      let busy = new Set();
+
+      // Quét các bản ghi hàng ngày (Học tập, Tăng cường)
+      dsDaily.forEach(r => {
+          if (excludeIds.includes(r.id)) return;
+          if (r.date >= startDate && r.date <= endDate) {
+              if (isSessionConflict(r.session, targetSession)) {
+                  r.users.forEach(u => busy.add(u));
+              }
+          }
+      });
+
+      // Quét các lịch Nghỉ phép (Kiểm tra xem có đè lên khoảng ngày đang chọn không)
+      dsLeaves.forEach(r => {
+          if (excludeIds.includes(r.id)) return;
+          if (r.start <= endDate && r.end >= startDate) {
+              // Lịch nghỉ > 1 ngày được tính là nghỉ full ngày 'all'
+              let rSess = (r.start !== r.end) ? 'all' : r.session;
+              if (isSessionConflict(rSess, targetSession)) {
+                  r.users.forEach(u => busy.add(u));
+              }
+          }
+      });
+
+      return Array.from(busy);
+  }
+
+  function getSelectedUsers(containerId) { 
+      let checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`); 
+      let users = []; checkboxes.forEach(cb => users.push(cb.value)); 
+      return users; 
+  }
+
+  // Hàm render danh sách Checkbox ĐÃ LỌC BỎ người bận
+  function updateCheckboxes(type, usersToSelect = null) {
+      let containerId = 'grid-user-' + type;
+      let currentChecked = usersToSelect !== null ? usersToSelect : getSelectedUsers(containerId);
+
+      let startDate, endDate, session;
+      if (type === 'hoctap') {
+          startDate = endDate = document.getElementById('date-picker').value;
+          session = document.querySelector('input[name="sess_hoctap"]:checked').value;
+      } else if (type === 'viec') {
+          startDate = endDate = document.getElementById('date-picker').value;
+          session = document.querySelector('input[name="sess_viec"]:checked').value;
+      } else if (type === 'nghi') {
+          startDate = document.getElementById('nghi-tu').value;
+          endDate = document.getElementById('nghi-den').value;
+          if (endDate < startDate) endDate = startDate; // Đảm bảo end >= start
+          session = (startDate === endDate) ? document.querySelector('input[name="sess_nghi"]:checked').value : 'all';
+      }
+
+      let busyUsers = getBusyUsers(startDate, endDate, session, editingId);
+
+      let html = '';
+      dsNhanVien.forEach(u => {
+          if (busyUsers.includes(u.name)) return; // Ẩn nhân sự nếu đã bận
+
+          let roleSub = u.role ? `<span class="check-role">${u.role}</span>` : '';
+          let isChecked = currentChecked.includes(u.name) ? 'checked' : '';
+          let activeClass = isChecked ? 'active' : '';
+
+          html += `<label class="check-item ${activeClass}" onclick="toggleCheck(this)">
+                      <input type="checkbox" value="${u.name}" ${isChecked}>
+                      <div class="check-icon"></div> 
+                      <div><span class="check-text">${u.name}</span>${roleSub}</div>
+                   </label>`;
+      });
+
+      document.getElementById(containerId).innerHTML = html || '<p style="font-size:13px; color:#e74c3c; grid-column: 1 / -1; margin:0; padding:10px;">Toàn bộ nhân sự đã được phân công kín lịch trong thời gian này!</p>';
+  }
+
+  function toggleCheck(lbl) { setTimeout(() => { let cb = lbl.querySelector('input'); if(cb.checked) lbl.classList.add('active'); else lbl.classList.remove('active'); }, 10); }
+  function selectAll(containerId) { let labels = document.querySelectorAll(`#${containerId} .check-item`); let isAllChecked = true; labels.forEach(lbl => { if(!lbl.querySelector('input').checked) isAllChecked = false; }); labels.forEach(lbl => { let cb = lbl.querySelector('input'); cb.checked = !isAllChecked; if(cb.checked) lbl.classList.add('active'); else lbl.classList.remove('active'); }); }
+
+  // ==========================================
   // HỆ THỐNG BẢO MẬT & FACE ID
   // ==========================================
   let isSecurityEnabled = localStorage.getItem('cc_security') === 'true';
@@ -531,9 +616,7 @@
       if (isSecurityEnabled && sessionStorage.getItem('appUnlocked') !== 'true') {
           document.getElementById('lock-screen').style.display = 'flex';
           khoiDongKhoa(); 
-      } else {
-          moKhoaThanhCong();
-      }
+      } else { moKhoaThanhCong(); }
   };
 
   async function khoiDongKhoa() {
@@ -572,8 +655,7 @@
         });
         if (credential) {
             localStorage.setItem('faceID_Registered', 'true');
-            alert("Đã liên kết Face ID / Vân tay thành công!");
-            loadCaiDat();
+            alert("Đã liên kết Face ID / Vân tay thành công!"); loadCaiDat();
         }
     } catch (e) { alert("Thiết lập bị hủy hoặc thiết bị không hỗ trợ."); }
   }
@@ -601,9 +683,6 @@
     sessionStorage.setItem('appUnlocked', 'true');
   }
 
-  // ==========================================
-  // LOGIC CẬP NHẬT PHIÊN BẢN
-  // ==========================================
   function capNhatPhienBanMoi() {
     if(confirm("Tải lại ứng dụng để cập nhật mã nguồn mới nhất? (Không mất dữ liệu đang có)")) {
       let url = window.location.origin + window.location.pathname;
@@ -660,7 +739,7 @@
   }
 
   // ==========================================
-  // HÀM CHUYỂN TAB CƠ BẢN
+  // HÀM CHUYỂN TAB
   // ==========================================
   function switchTab(tabId, title) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -677,53 +756,8 @@
   }
 
   // ==========================================
-  // TAB CÀI ĐẶT
+  // XỬ LÝ MODAL (POPUP FORM)
   // ==========================================
-  function loadCaiDat() {
-    document.getElementById('toggle-security').checked = isSecurityEnabled;
-    document.getElementById('btn-setup-faceid').style.display = (isSecurityEnabled && window.PublicKeyCredential) ? 'block' : 'none';
-
-    let htmlUsers = '';
-    dsNhanVien.forEach((u, i) => {
-      let roleDisplay = u.role ? `<span style="font-size:11px; background:#e0f7fa; color:#0097a7; padding:4px 8px; border-radius:6px; margin-left:8px;">${u.role}</span>` : '';
-      htmlUsers += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 10px; border-bottom:1px dashed #eee; font-weight:bold; color:#2c3e50; font-size:14px;">
-                      <span style="display:flex; align-items:center; gap:8px;"><span style="color:#1976d2; font-size:16px;">👤</span> ${u.name} ${roleDisplay}</span> 
-                      <button style="background:#ffeeee; border:none; color:#e74c3c; width:26px; height:26px; border-radius:50%; font-weight:bold; cursor:pointer; font-size:13px;" onclick="xoaNhanVien(${i})">✖</button>
-                    </div>`;
-    });
-    document.getElementById('list-users').innerHTML = htmlUsers;
-
-    let htmlLeaves = ''; dsLoaiNghi.forEach((l, i) => { htmlLeaves += `<div class="tag-chip">${l} <span style="cursor:pointer; margin-left:6px; color:#e74c3c; font-size:14px;" onclick="xoaLoaiNghi(${i})">×</span></div>`; }); document.getElementById('list-leaves').innerHTML = htmlLeaves;
-    let htmlTasks = ''; dsViecTangCuong.forEach((t, i) => { htmlTasks += `<div class="tag-chip task">${t} <span style="cursor:pointer; margin-left:6px; color:#e74c3c; font-size:14px;" onclick="xoaViec(${i})">×</span></div>`; }); document.getElementById('list-tasks').innerHTML = htmlTasks;
-  }
-
-  function themNhanVien() { let n = document.getElementById('input-new-user').value.trim(); let r = document.getElementById('input-new-role').value.trim(); if(n && !dsNhanVien.some(u => u.name === n)) { dsNhanVien.push({name: n, role: r}); saveData('cc_users', dsNhanVien); document.getElementById('input-new-user').value = ''; document.getElementById('input-new-role').value = ''; loadCaiDat(); } }
-  function xoaNhanVien(i) { dsNhanVien.splice(i, 1); saveData('cc_users', dsNhanVien); loadCaiDat(); }
-  function themLoaiNghi() { let v = document.getElementById('input-new-leave').value.trim(); if(v && !dsLoaiNghi.includes(v)) { dsLoaiNghi.push(v); saveData('cc_leaves', dsLoaiNghi); document.getElementById('input-new-leave').value = ''; loadCaiDat(); } }
-  function xoaLoaiNghi(i) { dsLoaiNghi.splice(i, 1); saveData('cc_leaves', dsLoaiNghi); loadCaiDat(); }
-  function themViec() { let v = document.getElementById('input-new-task').value.trim(); if(v && !dsViecTangCuong.includes(v)) { dsViecTangCuong.push(v); saveData('cc_tasks', dsViecTangCuong); document.getElementById('input-new-task').value = ''; loadCaiDat(); } }
-  function xoaViec(i) { dsViecTangCuong.splice(i, 1); saveData('cc_tasks', dsViecTangCuong); loadCaiDat(); }
-  function xoaToanBoDuLieu() { if(confirm("Khôi phục toàn bộ danh sách về mặc định và XÓA SẠCH Lịch sử chấm công?")) { localStorage.clear(); location.reload(); } }
-
-  // ==========================================
-  // XỬ LÝ MODAL & CHECKBOXES
-  // ==========================================
-  function renderCheckboxes(containerId) {
-    let html = '';
-    dsNhanVien.forEach(u => {
-      let roleSub = u.role ? `<span class="check-role">${u.role}</span>` : '';
-      html += `<label class="check-item" onclick="toggleCheck(this)">
-                  <input type="checkbox" value="${u.name}">
-                  <div class="check-icon"></div> 
-                  <div><span class="check-text">${u.name}</span>${roleSub}</div>
-               </label>`;
-    });
-    document.getElementById(containerId).innerHTML = html || '<p style="font-size:13px; color:red;">Cần thêm Nhân sự!</p>';
-  }
-  function toggleCheck(lbl) { setTimeout(() => { let cb = lbl.querySelector('input'); if(cb.checked) lbl.classList.add('active'); else lbl.classList.remove('active'); }, 10); }
-  function selectAll(containerId) { let labels = document.querySelectorAll(`#${containerId} .check-item`); let isAllChecked = true; labels.forEach(lbl => { if(!lbl.querySelector('input').checked) isAllChecked = false; }); labels.forEach(lbl => { let cb = lbl.querySelector('input'); cb.checked = !isAllChecked; if(cb.checked) lbl.classList.add('active'); else lbl.classList.remove('active'); }); }
-  function formatDateVN(isoStr) { let d = new Date(isoStr); return `${('0'+d.getDate()).slice(-2)}/${('0'+(d.getMonth()+1)).slice(-2)}/${d.getFullYear()}`; }
-
   document.getElementById('sel-loai-hoctap').addEventListener('change', function() { document.getElementById('txt-hoctap-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
   document.getElementById('sel-loai-viec').addEventListener('change', function() { document.getElementById('wrap-viec-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
 
@@ -734,17 +768,21 @@
     
     if(id === 'modal-nghi') {
       document.getElementById('btn-submit-nghi').innerText = 'LƯU BÁO CÁO';
-      document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join(''); renderCheckboxes('grid-user-nghi');
-      document.getElementById('nghi-tu').value = selectedDate; document.getElementById('nghi-den').value = selectedDate; kiemTraHienThiBuoiNghi();
+      document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join(''); 
+      document.getElementById('nghi-tu').value = selectedDate; document.getElementById('nghi-den').value = selectedDate; 
+      kiemTraHienThiBuoiNghi();
+      updateCheckboxes('nghi', []); // Mở trắng tinh, chỉ ẩn người bận
     }
     if(id === 'modal-tang-cuong') {
       document.getElementById('btn-submit-viec').innerText = 'LƯU BÁO CÁO';
       document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
-      document.getElementById('wrap-viec-moi').style.display = 'none'; renderCheckboxes('grid-user-viec'); document.getElementById('t-all').checked = true;
+      document.getElementById('wrap-viec-moi').style.display = 'none'; document.getElementById('t-all').checked = true;
+      updateCheckboxes('viec', []);
     }
     if(id === 'modal-hoctap') {
       document.getElementById('btn-submit-hoctap').innerText = 'LƯU BÁO CÁO';
-      document.getElementById('sel-loai-hoctap').value = 'Học tập'; document.getElementById('txt-hoctap-moi').style.display = 'none'; renderCheckboxes('grid-user-hoctap'); document.getElementById('h-all').checked = true;
+      document.getElementById('sel-loai-hoctap').value = 'Học tập'; document.getElementById('txt-hoctap-moi').style.display = 'none'; document.getElementById('h-all').checked = true;
+      updateCheckboxes('hoctap', []);
     }
     if(id === 'modal-thongke-nghi') {
       document.getElementById('tk-nam').value = new Date().getFullYear(); tinhThongKeNghiNam();
@@ -753,7 +791,7 @@
 
   function dongModal(id) { editingId = null; document.getElementById(id).style.display = 'none'; }
 
-  function getSelectedUsers(containerId) { let checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`); let users = []; checkboxes.forEach(cb => users.push(cb.value)); return users; }
+  function formatDateVN(isoStr) { let d = new Date(isoStr); return `${('0'+d.getDate()).slice(-2)}/${('0'+(d.getMonth()+1)).slice(-2)}/${d.getFullYear()}`; }
 
   function formatGroupedUsers(records, categoryField, isLeave = false) {
       let groups = {};
@@ -769,19 +807,17 @@
   }
 
   // ==========================================
-  // SỬA BẢN GHI (Cho Daily Records & Lịch Sử Nghỉ)
+  // CẬP NHẬT (SỬA) BẢN GHI TỪ THẺ GỘP CHUNG
   // ==========================================
-  function suaRecordDaily(idStr) {
+  function suaRecordDaily(idStr, mode) {
     let idArr = idStr.split(',');
     let r = dsDaily.find(x => x.id === idArr[0]); if (!r) return;
     editingId = idStr;
     
     let allUsers = [];
-    dsDaily.filter(x => idArr.includes(x.id)).forEach(item => {
-        item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); });
-    });
+    dsDaily.filter(x => idArr.includes(x.id)).forEach(item => { item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); }); });
 
-    if (r.type === 'viec') {
+    if (mode === 'viec') {
         document.getElementById('modal-tang-cuong').style.display = 'flex';
         document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
         if (dsViecTangCuong.includes(r.taskName)) {
@@ -790,11 +826,10 @@
             document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName;
         }
         document.querySelector(`input[name="sess_viec"][value="${r.session}"]`).checked = true;
-        renderCheckboxes('grid-user-viec');
-        document.querySelectorAll('#grid-user-viec input[type="checkbox"]').forEach(cb => { if(allUsers.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+        updateCheckboxes('viec', allUsers);
         document.getElementById('btn-submit-viec').innerText = 'CẬP NHẬT';
     } 
-    else if (r.type === 'hoctap') {
+    else if (mode === 'hoctap') {
         document.getElementById('modal-hoctap').style.display = 'flex';
         let validOpts = ["Học tập", "Công tác", "Đi tuyến"];
         if (validOpts.includes(r.taskName)) {
@@ -803,8 +838,7 @@
             document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName;
         }
         document.querySelector(`input[name="sess_hoctap"][value="${r.session}"]`).checked = true;
-        renderCheckboxes('grid-user-hoctap');
-        document.querySelectorAll('#grid-user-hoctap input[type="checkbox"]').forEach(cb => { if(allUsers.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+        updateCheckboxes('hoctap', allUsers);
         document.getElementById('btn-submit-hoctap').innerText = 'CẬP NHẬT';
     }
   }
@@ -815,9 +849,7 @@
     editingId = idStr;
 
     let allUsers = [];
-    dsLeaves.filter(x => idArr.includes(x.id)).forEach(item => {
-        item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); });
-    });
+    dsLeaves.filter(x => idArr.includes(x.id)).forEach(item => { item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); }); });
     
     document.getElementById('modal-nghi').style.display = 'flex';
     document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join('');
@@ -826,51 +858,33 @@
     kiemTraHienThiBuoiNghi();
     
     if (r.start === r.end) { document.querySelector(`input[name="sess_nghi"][value="${r.session}"]`).checked = true; }
-    
-    renderCheckboxes('grid-user-nghi');
-    document.querySelectorAll('#grid-user-nghi input[type="checkbox"]').forEach(cb => { if(allUsers.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+    updateCheckboxes('nghi', allUsers);
     document.getElementById('btn-submit-nghi').innerText = 'CẬP NHẬT';
-  }
-
-  // ==========================================
-  // LÀM VIỆC CUỐI TUẦN
-  // ==========================================
-  function toggleCuoiTuan() {
-    let dateStr = document.getElementById('date-picker').value;
-    let isChecked = document.getElementById('chk-lam-cuoi-tuan').checked;
-    
-    if (isChecked) {
-      if (!dsWeekendWork.includes(dateStr)) dsWeekendWork.push(dateStr);
-    } else {
-      dsWeekendWork = dsWeekendWork.filter(d => d !== dateStr);
-    }
-    saveData('cc_weekend_work', dsWeekendWork);
-    loadDuLieuNgay(); 
   }
 
   // ==========================================
   // TAB 1: CHẤM CÔNG NGÀY
   // ==========================================
+  function toggleCuoiTuan() {
+    let dateStr = document.getElementById('date-picker').value;
+    let isChecked = document.getElementById('chk-lam-cuoi-tuan').checked;
+    if (isChecked) { if (!dsWeekendWork.includes(dateStr)) dsWeekendWork.push(dateStr); } 
+    else { dsWeekendWork = dsWeekendWork.filter(d => d !== dateStr); }
+    saveData('cc_weekend_work', dsWeekendWork); loadDuLieuNgay(); 
+  }
+
   function loadDuLieuNgay() {
     let targetDate = document.getElementById('date-picker').value;
     let recordsDaily = dsDaily.filter(r => r.date === targetDate);
     let recordsLeave = dsLeaves.filter(l => targetDate >= l.start && targetDate <= l.end);
 
-    // [THUẬT TOÁN GỘP CHO MÀN HÌNH CHẤM NGÀY - ÉP GỘP BẤT CHẤP NGÀY BẮT ĐẦU/KẾT THÚC]
+    // Gộp dữ liệu hiển thị (Bất chấp ngày bắt đầu/kết thúc khác nhau)
     let groupedLeavesToday = Object.values(recordsLeave.reduce((acc, r) => {
         let isMulti = r.start !== r.end;
         let effectiveSession = isMulti ? 'multi' : r.session;
-        let key = r.category + '|' + effectiveSession;
-        
-        if(!acc[key]) {
-            acc[key] = { 
-                category: r.category, 
-                sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], 
-                combinedUsers: [...r.users] 
-            };
-        } else { 
-            r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); 
-        }
+        let key = r.category + '|' + effectiveSession; // Gộp theo Loại và Buổi
+        if(!acc[key]) { acc[key] = { category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users] }; } 
+        else { r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
         return acc;
     }, {}));
 
@@ -888,40 +902,25 @@
     let dObj = new Date(targetDate);
     let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
     let isWorkingDay = true;
-
     if (isWeekend) {
         document.getElementById('wrap-lam-cuoi-tuan').style.display = 'flex';
         let isChecked = dsWeekendWork.includes(targetDate);
         document.getElementById('chk-lam-cuoi-tuan').checked = isChecked;
         if (!isChecked) isWorkingDay = false; 
-    } else {
-        document.getElementById('wrap-lam-cuoi-tuan').style.display = 'none';
-    }
+    } else { document.getElementById('wrap-lam-cuoi-tuan').style.display = 'none'; }
 
     let sumNghi = 0, sumTC = 0, sumHT = 0, sumBQTX = 0;
-
     dsNhanVien.forEach(nv => {
       let uName = nv.name; let uRole = nv.role; let uNghi = 0, uTC = 0, uHT = 0;
-
       recordsLeave.forEach(r => { if(r.users.includes(uName)) { uNghi += (r.start === r.end && r.session !== 'all') ? 0.5 : 1; } });
       recordsDaily.forEach(r => {
-          if(r.users.includes(uName)) {
-              let val = (r.session === 'all') ? 1 : 0.5;
-              if(r.type === 'viec') uTC += val;
-              if(r.type === 'hoctap') uHT += val;
-          }
+          if(r.users.includes(uName)) { let val = (r.session === 'all') ? 1 : 0.5; if(r.type === 'viec') uTC += val; if(r.type === 'hoctap') uHT += val; }
       });
 
       sumNghi += uNghi; sumTC += uTC; sumHT += uHT;
-
       let base = 0;
-      if (isWorkingDay) {
-          base = 1.0;
-          if(uRole === 'Đội trưởng') base = 0; else if(uRole === 'Phó đội trưởng') base = 0.5;
-      }
-      let absence = uNghi + uTC + uHT; 
-      let bqtx = Math.max(0, base - absence); 
-      sumBQTX += bqtx;
+      if (isWorkingDay) { base = 1.0; if(uRole === 'Đội trưởng') base = 0; else if(uRole === 'Phó đội trưởng') base = 0.5; }
+      let absence = uNghi + uTC + uHT; let bqtx = Math.max(0, base - absence); sumBQTX += bqtx;
     });
 
     document.getElementById('sum-nghi').innerText = sumNghi; document.getElementById('sum-tc').innerText = sumTC;
@@ -939,7 +938,7 @@
     let html = '';
     if(totalRec === 0) { html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Chưa có báo cáo nào.</div>'; }
     
-    // RENDER THẺ NGHỈ Ở TAB NGÀY (ẨN NÚT XÓA/SỬA ĐỂ BẢO VỆ DỮ LIỆU)
+    // Render thẻ Nghỉ (Đã gộp hoàn toàn, tắt nút sửa xoá ở tab này để an toàn)
     groupedLeavesToday.forEach(r => {
       html += `<div class="list-item type-nghi-auto" style="padding-right:14px;">
                  <div class="list-item-header" style="padding-right:0;">
@@ -947,23 +946,22 @@
                      <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
                  </div>
                  <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
-                 <div style="font-size:10.5px; color:#aaa; margin-top:6px; font-style:italic;">* Sửa/Xóa lịch này tại tab "Nghỉ"</div>
+                 <div style="font-size:10.5px; color:#aaa; margin-top:6px; font-style:italic;">* Thay đổi lịch này tại Tab "Nghỉ"</div>
                </div>`;
     });
 
     groupedDaily.forEach(r => {
-      let sessionText = SES_LABELS_FULL[r.session];
-      let idsStr = r.ids.join(',');
+      let sessionText = SES_LABELS_FULL[r.session]; let idsStr = r.ids.join(',');
       if(r.type === 'hoctap') {
         html += `<div class="list-item type-hoctap">
-                   <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}')">✏️</button>
+                   <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'hoctap')">✏️</button>
                    <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">×</button>
                    <div class="list-item-header"><span class="list-item-title">📘 ${r.taskName}</span><span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span></div>
                    <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  </div>`;
       } else if (r.type === 'viec') {
         html += `<div class="list-item type-viec">
-                   <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}')">✏️</button>
+                   <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'viec')">✏️</button>
                    <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">×</button>
                    <div class="list-item-header"><span class="list-item-title">⚡ T.Cường: ${r.taskName}</span><span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span></div>
                    <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
@@ -982,26 +980,20 @@
 
     let sess = document.querySelector(`input[name="sess_${type}"]:checked`).value;
     
-    if (editingId) { 
-        let idArr = editingId.split(',');
-        dsDaily = dsDaily.filter(x => !idArr.includes(x.id));
-        editingId = null;
-    }
-    
+    if (editingId) { let idArr = editingId.split(','); dsDaily = dsDaily.filter(x => !idArr.includes(x.id)); editingId = null; }
     dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users });
     saveData('cc_daily', dsDaily); dongModal(type === 'viec' ? 'modal-tang-cuong' : 'modal-hoctap'); loadDuLieuNgay();
   }
   
   function xoaRecordDaily(idsStr) { 
       if(confirm('Xóa bản ghi này khỏi ngày hôm nay?')) { 
-          let idArr = idsStr.split(',');
-          dsDaily = dsDaily.filter(r => !idArr.includes(r.id)); 
+          let idArr = idsStr.split(','); dsDaily = dsDaily.filter(r => !idArr.includes(r.id)); 
           saveData('cc_daily', dsDaily); loadDuLieuNgay(); 
       } 
   }
 
   // ==========================================
-  // TAB 2: QUẢN LÝ NGHỈ PHÉP & THỐNG KÊ
+  // TAB 2: QUẢN LÝ NGHỈ PHÉP
   // ==========================================
   function kiemTraHienThiBuoiNghi() {
     let tu = document.getElementById('nghi-tu').value; let den = document.getElementById('nghi-den').value;
@@ -1015,13 +1007,9 @@
     if(den < tu) { alert('Ngày kết thúc không hợp lệ!'); return; }
     let cat = document.getElementById('sel-loai-nghi').value; let sess = document.querySelector('input[name="sess_nghi"]:checked').value;
 
-    if (editingId) {
-        let idArr = editingId.split(',');
-        dsLeaves = dsLeaves.filter(x => !idArr.includes(x.id));
-        editingId = null;
-    }
-    
+    if (editingId) { let idArr = editingId.split(','); dsLeaves = dsLeaves.filter(x => !idArr.includes(x.id)); editingId = null; }
     dsLeaves.push({ id: Date.now().toString(), start: tu, end: den, category: cat, session: sess, users: users });
+    
     saveData('cc_leaves_data', dsLeaves); dongModal('modal-nghi'); loadDanhSachNghi();
     if(document.getElementById('tab-ngay').classList.contains('active')) loadDuLieuNgay();
   }
@@ -1039,15 +1027,9 @@
     
     sorted.forEach(r => {
       let dateText = r.start === r.end ? formatDateVN(r.start) : `${formatDateVN(r.start)} - ${formatDateVN(r.end)}`;
-      
       let durationText = "";
-      if (r.start === r.end) {
-          durationText = (r.session === 'all') ? "1 ngày" : "0.5 ngày";
-      } else {
-          let d1 = new Date(r.start); let d2 = new Date(r.end);
-          let dayDiff = Math.round((d2 - d1) / (1000 * 3600 * 24)) + 1;
-          durationText = dayDiff + " ngày";
-      }
+      if (r.start === r.end) { durationText = (r.session === 'all') ? "1 ngày" : "0.5 ngày"; } 
+      else { let d1 = new Date(r.start); let d2 = new Date(r.end); let dayDiff = Math.round((d2 - d1) / (1000 * 3600 * 24)) + 1; durationText = dayDiff + " ngày"; }
 
       let idsStr = r.ids.join(',');
 
@@ -1061,11 +1043,9 @@
     });
     document.getElementById('list-nghi-dai-han').innerHTML = html;
   }
-  
   function xoaLeave(idsStr) { 
       if(confirm('Xóa lịch nghỉ phép này?')) { 
-          let idArr = idsStr.split(',');
-          dsLeaves = dsLeaves.filter(r => !idArr.includes(r.id)); 
+          let idArr = idsStr.split(','); dsLeaves = dsLeaves.filter(r => !idArr.includes(r.id)); 
           saveData('cc_leaves_data', dsLeaves); loadDanhSachNghi(); 
           if(document.getElementById('tab-ngay').classList.contains('active')) loadDuLieuNgay();
       } 
@@ -1087,10 +1067,7 @@
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
                       l.users.forEach(u => {
-                          if(stats[u]) {
-                              stats[u].total += val;
-                              stats[u].chitiet[l.category] = (stats[u].chitiet[l.category]||0) + val;
-                          }
+                          if(stats[u]) { stats[u].total += val; stats[u].chitiet[l.category] = (stats[u].chitiet[l.category]||0) + val; }
                       });
                   }
                   cur.setDate(cur.getDate()+1);
@@ -1102,11 +1079,9 @@
       dsNhanVien.forEach(u => {
           let st = stats[u.name];
           let str = Object.keys(st.chitiet).map(k=>`• ${k}: ${st.chitiet[k]}`).join('<br>');
-          tbody += `<tr>
-                      <td style="text-align:left; font-weight:bold; font-size:13px;">${u.name}</td>
-                      <td style="color:#e74c3c; font-weight:bold; font-size:15px;">${st.total > 0 ? st.total : '-'}</td>
-                      <td style="text-align:left; font-size:12px; color:#666; line-height:1.4;">${str}</td>
-                    </tr>`;
+          tbody += `<tr><td style="text-align:left; font-weight:bold; font-size:13px;">${u.name}</td>
+                        <td style="color:#e74c3c; font-weight:bold; font-size:15px;">${st.total > 0 ? st.total : '-'}</td>
+                        <td style="text-align:left; font-size:12px; color:#666; line-height:1.4;">${str}</td></tr>`;
       });
       document.querySelector('#table-thongke-nam tbody').innerHTML = tbody;
   }
@@ -1115,60 +1090,24 @@
   // TAB TỔNG HỢP CHU KỲ
   // ==========================================
   function clearQuickActive() { document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active')); }
-  
   function chonThangTuyChinh() {
-      clearQuickActive();
-      let val = document.getElementById('month-year-picker').value; 
-      if(!val) { alert("Vui lòng chọn tháng/năm!"); return; }
-
+      clearQuickActive(); let val = document.getElementById('month-year-picker').value; if(!val) { alert("Vui lòng chọn tháng/năm!"); return; }
       let parts = val.split('-'); let year = parseInt(parts[0]); let month = parseInt(parts[1]) - 1; 
       let start = new Date(year, month, 1); let end = new Date(year, month + 1, 0); 
-
       let formatIsoLocal = (d) => { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
-      document.getElementById('cycle-start').value = formatIsoLocal(start);
-      document.getElementById('cycle-end').value = formatIsoLocal(end);
+      document.getElementById('cycle-start').value = formatIsoLocal(start); document.getElementById('cycle-end').value = formatIsoLocal(end);
   }
-
-  function chonTuanTruoc() {
-    clearQuickActive(); document.getElementById('btn-tuan-truoc').classList.add('active');
-    let curr = new Date(); let first = curr.getDate() - curr.getDay() + 1 - 7; 
-    let start = new Date(curr.setDate(first)); let end = new Date(start); end.setDate(end.getDate() + 6);
-    document.getElementById('cycle-start').value = start.toISOString().split('T')[0]; document.getElementById('cycle-end').value = end.toISOString().split('T')[0];
-  }
-
-  function chonTuanNay() {
-    clearQuickActive(); document.getElementById('btn-tuan-nay').classList.add('active');
-    let curr = new Date(); let first = curr.getDate() - curr.getDay() + 1; let last = first + 6; 
-    document.getElementById('cycle-start').value = new Date(curr.setDate(first)).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(curr.setDate(last)).toISOString().split('T')[0];
-  }
-
-  function chonThangTruoc() {
-    clearQuickActive(); document.getElementById('btn-thang-truoc').classList.add('active');
-    let date = new Date(); document.getElementById('cycle-start').value = new Date(date.getFullYear(), date.getMonth() - 1, 1).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(date.getFullYear(), date.getMonth(), 0).toISOString().split('T')[0];
-  }
-
-  function chonThangNay() {
-    clearQuickActive(); document.getElementById('btn-thang-nay').classList.add('active');
-    let date = new Date(); document.getElementById('cycle-start').value = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0];
-  }
-
-  function initChuKy() {
-    let savedEnd = localStorage.getItem('cc_last_end_date');
-    if(savedEnd) { 
-      let nextStart = new Date(savedEnd); nextStart.setDate(nextStart.getDate() + 1); 
-      document.getElementById('cycle-start').value = nextStart.toISOString().split('T')[0]; autoCalcEndDate(); 
-    } 
-  }
-
-  function autoCalcEndDate() {
-    let startVal = document.getElementById('cycle-start').value;
-    if(startVal) { let end = new Date(startVal); end.setMonth(end.getMonth() + 1); end.setDate(end.getDate() - 1); document.getElementById('cycle-end').value = end.toISOString().split('T')[0]; }
-  }
+  function chonTuanTruoc() { clearQuickActive(); document.getElementById('btn-tuan-truoc').classList.add('active'); let curr = new Date(); let first = curr.getDate() - curr.getDay() + 1 - 7; let start = new Date(curr.setDate(first)); let end = new Date(start); end.setDate(end.getDate() + 6); document.getElementById('cycle-start').value = start.toISOString().split('T')[0]; document.getElementById('cycle-end').value = end.toISOString().split('T')[0]; }
+  function chonTuanNay() { clearQuickActive(); document.getElementById('btn-tuan-nay').classList.add('active'); let curr = new Date(); let first = curr.getDate() - curr.getDay() + 1; let last = first + 6; document.getElementById('cycle-start').value = new Date(curr.setDate(first)).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(curr.setDate(last)).toISOString().split('T')[0]; }
+  function chonThangTruoc() { clearQuickActive(); document.getElementById('btn-thang-truoc').classList.add('active'); let date = new Date(); document.getElementById('cycle-start').value = new Date(date.getFullYear(), date.getMonth() - 1, 1).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(date.getFullYear(), date.getMonth(), 0).toISOString().split('T')[0]; }
+  function chonThangNay() { clearQuickActive(); document.getElementById('btn-thang-nay').classList.add('active'); let date = new Date(); document.getElementById('cycle-start').value = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0]; }
+  
+  function initChuKy() { let savedEnd = localStorage.getItem('cc_last_end_date'); if(savedEnd) { let nextStart = new Date(savedEnd); nextStart.setDate(nextStart.getDate() + 1); document.getElementById('cycle-start').value = nextStart.toISOString().split('T')[0]; autoCalcEndDate(); } }
+  function autoCalcEndDate() { let startVal = document.getElementById('cycle-start').value; if(startVal) { let end = new Date(startVal); end.setMonth(end.getMonth() + 1); end.setDate(end.getDate() - 1); document.getElementById('cycle-end').value = end.toISOString().split('T')[0]; } }
 
   function formatGlobalStat(statsObj) {
       return Object.keys(statsObj).map(key => {
-          let item = statsObj[key];
-          let userArr = Object.keys(item.users).map(u => `${u}: ${item.users[u]}`);
+          let item = statsObj[key]; let userArr = Object.keys(item.users).map(u => `${u}: ${item.users[u]}`);
           return `&bull; <b style="color:#2c3e50;">${key}: ${item.total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span>`;
       }).join('<br>');
   }
@@ -1178,9 +1117,7 @@
     if(!start || !end) { alert('Chọn đầy đủ khoảng thời gian!'); return; }
     localStorage.setItem('cc_last_end_date', end);
 
-    let stats = {}; 
-    dsNhanVien.forEach(u => { stats[u.name] = { nghiTotal: 0, hocTotal: 0, viecTotal: 0, chiTietNghi: {}, chiTietViec: {}, chiTietHoc: {} }; });
-
+    let stats = {}; dsNhanVien.forEach(u => { stats[u.name] = { nghiTotal: 0, hocTotal: 0, viecTotal: 0, chiTietNghi: {}, chiTietViec: {}, chiTietHoc: {} }; });
     let curDate = new Date(start); let endDate = new Date(end);
     let sumNghi = 0, sumHoc = 0, sumViec = 0, sumBQTX_cycle = 0;
     
@@ -1192,12 +1129,9 @@
         let dayOfWeek = curDate.getDay();
         let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
         let isWorkingDay = true;
-        if(isWeekend && !dsWeekendWork.includes(dStr)) {
-            isWorkingDay = false;
-        }
+        if(isWeekend && !dsWeekendWork.includes(dStr)) { isWorkingDay = false; }
 
-        let dailyAbsence = {};
-        dsNhanVien.forEach(u => dailyAbsence[u.name] = 0);
+        let dailyAbsence = {}; dsNhanVien.forEach(u => dailyAbsence[u.name] = 0);
 
         dsDaily.filter(r => r.date === dStr).forEach(r => {
             let val = r.session === 'all' ? 1 : 0.5;
@@ -1207,14 +1141,12 @@
                     if(r.type === 'hoctap') { 
                         stats[u].hocTotal += val; sumHoc += val; 
                         stats[u].chiTietHoc[r.taskName] = (stats[u].chiTietHoc[r.taskName]||0) + val;
-                        
                         if(!globalHocStats[r.taskName]) globalHocStats[r.taskName] = {total:0, users:{}};
                         globalHocStats[r.taskName].total += val; globalHocStats[r.taskName].users[u] = (globalHocStats[r.taskName].users[u]||0) + val;
                     } 
                     if(r.type === 'viec') { 
                         stats[u].viecTotal += val; sumViec += val; 
                         stats[u].chiTietViec[r.taskName] = (stats[u].chiTietViec[r.taskName]||0) + val;
-
                         if(!globalTaskStats[r.taskName]) globalTaskStats[r.taskName] = {total:0, users:{}};
                         globalTaskStats[r.taskName].total += val; globalTaskStats[r.taskName].users[u] = (globalTaskStats[r.taskName].users[u]||0) + val;
                     } 
@@ -1229,7 +1161,6 @@
                     dailyAbsence[u] += val;
                     stats[u].nghiTotal += val; sumNghi += val; 
                     stats[u].chiTietNghi[l.category] = (stats[u].chiTietNghi[l.category]||0) + val;
-
                     if(!globalNghiStats[l.category]) globalNghiStats[l.category] = {total:0, users:{}};
                     globalNghiStats[l.category].total += val; globalNghiStats[l.category].users[u] = (globalNghiStats[l.category].users[u]||0) + val;
                 } 
@@ -1238,10 +1169,7 @@
 
         dsNhanVien.forEach(nv => {
             let base = 0;
-            if(isWorkingDay) {
-               base = 1.0;
-               if(nv.role === 'Đội trưởng') base = 0; else if(nv.role === 'Phó đội trưởng') base = 0.5;
-            }
+            if(isWorkingDay) { base = 1.0; if(nv.role === 'Đội trưởng') base = 0; else if(nv.role === 'Phó đội trưởng') base = 0.5; }
             let bqtx = Math.max(0, base - dailyAbsence[nv.name]);
             sumBQTX_cycle += bqtx;
         });
@@ -1253,7 +1181,6 @@
     if(Object.keys(globalNghiStats).length > 0) { textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ:</span><br>${formatGlobalStat(globalNghiStats)}`); }
     if(Object.keys(globalHocStats).length > 0) { textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT:</span><br>${formatGlobalStat(globalHocStats)}`); }
     if(Object.keys(globalTaskStats).length > 0) { textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG:</span><br>${formatGlobalStat(globalTaskStats)}`); }
-    
     textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:14px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
 
     document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
@@ -1270,12 +1197,7 @@
       let cellHoc = st.hocTotal > 0 ? `<div class="main-val">${st.hocTotal}</div><div class="detail-text">${strHoc}</div>` : `<div style="color:#ccc">-</div>`;
       let cellViec = st.viecTotal > 0 ? `<div class="main-val">${st.viecTotal}</div><div class="detail-text">${strViec}</div>` : `<div style="color:#ccc">-</div>`;
 
-      tbody += `<tr>
-                  <td class="td-left">${u.name}</td>
-                  <td class="td-number">${cellNghi}</td>
-                  <td class="td-hoctap">${cellHoc}</td>
-                  <td class="td-task">${cellViec}</td>
-                </tr>`;
+      tbody += `<tr><td class="td-left">${u.name}</td><td class="td-number">${cellNghi}</td><td class="td-hoctap">${cellHoc}</td><td class="td-task">${cellViec}</td></tr>`;
     });
     document.querySelector('#table-tong-hop tbody').innerHTML = tbody || '<tr><td colspan="4">Chưa có nhân sự</td></tr>';
     document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td>${sumNghi}</td><td>${sumHoc}</td><td>${sumViec}</td></tr>`;
