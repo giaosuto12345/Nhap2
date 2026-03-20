@@ -95,7 +95,7 @@
     .list-item.type-viec { border-left-color: #f39c12; }
     .list-item.type-nghi-auto { border-left-color: #e74c3c; background: #fffcfc; }
     .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; padding-right: 65px;}
-    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; padding-right: 65px; }
+    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4;}
     .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #eee; font-weight: bold; color: #555; white-space: nowrap; margin-left: 8px; }
     .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
     
@@ -509,9 +509,7 @@
   let dsDaily = JSON.parse(localStorage.getItem('cc_daily')) || [];
   let dsLeaves = JSON.parse(localStorage.getItem('cc_leaves_data')) || [];
   
-  // Biến lưu trữ các ngày nghỉ được đánh dấu là có làm việc
   let dsWeekendWork = JSON.parse(localStorage.getItem('cc_weekend_work')) || [];
-
   let editingId = null; 
 
   let today = new Date();
@@ -730,7 +728,7 @@
   document.getElementById('sel-loai-viec').addEventListener('change', function() { document.getElementById('wrap-viec-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
 
   function moModal(id) {
-    editingId = null; // Đảm bảo luôn Tạo Mới khi bấm Mở thông thường
+    editingId = null; 
     document.getElementById(id).style.display = 'flex';
     let selectedDate = document.getElementById('date-picker').value;
     
@@ -764,18 +762,20 @@
           let sessTag = (r.session === 'all' || (isLeave && r.start !== r.end)) ? '' : ` ${SES_LABELS[r.session]}`;
           r.users.forEach(u => { groups[cat].push(`${u}${sessTag}`); });
       });
-      return Object.keys(groups).map(k => `&bull; <b style="color:#2c3e50;">${k}</b>: ${groups[k].join(', ')}`).join('<br>');
+      return Object.keys(groups).map(k => {
+          let uniqueUsers = [...new Set(groups[k])];
+          return `&bull; <b style="color:#2c3e50;">${k}</b>: ${uniqueUsers.join(', ')}`;
+      }).join('<br>');
   }
 
   // ==========================================
-  // SỬA BẢN GHI (GỘP CHUNG MÃ ID NẾU CÓ)
+  // SỬA BẢN GHI (Cho Daily Records & Lịch Sử Nghỉ)
   // ==========================================
   function suaRecordDaily(idStr) {
     let idArr = idStr.split(',');
     let r = dsDaily.find(x => x.id === idArr[0]); if (!r) return;
     editingId = idStr;
     
-    // Thu thập tất cả users của nhóm bản ghi này
     let allUsers = [];
     dsDaily.filter(x => idArr.includes(x.id)).forEach(item => {
         item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); });
@@ -833,7 +833,7 @@
   }
 
   // ==========================================
-  // LÀM VIỆC CUỐI TUẦN (T7, CN)
+  // LÀM VIỆC CUỐI TUẦN
   // ==========================================
   function toggleCuoiTuan() {
     let dateStr = document.getElementById('date-picker').value;
@@ -844,7 +844,6 @@
     } else {
       dsWeekendWork = dsWeekendWork.filter(d => d !== dateStr);
     }
-    
     saveData('cc_weekend_work', dsWeekendWork);
     loadDuLieuNgay(); 
   }
@@ -857,15 +856,24 @@
     let recordsDaily = dsDaily.filter(r => r.date === targetDate);
     let recordsLeave = dsLeaves.filter(l => targetDate >= l.start && targetDate <= l.end);
 
-    // Gộp dữ liệu hiển thị Nghỉ Phép
-    let groupedLeaves = Object.values(recordsLeave.reduce((acc, r) => {
-        let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end;
-        if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
-        else { acc[key].ids.push(r.id); r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
+    // [THUẬT TOÁN GỘP CHO MÀN HÌNH CHẤM NGÀY - ÉP GỘP BẤT CHẤP NGÀY BẮT ĐẦU/KẾT THÚC]
+    let groupedLeavesToday = Object.values(recordsLeave.reduce((acc, r) => {
+        let isMulti = r.start !== r.end;
+        let effectiveSession = isMulti ? 'multi' : r.session;
+        let key = r.category + '|' + effectiveSession;
+        
+        if(!acc[key]) {
+            acc[key] = { 
+                category: r.category, 
+                sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], 
+                combinedUsers: [...r.users] 
+            };
+        } else { 
+            r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); 
+        }
         return acc;
     }, {}));
 
-    // Gộp dữ liệu hiển thị Học Tập / Tăng Cường
     let groupedDaily = Object.values(recordsDaily.reduce((acc, r) => {
         let key = r.type + '|' + r.taskName + '|' + r.session;
         if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
@@ -873,13 +881,12 @@
         return acc;
     }, {}));
 
-    let totalRec = groupedDaily.length + groupedLeaves.length;
+    let totalRec = groupedDaily.length + groupedLeavesToday.length;
     document.getElementById('count-records').innerText = `${totalRec} bản ghi`;
 
-    // KIỂM TRA CUỐI TUẦN (T7 = 6, CN = 0)
+    // KIỂM TRA CUỐI TUẦN
     let dObj = new Date(targetDate);
-    let dayOfWeek = dObj.getDay();
-    let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+    let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
     let isWorkingDay = true;
 
     if (isWeekend) {
@@ -907,7 +914,6 @@
 
       sumNghi += uNghi; sumTC += uTC; sumHT += uHT;
 
-      // LOGIC TÍNH BQTX
       let base = 0;
       if (isWorkingDay) {
           base = 1.0;
@@ -933,14 +939,15 @@
     let html = '';
     if(totalRec === 0) { html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Chưa có báo cáo nào.</div>'; }
     
-    groupedLeaves.forEach(r => {
-      let isMulti = r.start !== r.end; let sessionText = isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session];
-      let idsStr = r.ids.join(',');
-      html += `<div class="list-item type-nghi-auto">
-                 <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
-                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">×</button>
-                 <div class="list-item-header"><span class="list-item-title">⛱️ Nghỉ: ${r.category}</span><span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${sessionText}</span></div>
+    // RENDER THẺ NGHỈ Ở TAB NGÀY (ẨN NÚT XÓA/SỬA ĐỂ BẢO VỆ DỮ LIỆU)
+    groupedLeavesToday.forEach(r => {
+      html += `<div class="list-item type-nghi-auto" style="padding-right:14px;">
+                 <div class="list-item-header" style="padding-right:0;">
+                     <span class="list-item-title">⛱️ Nghỉ: ${r.category}</span>
+                     <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
+                 </div>
                  <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
+                 <div style="font-size:10.5px; color:#aaa; margin-top:6px; font-style:italic;">* Sửa/Xóa lịch này tại tab "Nghỉ"</div>
                </div>`;
     });
 
@@ -975,7 +982,7 @@
 
     let sess = document.querySelector(`input[name="sess_${type}"]:checked`).value;
     
-    if (editingId) { // Chế độ Sửa (Xóa các ID cũ, tạo 1 ID gộp mới)
+    if (editingId) { 
         let idArr = editingId.split(',');
         dsDaily = dsDaily.filter(x => !idArr.includes(x.id));
         editingId = null;
@@ -984,6 +991,7 @@
     dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users });
     saveData('cc_daily', dsDaily); dongModal(type === 'viec' ? 'modal-tang-cuong' : 'modal-hoctap'); loadDuLieuNgay();
   }
+  
   function xoaRecordDaily(idsStr) { 
       if(confirm('Xóa bản ghi này khỏi ngày hôm nay?')) { 
           let idArr = idsStr.split(',');
@@ -1019,7 +1027,6 @@
   }
 
   function loadDanhSachNghi() {
-    // Gộp dữ liệu hiển thị Danh sách Nghỉ Phép (Tương tự Chấm ngày)
     let grouped = Object.values(dsLeaves.reduce((acc, r) => {
         let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end;
         if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
@@ -1054,11 +1061,13 @@
     });
     document.getElementById('list-nghi-dai-han').innerHTML = html;
   }
+  
   function xoaLeave(idsStr) { 
       if(confirm('Xóa lịch nghỉ phép này?')) { 
           let idArr = idsStr.split(',');
           dsLeaves = dsLeaves.filter(r => !idArr.includes(r.id)); 
           saveData('cc_leaves_data', dsLeaves); loadDanhSachNghi(); 
+          if(document.getElementById('tab-ngay').classList.contains('active')) loadDuLieuNgay();
       } 
   }
 
@@ -1103,7 +1112,7 @@
   }
 
   // ==========================================
-  // TAB TỔNG HỢP CHU KỲ (THÊM BỘ LỌC THÁNG)
+  // TAB TỔNG HỢP CHU KỲ
   // ==========================================
   function clearQuickActive() { document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active')); }
   
@@ -1227,7 +1236,6 @@
             });
         });
 
-        // Tính BQTX trong kỳ phụ thuộc vào Ngày làm việc hay Ngày nghỉ
         dsNhanVien.forEach(nv => {
             let base = 0;
             if(isWorkingDay) {
