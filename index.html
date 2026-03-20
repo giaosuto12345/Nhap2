@@ -206,6 +206,17 @@
         <div class="summary-details" id="summary-details-text"></div>
       </div>
 
+      <div id="wrap-lam-cuoi-tuan" style="display:none; justify-content:space-between; align-items:center; background:#fff3cd; padding:12px 14px; border-radius:12px; border:1px solid #ffe69c; margin-bottom:12px;">
+          <div>
+            <span style="font-weight:bold; color:#b97a00; font-size:14px;">🌟 Làm việc ngày nghỉ</span>
+            <span style="display:block; font-size:11px; color:#d48f00; margin-top:4px;">Bật công tắc để tính công BQTX</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="chk-lam-cuoi-tuan" onchange="toggleCuoiTuan()">
+            <span class="slider"></span>
+          </label>
+      </div>
+
       <div class="flex-row">
         <button class="btn btn-info" onclick="moModal('modal-hoctap')">📘 HỌC TẬP/C.TÁC</button>
         <button class="btn btn-warning" onclick="moModal('modal-tang-cuong')">⚡ TĂNG CƯỜNG</button>
@@ -498,12 +509,14 @@
   let dsDaily = JSON.parse(localStorage.getItem('cc_daily')) || [];
   let dsLeaves = JSON.parse(localStorage.getItem('cc_leaves_data')) || [];
   
+  // Biến lưu trữ các ngày nghỉ được đánh dấu là có làm việc
+  let dsWeekendWork = JSON.parse(localStorage.getItem('cc_weekend_work')) || [];
+
   let editingId = null; 
 
   let today = new Date();
   document.getElementById('date-picker').value = today.toISOString().split('T')[0];
   document.getElementById('tk-nam').value = today.getFullYear();
-  // Khởi tạo tháng hiện tại cho ô chọn tháng
   document.getElementById('month-year-picker').value = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0');
 
   const SES_LABELS = { 'all': '', 'morning': '(Sáng)', 'afternoon': '(Chiều)' };
@@ -625,7 +638,7 @@
   }
 
   function exportBackupJSON() {
-      let data = { cc_users: dsNhanVien, cc_tasks: dsViecTangCuong, cc_leaves: dsLoaiNghi, cc_daily: dsDaily, cc_leaves_data: dsLeaves, cc_security: isSecurityEnabled };
+      let data = { cc_users: dsNhanVien, cc_tasks: dsViecTangCuong, cc_leaves: dsLoaiNghi, cc_daily: dsDaily, cc_leaves_data: dsLeaves, cc_security: isSecurityEnabled, cc_weekend_work: dsWeekendWork };
       let blob = new Blob([JSON.stringify(data)], {type: "application/json"}); let url = URL.createObjectURL(blob);
       let a = document.createElement('a'); a.href = url; a.download = "Backup_AppChamCong_" + new Date().toISOString().split('T')[0] + ".json";
       document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
@@ -642,6 +655,7 @@
               if(data.cc_daily) localStorage.setItem('cc_daily', JSON.stringify(data.cc_daily));
               if(data.cc_leaves_data) localStorage.setItem('cc_leaves_data', JSON.stringify(data.cc_leaves_data));
               if(data.cc_security !== undefined) localStorage.setItem('cc_security', data.cc_security);
+              if(data.cc_weekend_work) localStorage.setItem('cc_weekend_work', JSON.stringify(data.cc_weekend_work));
               alert("Phục hồi dữ liệu thành công! Ứng dụng sẽ tải lại."); location.reload();
           } catch(err) { alert("File không hợp lệ hoặc bị lỗi!"); }
       }; reader.readAsText(file);
@@ -806,6 +820,23 @@
   }
 
   // ==========================================
+  // LÀM VIỆC CUỐI TUẦN (T7, CN)
+  // ==========================================
+  function toggleCuoiTuan() {
+    let dateStr = document.getElementById('date-picker').value;
+    let isChecked = document.getElementById('chk-lam-cuoi-tuan').checked;
+    
+    if (isChecked) {
+      if (!dsWeekendWork.includes(dateStr)) dsWeekendWork.push(dateStr);
+    } else {
+      dsWeekendWork = dsWeekendWork.filter(d => d !== dateStr);
+    }
+    
+    saveData('cc_weekend_work', dsWeekendWork);
+    loadDuLieuNgay(); // Tính toán lại ngay lập tức
+  }
+
+  // ==========================================
   // TAB 1: CHẤM CÔNG NGÀY
   // ==========================================
   function loadDuLieuNgay() {
@@ -815,6 +846,21 @@
 
     let totalRec = recordsDaily.length + recordsLeave.length;
     document.getElementById('count-records').innerText = `${totalRec} bản ghi`;
+
+    // KIỂM TRA CUỐI TUẦN (T7 = 6, CN = 0)
+    let dObj = new Date(targetDate);
+    let dayOfWeek = dObj.getDay();
+    let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+    let isWorkingDay = true;
+
+    if (isWeekend) {
+        document.getElementById('wrap-lam-cuoi-tuan').style.display = 'flex';
+        let isChecked = dsWeekendWork.includes(targetDate);
+        document.getElementById('chk-lam-cuoi-tuan').checked = isChecked;
+        if (!isChecked) isWorkingDay = false; // Nếu không bật công tắc thì T7/CN là ngày nghỉ
+    } else {
+        document.getElementById('wrap-lam-cuoi-tuan').style.display = 'none';
+    }
 
     let sumNghi = 0, sumTC = 0, sumHT = 0, sumBQTX = 0;
 
@@ -832,10 +878,16 @@
 
       sumNghi += uNghi; sumTC += uTC; sumHT += uHT;
 
-      let base = 1.0;
-      if(uRole === 'Đội trưởng') base = 0; else if(uRole === 'Phó đội trưởng') base = 0.5;
-
-      let absence = uNghi + uTC + uHT; let bqtx = Math.max(0, base - absence); sumBQTX += bqtx;
+      // LOGIC TÍNH BQTX (PHỤ THUỘC VÀO LÀM VIỆC CUỐI TUẦN)
+      let base = 0;
+      if (isWorkingDay) {
+          base = 1.0;
+          if(uRole === 'Đội trưởng') base = 0; else if(uRole === 'Phó đội trưởng') base = 0.5;
+      }
+      
+      let absence = uNghi + uTC + uHT; 
+      let bqtx = Math.max(0, base - absence); 
+      sumBQTX += bqtx;
     });
 
     document.getElementById('sum-nghi').innerText = sumNghi; document.getElementById('sum-tc').innerText = sumTC;
@@ -1077,6 +1129,13 @@
 
     while(curDate <= endDate) {
         let dStr = curDate.toISOString().split('T')[0];
+        
+        let dayOfWeek = curDate.getDay();
+        let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+        let isWorkingDay = true;
+        if(isWeekend && !dsWeekendWork.includes(dStr)) {
+            isWorkingDay = false;
+        }
 
         let dailyAbsence = {};
         dsNhanVien.forEach(u => dailyAbsence[u.name] = 0);
@@ -1118,10 +1177,13 @@
             });
         });
 
-        // Tính BQTX trong kỳ
+        // Tính BQTX trong kỳ phụ thuộc vào Ngày làm việc hay Ngày nghỉ
         dsNhanVien.forEach(nv => {
-            let base = 1.0;
-            if(nv.role === 'Đội trưởng') base = 0; else if(nv.role === 'Phó đội trưởng') base = 0.5;
+            let base = 0;
+            if(isWorkingDay) {
+               base = 1.0;
+               if(nv.role === 'Đội trưởng') base = 0; else if(nv.role === 'Phó đội trưởng') base = 0.5;
+            }
             let bqtx = Math.max(0, base - dailyAbsence[nv.name]);
             sumBQTX_cycle += bqtx;
         });
@@ -1134,7 +1196,6 @@
     if(Object.keys(globalHocStats).length > 0) { textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT:</span><br>${formatGlobalStat(globalHocStats)}`); }
     if(Object.keys(globalTaskStats).length > 0) { textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG:</span><br>${formatGlobalStat(globalTaskStats)}`); }
     
-    // Thêm tổng BQTX
     textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:14px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
 
     document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
