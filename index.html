@@ -768,12 +768,19 @@
   }
 
   // ==========================================
-  // SỬA BẢN GHI
+  // SỬA BẢN GHI (GỘP CHUNG MÃ ID NẾU CÓ)
   // ==========================================
-  function suaRecordDaily(id) {
-    let r = dsDaily.find(x => x.id === id); if (!r) return;
-    editingId = id;
+  function suaRecordDaily(idStr) {
+    let idArr = idStr.split(',');
+    let r = dsDaily.find(x => x.id === idArr[0]); if (!r) return;
+    editingId = idStr;
     
+    // Thu thập tất cả users của nhóm bản ghi này
+    let allUsers = [];
+    dsDaily.filter(x => idArr.includes(x.id)).forEach(item => {
+        item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); });
+    });
+
     if (r.type === 'viec') {
         document.getElementById('modal-tang-cuong').style.display = 'flex';
         document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
@@ -784,7 +791,7 @@
         }
         document.querySelector(`input[name="sess_viec"][value="${r.session}"]`).checked = true;
         renderCheckboxes('grid-user-viec');
-        document.querySelectorAll('#grid-user-viec input[type="checkbox"]').forEach(cb => { if(r.users.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+        document.querySelectorAll('#grid-user-viec input[type="checkbox"]').forEach(cb => { if(allUsers.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
         document.getElementById('btn-submit-viec').innerText = 'CẬP NHẬT';
     } 
     else if (r.type === 'hoctap') {
@@ -797,14 +804,20 @@
         }
         document.querySelector(`input[name="sess_hoctap"][value="${r.session}"]`).checked = true;
         renderCheckboxes('grid-user-hoctap');
-        document.querySelectorAll('#grid-user-hoctap input[type="checkbox"]').forEach(cb => { if(r.users.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+        document.querySelectorAll('#grid-user-hoctap input[type="checkbox"]').forEach(cb => { if(allUsers.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
         document.getElementById('btn-submit-hoctap').innerText = 'CẬP NHẬT';
     }
   }
 
-  function suaLeave(id) {
-    let r = dsLeaves.find(x => x.id === id); if (!r) return;
-    editingId = id;
+  function suaLeave(idStr) {
+    let idArr = idStr.split(',');
+    let r = dsLeaves.find(x => x.id === idArr[0]); if (!r) return;
+    editingId = idStr;
+
+    let allUsers = [];
+    dsLeaves.filter(x => idArr.includes(x.id)).forEach(item => {
+        item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); });
+    });
     
     document.getElementById('modal-nghi').style.display = 'flex';
     document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join('');
@@ -815,7 +828,7 @@
     if (r.start === r.end) { document.querySelector(`input[name="sess_nghi"][value="${r.session}"]`).checked = true; }
     
     renderCheckboxes('grid-user-nghi');
-    document.querySelectorAll('#grid-user-nghi input[type="checkbox"]').forEach(cb => { if(r.users.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+    document.querySelectorAll('#grid-user-nghi input[type="checkbox"]').forEach(cb => { if(allUsers.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
     document.getElementById('btn-submit-nghi').innerText = 'CẬP NHẬT';
   }
 
@@ -833,7 +846,7 @@
     }
     
     saveData('cc_weekend_work', dsWeekendWork);
-    loadDuLieuNgay(); // Tính toán lại ngay lập tức
+    loadDuLieuNgay(); 
   }
 
   // ==========================================
@@ -844,7 +857,23 @@
     let recordsDaily = dsDaily.filter(r => r.date === targetDate);
     let recordsLeave = dsLeaves.filter(l => targetDate >= l.start && targetDate <= l.end);
 
-    let totalRec = recordsDaily.length + recordsLeave.length;
+    // Gộp dữ liệu hiển thị Nghỉ Phép
+    let groupedLeaves = Object.values(recordsLeave.reduce((acc, r) => {
+        let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end;
+        if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
+        else { acc[key].ids.push(r.id); r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
+        return acc;
+    }, {}));
+
+    // Gộp dữ liệu hiển thị Học Tập / Tăng Cường
+    let groupedDaily = Object.values(recordsDaily.reduce((acc, r) => {
+        let key = r.type + '|' + r.taskName + '|' + r.session;
+        if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
+        else { acc[key].ids.push(r.id); r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
+        return acc;
+    }, {}));
+
+    let totalRec = groupedDaily.length + groupedLeaves.length;
     document.getElementById('count-records').innerText = `${totalRec} bản ghi`;
 
     // KIỂM TRA CUỐI TUẦN (T7 = 6, CN = 0)
@@ -857,7 +886,7 @@
         document.getElementById('wrap-lam-cuoi-tuan').style.display = 'flex';
         let isChecked = dsWeekendWork.includes(targetDate);
         document.getElementById('chk-lam-cuoi-tuan').checked = isChecked;
-        if (!isChecked) isWorkingDay = false; // Nếu không bật công tắc thì T7/CN là ngày nghỉ
+        if (!isChecked) isWorkingDay = false; 
     } else {
         document.getElementById('wrap-lam-cuoi-tuan').style.display = 'none';
     }
@@ -878,13 +907,12 @@
 
       sumNghi += uNghi; sumTC += uTC; sumHT += uHT;
 
-      // LOGIC TÍNH BQTX (PHỤ THUỘC VÀO LÀM VIỆC CUỐI TUẦN)
+      // LOGIC TÍNH BQTX
       let base = 0;
       if (isWorkingDay) {
           base = 1.0;
           if(uRole === 'Đội trưởng') base = 0; else if(uRole === 'Phó đội trưởng') base = 0.5;
       }
-      
       let absence = uNghi + uTC + uHT; 
       let bqtx = Math.max(0, base - absence); 
       sumBQTX += bqtx;
@@ -905,31 +933,33 @@
     let html = '';
     if(totalRec === 0) { html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Chưa có báo cáo nào.</div>'; }
     
-    recordsLeave.forEach(r => {
+    groupedLeaves.forEach(r => {
       let isMulti = r.start !== r.end; let sessionText = isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session];
+      let idsStr = r.ids.join(',');
       html += `<div class="list-item type-nghi-auto">
-                 <button class="btn-edit-item" onclick="suaLeave('${r.id}')">✏️</button>
-                 <button class="btn-delete-item" onclick="xoaLeave('${r.id}')">×</button>
+                 <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">×</button>
                  <div class="list-item-header"><span class="list-item-title">⛱️ Nghỉ: ${r.category}</span><span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${sessionText}</span></div>
-                 <div class="list-item-users">👤 ${r.users.join(', ')}</div>
+                 <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                </div>`;
     });
 
-    recordsDaily.forEach(r => {
+    groupedDaily.forEach(r => {
       let sessionText = SES_LABELS_FULL[r.session];
+      let idsStr = r.ids.join(',');
       if(r.type === 'hoctap') {
         html += `<div class="list-item type-hoctap">
-                   <button class="btn-edit-item" onclick="suaRecordDaily('${r.id}')">✏️</button>
-                   <button class="btn-delete-item" onclick="xoaRecordDaily('${r.id}')">×</button>
+                   <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}')">✏️</button>
+                   <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">×</button>
                    <div class="list-item-header"><span class="list-item-title">📘 ${r.taskName}</span><span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span></div>
-                   <div class="list-item-users">👤 ${r.users.join(', ')}</div>
+                   <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  </div>`;
       } else if (r.type === 'viec') {
         html += `<div class="list-item type-viec">
-                   <button class="btn-edit-item" onclick="suaRecordDaily('${r.id}')">✏️</button>
-                   <button class="btn-delete-item" onclick="xoaRecordDaily('${r.id}')">×</button>
+                   <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}')">✏️</button>
+                   <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">×</button>
                    <div class="list-item-header"><span class="list-item-title">⚡ T.Cường: ${r.taskName}</span><span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span></div>
-                   <div class="list-item-users">👤 ${r.users.join(', ')}</div>
+                   <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  </div>`;
       }
     });
@@ -945,17 +975,22 @@
 
     let sess = document.querySelector(`input[name="sess_${type}"]:checked`).value;
     
-    if (editingId) { // Chế độ Sửa
-        let index = dsDaily.findIndex(x => x.id === editingId);
-        if(index > -1) { dsDaily[index].taskName = taskName; dsDaily[index].session = sess; dsDaily[index].users = users; }
+    if (editingId) { // Chế độ Sửa (Xóa các ID cũ, tạo 1 ID gộp mới)
+        let idArr = editingId.split(',');
+        dsDaily = dsDaily.filter(x => !idArr.includes(x.id));
         editingId = null;
-    } else { // Chế độ Tạo mới
-        dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users });
     }
     
+    dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users });
     saveData('cc_daily', dsDaily); dongModal(type === 'viec' ? 'modal-tang-cuong' : 'modal-hoctap'); loadDuLieuNgay();
   }
-  function xoaRecordDaily(id) { if(confirm('Xóa bản ghi này khỏi ngày hôm nay?')) { dsDaily = dsDaily.filter(r => r.id !== id); saveData('cc_daily', dsDaily); loadDuLieuNgay(); } }
+  function xoaRecordDaily(idsStr) { 
+      if(confirm('Xóa bản ghi này khỏi ngày hôm nay?')) { 
+          let idArr = idsStr.split(',');
+          dsDaily = dsDaily.filter(r => !idArr.includes(r.id)); 
+          saveData('cc_daily', dsDaily); loadDuLieuNgay(); 
+      } 
+  }
 
   // ==========================================
   // TAB 2: QUẢN LÝ NGHỈ PHÉP & THỐNG KÊ
@@ -973,24 +1008,31 @@
     let cat = document.getElementById('sel-loai-nghi').value; let sess = document.querySelector('input[name="sess_nghi"]:checked').value;
 
     if (editingId) {
-        let index = dsLeaves.findIndex(x => x.id === editingId);
-        if(index > -1) { dsLeaves[index].start = tu; dsLeaves[index].end = den; dsLeaves[index].category = cat; dsLeaves[index].session = sess; dsLeaves[index].users = users; }
+        let idArr = editingId.split(',');
+        dsLeaves = dsLeaves.filter(x => !idArr.includes(x.id));
         editingId = null;
-    } else {
-        dsLeaves.push({ id: Date.now().toString(), start: tu, end: den, category: cat, session: sess, users: users });
     }
     
+    dsLeaves.push({ id: Date.now().toString(), start: tu, end: den, category: cat, session: sess, users: users });
     saveData('cc_leaves_data', dsLeaves); dongModal('modal-nghi'); loadDanhSachNghi();
     if(document.getElementById('tab-ngay').classList.contains('active')) loadDuLieuNgay();
   }
 
   function loadDanhSachNghi() {
-    let html = ''; let sorted = [...dsLeaves].sort((a,b) => new Date(b.start) - new Date(a.start));
+    // Gộp dữ liệu hiển thị Danh sách Nghỉ Phép (Tương tự Chấm ngày)
+    let grouped = Object.values(dsLeaves.reduce((acc, r) => {
+        let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end;
+        if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
+        else { acc[key].ids.push(r.id); r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
+        return acc;
+    }, {}));
+
+    let html = ''; let sorted = grouped.sort((a,b) => new Date(b.start) - new Date(a.start));
     if(sorted.length === 0) html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px;">Chưa có lịch nghỉ nào.</div>';
+    
     sorted.forEach(r => {
       let dateText = r.start === r.end ? formatDateVN(r.start) : `${formatDateVN(r.start)} - ${formatDateVN(r.end)}`;
       
-      // TÍNH TOÁN SỐ NGÀY NGHỈ
       let durationText = "";
       if (r.start === r.end) {
           durationText = (r.session === 'all') ? "1 ngày" : "0.5 ngày";
@@ -1000,17 +1042,25 @@
           durationText = dayDiff + " ngày";
       }
 
+      let idsStr = r.ids.join(',');
+
       html += `<div class="list-item type-nghi-auto">
-                 <button class="btn-edit-item" onclick="suaLeave('${r.id}')">✏️</button>
-                 <button class="btn-delete-item" onclick="xoaLeave('${r.id}')">×</button>
+                 <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">×</button>
                  <div class="list-item-header"><span class="list-item-title" style="padding-right:0;">⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span></span></div>
                  <div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div>
-                 <div class="list-item-users">👤 ${r.users.join(', ')}</div>
+                 <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                </div>`;
     });
     document.getElementById('list-nghi-dai-han').innerHTML = html;
   }
-  function xoaLeave(id) { if(confirm('Xóa lịch nghỉ phép này?')) { dsLeaves = dsLeaves.filter(r => r.id !== id); saveData('cc_leaves_data', dsLeaves); loadDanhSachNghi(); } }
+  function xoaLeave(idsStr) { 
+      if(confirm('Xóa lịch nghỉ phép này?')) { 
+          let idArr = idsStr.split(',');
+          dsLeaves = dsLeaves.filter(r => !idArr.includes(r.id)); 
+          saveData('cc_leaves_data', dsLeaves); loadDanhSachNghi(); 
+      } 
+  }
 
   // THỐNG KÊ NGHỈ NĂM
   function tinhThongKeNghiNam() {
