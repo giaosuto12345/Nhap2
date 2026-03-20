@@ -103,11 +103,11 @@
     .btn-edit-item { position: absolute; top: 12px; right: 46px; color: #1976d2; background: #eaf6ff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
     /* ====== TÓM TẮT TRONG NGÀY ====== */
-    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 14px; border-radius: 12px; margin-bottom: 14px; }
-    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; color: #555; font-weight: bold;}
-    .summary-day-grid div { background: #fff; padding: 12px 6px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .val-b { font-weight: 900; font-size: 16px; display: block; margin-top: 6px; }
-    .summary-details { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #b3d4fc; font-size: 13px; color: #444; line-height: 1.6; text-align: left; font-weight: normal; }
+    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 10px 12px; border-radius: 12px; margin-bottom: 12px; }
+    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; color: #555; font-weight: bold;}
+    .summary-day-grid div { background: #fff; padding: 8px 4px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .val-b { font-weight: 900; font-size: 15px; display: block; margin-top: 4px; }
+    .summary-details { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #b3d4fc; font-size: 13px; color: #444; line-height: 1.6; text-align: left; font-weight: normal; }
 
     /* ====== BẢNG TỔNG HỢP ====== */
     .table-wrapper { width: 100%; border-radius: 8px; border: 1px solid #eee; overflow: hidden; }
@@ -192,8 +192,8 @@
     <div id="tab-ngay" class="tab-content active container">
       <div class="summary-day-box">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #b3d4fc; padding-bottom:10px; margin-bottom:12px;">
-           <div style="font-weight:900; color:#1976d2; font-size:15px; text-transform:uppercase;">📊 TỔNG KẾT QUÂN SỐ</div>
-           <input type="date" id="date-picker" style="width:140px; padding:8px; font-size:14px; border:1px solid #1976d2; color:#1976d2; font-weight:bold; background:#fff;" onchange="loadDuLieuNgay()">
+           <div style="font-weight:900; color:#1976d2; font-size:14px; text-transform:uppercase;">📊 TỔNG KẾT QUÂN SỐ</div>
+           <input type="date" id="date-picker" style="width:140px; padding:6px; font-size:14px; border:1px solid #1976d2; color:#1976d2; font-weight:bold; background:#fff;" onchange="loadDuLieuNgay()">
         </div>
 
         <div class="summary-day-grid">
@@ -482,7 +482,7 @@
   <div class="modal-overlay" id="modal-chi-tiet-nhan-su">
     <div class="modal-content" style="background: #f9fbff;">
       <div class="close-modal" onclick="dongModal('modal-chi-tiet-nhan-su')">&times;</div>
-      <h3 id="detail-modal-title" style="margin-top:0; font-size:16px; color:#1976d2; border-bottom:2px solid #b3d4fc; padding-bottom:8px; text-transform:uppercase;">CHI TIẾT LỊCH NGHỈ</h3>
+      <h3 id="detail-modal-title" style="margin-top:0; font-size:16px; color:#1976d2; border-bottom:2px solid #b3d4fc; padding-bottom:8px; text-transform:uppercase;">CHI TIẾT LỊCH TRÌNH</h3>
       <p id="detail-modal-subtitle" style="font-size:12px; color:#555; font-weight:bold; margin-top:0; margin-bottom:15px;"></p>
       
       <div id="detail-modal-body" style="max-height: 50vh; overflow-y: auto;">
@@ -535,7 +535,7 @@
   function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
   // ==========================================
-  // THUẬT TOÁN KIỂM TRA XUNG ĐỘT LỊCH
+  // THUẬT TOÁN KIỂM TRA XUNG ĐỘT (CONFLICT) LỊCH
   // ==========================================
   function isSessionConflict(sess1, sess2) {
       if (sess1 === 'all' || sess2 === 'all') return true;
@@ -612,7 +612,7 @@
   function selectAll(containerId) { let labels = document.querySelectorAll(`#${containerId} .check-item`); let isAllChecked = true; labels.forEach(lbl => { if(!lbl.querySelector('input').checked) isAllChecked = false; }); labels.forEach(lbl => { let cb = lbl.querySelector('input'); cb.checked = !isAllChecked; if(cb.checked) lbl.classList.add('active'); else lbl.classList.remove('active'); }); }
 
   // ==========================================
-  // HỆ THỐNG BẢO MẬT
+  // HỆ THỐNG BẢO MẬT & FACE ID
   // ==========================================
   let isSecurityEnabled = localStorage.getItem('cc_security') === 'true';
 
@@ -812,9 +812,9 @@
               if(validDays > 0) {
                    let dateText = l.start === l.end ? formatDateVN(l.start) : `${formatDateVN(l.start)} - ${formatDateVN(l.end)}`;
                    let sessText = l.start === l.end ? ` (${SES_LABELS_FULL[l.session]})` : '';
-                   details.push({date: l.start, html: `<div style="padding:12px; border-left:4px solid #e74c3c; background:#fffcfc; margin-bottom:10px; border-radius:8px; border-right:1px solid #eee; border-top:1px solid #eee; border-bottom:1px solid #eee; box-shadow:0 1px 3px rgba(0,0,0,0.02);">
-                        <div style="font-weight:bold; color:#e74c3c; font-size:14px; margin-bottom:4px;">⛱️ ${l.category}${sessText}</div>
-                        <div style="font-size:12px; color:#555; display:flex; justify-content:space-between;">
+                   details.push({date: l.start, html: `<div style="padding:10px; border-left:4px solid #e74c3c; background:#fffcfc; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <div style="font-weight:bold; color:#e74c3c; font-size:13px; margin-bottom:4px;">⛱️ ${l.category}${sessText}</div>
+                        <div style="font-size:11px; color:#555; display:flex; justify-content:space-between;">
                             <span>📅 ${dateText}</span> 
                             <span style="color:#c0392b; font-weight:900;">+${validDays} ngày</span>
                         </div>
@@ -827,6 +827,62 @@
       document.getElementById('detail-modal-title').innerText = `CHI TIẾT: ${userName.toUpperCase()}`;
       document.getElementById('detail-modal-subtitle').innerText = `Thống kê nghỉ phép năm ${yearStr}`;
       document.getElementById('detail-modal-body').innerHTML = details.length ? details.map(d=>d.html).join('') : '<div style="padding:20px; text-align:center; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Không có dữ liệu nghỉ phép trong năm này</div>';
+      document.getElementById('modal-chi-tiet-nhan-su').style.display = 'flex';
+  }
+
+  // ------ HÀM XEM CHI TIẾT TỔNG HỢP CHU KỲ ------
+  function xemChiTietChuKy(userName, startStr, endStr) {
+      let details = [];
+      let curDate = new Date(startStr); let endDate = new Date(endStr);
+
+      while(curDate <= endDate) {
+          let dStr = curDate.toISOString().split('T')[0];
+
+          dsDaily.filter(r => r.date === dStr && r.users.includes(userName)).forEach(r => {
+              let sessText = SES_LABELS_FULL[r.session];
+              if(r.type === 'hoctap') {
+                  details.push({date: dStr, html: `<div style="padding:10px; border-left:4px solid #00bcd4; background:#fff; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                      <div style="font-weight:bold; color:#00bcd4; font-size:13px; margin-bottom:4px;">📘 ${r.taskName} (${sessText})</div>
+                      <div style="font-size:11px; color:#555;">📅 ${formatDateVN(dStr)}</div>
+                  </div>`});
+              } else if (r.type === 'viec') {
+                  details.push({date: dStr, html: `<div style="padding:10px; border-left:4px solid #f39c12; background:#fff; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                      <div style="font-weight:bold; color:#f39c12; font-size:13px; margin-bottom:4px;">⚡ T.Cường: ${r.taskName} (${sessText})</div>
+                      <div style="font-size:11px; color:#555;">📅 ${formatDateVN(dStr)}</div>
+                  </div>`});
+              }
+          });
+          curDate.setDate(curDate.getDate() + 1);
+      }
+
+      let leaveBlocks = dsLeaves.filter(l => l.users.includes(userName) && l.start <= endStr && l.end >= startStr);
+      leaveBlocks.forEach(l => {
+          let cur = new Date(Math.max(new Date(l.start), new Date(startStr)));
+          let end = new Date(Math.min(new Date(l.end), new Date(endStr)));
+          let validDays = 0;
+          while(cur <= end) {
+               let isWeekend = (cur.getDay() === 0 || cur.getDay() === 6);
+               if(!isWeekend) validDays += (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
+               cur.setDate(cur.getDate()+1);
+          }
+          if(validDays > 0) {
+               let dateText = l.start === l.end ? formatDateVN(l.start) : `${formatDateVN(l.start)} - ${formatDateVN(l.end)}`;
+               let sessText = l.start === l.end ? ` (${SES_LABELS_FULL[l.session]})` : '';
+               details.push({date: l.start, html: `<div style="padding:10px; border-left:4px solid #e74c3c; background:#fffcfc; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                    <div style="font-weight:bold; color:#e74c3c; font-size:13px; margin-bottom:4px;">⛱️ ${l.category}${sessText}</div>
+                    <div style="font-size:11px; color:#555; display:flex; justify-content:space-between;">
+                        <span>📅 ${dateText}</span> 
+                        <span style="color:#c0392b; font-weight:900;">+${validDays} ngày</span>
+                    </div>
+               </div>`});
+          }
+      });
+
+      details.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+      document.getElementById('detail-modal-title').innerText = `CHI TIẾT: ${userName.toUpperCase()}`;
+      document.getElementById('detail-modal-subtitle').innerText = `Từ ${formatDateVN(startStr)} đến ${formatDateVN(endStr)}`;
+      document.getElementById('detail-modal-body').innerHTML = details.length ? details.map(d=>d.html).join('') : '<div style="padding:20px; text-align:center; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Không có dữ liệu trong khoảng thời gian này</div>';
       document.getElementById('modal-chi-tiet-nhan-su').style.display = 'flex';
   }
 
@@ -857,8 +913,11 @@
     if (mode === 'viec') {
         document.getElementById('modal-tang-cuong').style.display = 'flex';
         document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
-        if (dsViecTangCuong.includes(r.taskName)) { document.getElementById('sel-loai-viec').value = r.taskName; document.getElementById('wrap-viec-moi').style.display = 'none'; } 
-        else { document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName; }
+        if (dsViecTangCuong.includes(r.taskName)) {
+            document.getElementById('sel-loai-viec').value = r.taskName; document.getElementById('wrap-viec-moi').style.display = 'none';
+        } else {
+            document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName;
+        }
         document.querySelector(`input[name="sess_viec"][value="${r.session}"]`).checked = true;
         updateCheckboxes('viec', allUsers);
         document.getElementById('btn-submit-viec').innerText = 'CẬP NHẬT';
@@ -866,8 +925,11 @@
     else if (mode === 'hoctap') {
         document.getElementById('modal-hoctap').style.display = 'flex';
         let validOpts = ["Học tập", "Công tác", "Đi tuyến"];
-        if (validOpts.includes(r.taskName)) { document.getElementById('sel-loai-hoctap').value = r.taskName; document.getElementById('txt-hoctap-moi').style.display = 'none'; } 
-        else { document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName; }
+        if (validOpts.includes(r.taskName)) {
+            document.getElementById('sel-loai-hoctap').value = r.taskName; document.getElementById('txt-hoctap-moi').style.display = 'none';
+        } else {
+            document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName;
+        }
         document.querySelector(`input[name="sess_hoctap"][value="${r.session}"]`).checked = true;
         updateCheckboxes('hoctap', allUsers);
         document.getElementById('btn-submit-hoctap').innerText = 'CẬP NHẬT';
@@ -909,13 +971,24 @@
     let recordsDaily = dsDaily.filter(r => r.date === targetDate);
     let recordsLeave = dsLeaves.filter(l => targetDate >= l.start && targetDate <= l.end);
 
-    let groupedLeavesToday = Object.values(recordsLeave.reduce((acc, r) => {
+    let groupedLeavesToday = [];
+    recordsLeave.forEach(r => {
+        // Chỉ ẩn thẻ của người nghỉ trong Tab Chấm Ngày nếu đó là ngày T7, CN
+        let dObj = new Date(targetDate);
+        let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
+        if (isWeekend) return; // Bỏ qua hiển thị ở Tab 1
+
         let isMulti = r.start !== r.end; let effectiveSession = isMulti ? 'multi' : r.session;
         let key = r.category + '|' + effectiveSession; 
-        if(!acc[key]) { acc[key] = { category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users] }; } 
-        else { r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
-        return acc;
-    }, {}));
+        
+        let existing = groupedLeavesToday.find(x => x.key === key);
+        if(!existing) { 
+            groupedLeavesToday.push({ key: key, category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users] }); 
+        } 
+        else { 
+            r.users.forEach(u => { if(!existing.combinedUsers.includes(u)) existing.combinedUsers.push(u); }); 
+        }
+    });
 
     let groupedDaily = Object.values(recordsDaily.reduce((acc, r) => {
         let key = r.type + '|' + r.taskName + '|' + r.session;
@@ -976,7 +1049,11 @@
     if (tcRecords.length > 0) { detailText.push(`<span style="color:#f39c12; font-weight:bold;">⚡ Tăng cường:</span><br>${formatGroupedUsers(tcRecords, 'taskName', false)}`); }
     let htRecords = recordsDaily.filter(r => r.type === 'hoctap');
     if (htRecords.length > 0) { detailText.push(`<span style="color:#00bcd4; font-weight:bold;">📘 Học tập/CT:</span><br>${formatGroupedUsers(htRecords, 'taskName', false)}`); }
-    if (recordsLeave.length > 0) { detailText.push(`<span style="color:#e74c3c; font-weight:bold;">⛱️ Nghỉ:</span><br>${formatGroupedUsers(recordsLeave, 'category', true)}`); }
+    
+    // Gộp text nghỉ để hiển thị ở Tóm tắt (Bỏ qua T7, CN)
+    if (!isWeekend && recordsLeave.length > 0) { 
+        detailText.push(`<span style="color:#e74c3c; font-weight:bold;">⛱️ Nghỉ:</span><br>${formatGroupedUsers(recordsLeave, 'category', true)}`); 
+    }
     
     document.getElementById('summary-details-text').innerHTML = detailText.length > 0 ? detailText.join('<div style="margin-top:6px;"></div>') : '<i style="color:#888;">Chưa có báo cáo chi tiết</i>';
 
@@ -990,7 +1067,6 @@
                      <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
                  </div>
                  <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
-                 <div style="font-size:10.5px; color:#aaa; margin-top:6px; font-style:italic;">* Thay đổi lịch này tại Tab "Nghỉ"</div>
                </div>`;
     });
 
@@ -1108,7 +1184,6 @@
           if(startY === yearStr || endY === yearStr) {
               let cur = new Date(l.start); let end = new Date(l.end);
               while(cur <= end) {
-                  // CỘNG ĐỦ SỐ NGÀY (BAO GỒM CẢ T7, CN) TRONG THỐNG KÊ PHÉP NĂM
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
                       l.users.forEach(u => {
@@ -1209,7 +1284,6 @@
             l.users.forEach(u => { 
                 if(stats[u]) { 
                     dailyAbsence[u] += val;
-                    // LOẠI BỎ T7, CN TRONG TỔNG HỢP CHU KỲ THEO YÊU CẦU
                     if(!isWeekend) {
                         stats[u].nghiTotal += val; sumNghi += val; 
                         stats[u].chiTietNghi[l.category] = (stats[u].chiTietNghi[l.category]||0) + val;
@@ -1231,9 +1305,9 @@
     }
 
     let textSummary = [];
-    if(Object.keys(globalNghiStats).length > 0) { textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ:</span><br>${formatGlobalStat(globalNghiStats)}`); }
-    if(Object.keys(globalHocStats).length > 0) { textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT:</span><br>${formatGlobalStat(globalHocStats)}`); }
-    if(Object.keys(globalTaskStats).length > 0) { textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG:</span><br>${formatGlobalStat(globalTaskStats)}`); }
+    if(Object.keys(globalNghiStats).length > 0) { textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: ${sumNghi}</span><br>${formatGlobalStat(globalNghiStats)}`); }
+    if(Object.keys(globalHocStats).length > 0) { textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: ${sumHoc}</span><br>${formatGlobalStat(globalHocStats)}`); }
+    if(Object.keys(globalTaskStats).length > 0) { textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG: ${sumViec}</span><br>${formatGlobalStat(globalTaskStats)}`); }
     textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:14px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
 
     document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
@@ -1250,7 +1324,6 @@
       let cellHoc = st.hocTotal > 0 ? `<div class="main-val">${st.hocTotal}</div><div class="detail-text">${strHoc}</div>` : `<div style="color:#ccc">-</div>`;
       let cellViec = st.viecTotal > 0 ? `<div class="main-val">${st.viecTotal}</div><div class="detail-text">${strViec}</div>` : `<div style="color:#ccc">-</div>`;
 
-      // Nút "Xem Lịch" được thêm vào cột cuối của bảng Tổng Hợp nếu nhân sự có phát sinh ít nhất 1 dữ liệu
       let hasData = st.nghiTotal > 0 || st.hocTotal > 0 || st.viecTotal > 0;
       let detailBtnHTML = hasData ? `<div style="margin-top:4px;"><span onclick="xemChiTietChuKy('${u.name}', '${start}', '${end}')" style="background:#eaf6ff; color:#1976d2; font-size:10px; font-weight:bold; padding:3px 6px; border-radius:4px; border:1px solid #b3d4fc; cursor:pointer;">Xem lịch 📅</span></div>` : '';
 
