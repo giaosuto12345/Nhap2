@@ -392,7 +392,7 @@
       </select>
       <input type="text" id="txt-hoctap-moi" placeholder="Nhập lý do cụ thể..." style="display:none; margin-top:10px; font-size:14px;">
 
-      <label>2. Thời lượng (Kích hoạt lọc người bận):</label>
+      <label>2. Thời lượng (Lọc tự động người bận):</label>
       <div class="toggle-group">
         <input type="radio" id="h-all" name="sess_hoctap" value="all" onchange="updateCheckboxes('hoctap')" checked><label for="h-all">Cả ngày</label>
         <input type="radio" id="h-mor" name="sess_hoctap" value="morning" onchange="updateCheckboxes('hoctap')"><label for="h-mor">Sáng</label>
@@ -400,7 +400,7 @@
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top: 15px;">
-        <label style="margin:0;">3. Chọn nhân sự (Đã lọc người bận):</label>
+        <label style="margin:0;">3. Chọn nhân sự:</label>
         <button class="btn-small" onclick="selectAll('grid-user-hoctap')">☑ Chọn hết</button>
       </div>
       <div class="checkbox-grid" id="grid-user-hoctap"></div>
@@ -423,7 +423,7 @@
         <input type="text" id="txt-viec-moi" placeholder="Nhập việc cụ thể..." style="font-size:14px;">
       </div>
 
-      <label>2. Thời lượng (Kích hoạt lọc người bận):</label>
+      <label>2. Thời lượng (Lọc tự động người bận):</label>
       <div class="toggle-group">
         <input type="radio" id="t-all" name="sess_viec" value="all" onchange="updateCheckboxes('viec')" checked><label for="t-all">Cả ngày</label>
         <input type="radio" id="t-mor" name="sess_viec" value="morning" onchange="updateCheckboxes('viec')"><label for="t-mor">Sáng</label>
@@ -431,7 +431,7 @@
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top: 15px;">
-        <label style="margin:0;">3. Chọn nhân sự (Đã lọc người bận):</label>
+        <label style="margin:0;">3. Chọn nhân sự:</label>
         <button class="btn-small" onclick="selectAll('grid-user-viec')">☑ Chọn hết</button>
       </div>
       <div class="checkbox-grid" id="grid-user-viec"></div>
@@ -458,7 +458,7 @@
       </div>
 
       <div id="wrap-buoi-nghi" style="margin-top: 12px;">
-        <span style="font-size:12px; color:#888; font-weight:bold;">Nghỉ theo buổi (Kích hoạt lọc người bận):</span>
+        <span style="font-size:12px; color:#888; font-weight:bold;">Nghỉ theo buổi (Chỉ áp dụng khi chọn 1 ngày):</span>
         <div class="toggle-group">
           <input type="radio" id="n-all" name="sess_nghi" value="all" onchange="updateCheckboxes('nghi')" checked><label for="n-all">Cả ngày</label>
           <input type="radio" id="n-mor" name="sess_nghi" value="morning" onchange="updateCheckboxes('nghi')"><label for="n-mor">Sáng</label>
@@ -534,25 +534,18 @@
       let excludeIds = excludeIdStr ? excludeIdStr.split(',') : [];
       let busy = new Set();
 
-      // Quét các bản ghi hàng ngày (Học tập, Tăng cường)
       dsDaily.forEach(r => {
           if (excludeIds.includes(r.id)) return;
           if (r.date >= startDate && r.date <= endDate) {
-              if (isSessionConflict(r.session, targetSession)) {
-                  r.users.forEach(u => busy.add(u));
-              }
+              if (isSessionConflict(r.session, targetSession)) { r.users.forEach(u => busy.add(u)); }
           }
       });
 
-      // Quét các lịch Nghỉ phép (Kiểm tra xem có đè lên khoảng ngày đang chọn không)
       dsLeaves.forEach(r => {
           if (excludeIds.includes(r.id)) return;
           if (r.start <= endDate && r.end >= startDate) {
-              // Lịch nghỉ > 1 ngày được tính là nghỉ full ngày 'all'
               let rSess = (r.start !== r.end) ? 'all' : r.session;
-              if (isSessionConflict(rSess, targetSession)) {
-                  r.users.forEach(u => busy.add(u));
-              }
+              if (isSessionConflict(rSess, targetSession)) { r.users.forEach(u => busy.add(u)); }
           }
       });
 
@@ -565,7 +558,6 @@
       return users; 
   }
 
-  // Hàm render danh sách Checkbox ĐÃ LỌC BỎ người bận
   function updateCheckboxes(type, usersToSelect = null) {
       let containerId = 'grid-user-' + type;
       let currentChecked = usersToSelect !== null ? usersToSelect : getSelectedUsers(containerId);
@@ -580,7 +572,7 @@
       } else if (type === 'nghi') {
           startDate = document.getElementById('nghi-tu').value;
           endDate = document.getElementById('nghi-den').value;
-          if (endDate < startDate) endDate = startDate; // Đảm bảo end >= start
+          if (endDate < startDate) endDate = startDate; 
           session = (startDate === endDate) ? document.querySelector('input[name="sess_nghi"]:checked').value : 'all';
       }
 
@@ -588,7 +580,7 @@
 
       let html = '';
       dsNhanVien.forEach(u => {
-          if (busyUsers.includes(u.name)) return; // Ẩn nhân sự nếu đã bận
+          if (busyUsers.includes(u.name)) return; 
 
           let roleSub = u.role ? `<span class="check-role">${u.role}</span>` : '';
           let isChecked = currentChecked.includes(u.name) ? 'checked' : '';
@@ -601,7 +593,7 @@
                    </label>`;
       });
 
-      document.getElementById(containerId).innerHTML = html || '<p style="font-size:13px; color:#e74c3c; grid-column: 1 / -1; margin:0; padding:10px;">Toàn bộ nhân sự đã được phân công kín lịch trong thời gian này!</p>';
+      document.getElementById(containerId).innerHTML = html || '<p style="font-size:13px; color:#e74c3c; grid-column: 1 / -1; margin:0; padding:10px; font-weight:bold;">Tất cả nhân sự đã phân công kín lịch / nghỉ phép vào thời gian này!</p>';
   }
 
   function toggleCheck(lbl) { setTimeout(() => { let cb = lbl.querySelector('input'); if(cb.checked) lbl.classList.add('active'); else lbl.classList.remove('active'); }, 10); }
@@ -690,9 +682,6 @@
     }
   }
 
-  // ==========================================
-  // XUẤT EXCEL & SAO LƯU
-  // ==========================================
   function xuatDuLieuRaExcel() {
       var wb = XLSX.utils.book_new();
       var dataNhanSu = dsNhanVien.map(u => ({ "Tên Nhân Viên": u.name, "Chức vụ": u.role }));
@@ -756,11 +745,8 @@
   }
 
   // ==========================================
-  // XỬ LÝ MODAL (POPUP FORM)
+  // XỬ LÝ MODAL & SỬA BẢN GHI
   // ==========================================
-  document.getElementById('sel-loai-hoctap').addEventListener('change', function() { document.getElementById('txt-hoctap-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
-  document.getElementById('sel-loai-viec').addEventListener('change', function() { document.getElementById('wrap-viec-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
-
   function moModal(id) {
     editingId = null; 
     document.getElementById(id).style.display = 'flex';
@@ -770,8 +756,7 @@
       document.getElementById('btn-submit-nghi').innerText = 'LƯU BÁO CÁO';
       document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join(''); 
       document.getElementById('nghi-tu').value = selectedDate; document.getElementById('nghi-den').value = selectedDate; 
-      kiemTraHienThiBuoiNghi();
-      updateCheckboxes('nghi', []); // Mở trắng tinh, chỉ ẩn người bận
+      kiemTraHienThiBuoiNghi(); updateCheckboxes('nghi', []); 
     }
     if(id === 'modal-tang-cuong') {
       document.getElementById('btn-submit-viec').innerText = 'LƯU BÁO CÁO';
@@ -790,7 +775,6 @@
   }
 
   function dongModal(id) { editingId = null; document.getElementById(id).style.display = 'none'; }
-
   function formatDateVN(isoStr) { let d = new Date(isoStr); return `${('0'+d.getDate()).slice(-2)}/${('0'+(d.getMonth()+1)).slice(-2)}/${d.getFullYear()}`; }
 
   function formatGroupedUsers(records, categoryField, isLeave = false) {
@@ -806,9 +790,6 @@
       }).join('<br>');
   }
 
-  // ==========================================
-  // CẬP NHẬT (SỬA) BẢN GHI TỪ THẺ GỘP CHUNG
-  // ==========================================
   function suaRecordDaily(idStr, mode) {
     let idArr = idStr.split(',');
     let r = dsDaily.find(x => x.id === idArr[0]); if (!r) return;
@@ -820,11 +801,8 @@
     if (mode === 'viec') {
         document.getElementById('modal-tang-cuong').style.display = 'flex';
         document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
-        if (dsViecTangCuong.includes(r.taskName)) {
-            document.getElementById('sel-loai-viec').value = r.taskName; document.getElementById('wrap-viec-moi').style.display = 'none';
-        } else {
-            document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName;
-        }
+        if (dsViecTangCuong.includes(r.taskName)) { document.getElementById('sel-loai-viec').value = r.taskName; document.getElementById('wrap-viec-moi').style.display = 'none'; } 
+        else { document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName; }
         document.querySelector(`input[name="sess_viec"][value="${r.session}"]`).checked = true;
         updateCheckboxes('viec', allUsers);
         document.getElementById('btn-submit-viec').innerText = 'CẬP NHẬT';
@@ -832,11 +810,8 @@
     else if (mode === 'hoctap') {
         document.getElementById('modal-hoctap').style.display = 'flex';
         let validOpts = ["Học tập", "Công tác", "Đi tuyến"];
-        if (validOpts.includes(r.taskName)) {
-            document.getElementById('sel-loai-hoctap').value = r.taskName; document.getElementById('txt-hoctap-moi').style.display = 'none';
-        } else {
-            document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName;
-        }
+        if (validOpts.includes(r.taskName)) { document.getElementById('sel-loai-hoctap').value = r.taskName; document.getElementById('txt-hoctap-moi').style.display = 'none'; } 
+        else { document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName; }
         document.querySelector(`input[name="sess_hoctap"][value="${r.session}"]`).checked = true;
         updateCheckboxes('hoctap', allUsers);
         document.getElementById('btn-submit-hoctap').innerText = 'CẬP NHẬT';
@@ -863,7 +838,7 @@
   }
 
   // ==========================================
-  // TAB 1: CHẤM CÔNG NGÀY
+  // LÀM VIỆC CUỐI TUẦN & TAB 1: CHẤM CÔNG NGÀY
   // ==========================================
   function toggleCuoiTuan() {
     let dateStr = document.getElementById('date-picker').value;
@@ -878,11 +853,9 @@
     let recordsDaily = dsDaily.filter(r => r.date === targetDate);
     let recordsLeave = dsLeaves.filter(l => targetDate >= l.start && targetDate <= l.end);
 
-    // Gộp dữ liệu hiển thị (Bất chấp ngày bắt đầu/kết thúc khác nhau)
     let groupedLeavesToday = Object.values(recordsLeave.reduce((acc, r) => {
-        let isMulti = r.start !== r.end;
-        let effectiveSession = isMulti ? 'multi' : r.session;
-        let key = r.category + '|' + effectiveSession; // Gộp theo Loại và Buổi
+        let isMulti = r.start !== r.end; let effectiveSession = isMulti ? 'multi' : r.session;
+        let key = r.category + '|' + effectiveSession; 
         if(!acc[key]) { acc[key] = { category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users] }; } 
         else { r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
         return acc;
@@ -898,7 +871,6 @@
     let totalRec = groupedDaily.length + groupedLeavesToday.length;
     document.getElementById('count-records').innerText = `${totalRec} bản ghi`;
 
-    // KIỂM TRA CUỐI TUẦN
     let dObj = new Date(targetDate);
     let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
     let isWorkingDay = true;
@@ -912,15 +884,30 @@
     let sumNghi = 0, sumTC = 0, sumHT = 0, sumBQTX = 0;
     dsNhanVien.forEach(nv => {
       let uName = nv.name; let uRole = nv.role; let uNghi = 0, uTC = 0, uHT = 0;
-      recordsLeave.forEach(r => { if(r.users.includes(uName)) { uNghi += (r.start === r.end && r.session !== 'all') ? 0.5 : 1; } });
+      let absenceForBQTX = 0;
+
+      recordsLeave.forEach(r => { 
+          if(r.users.includes(uName)) { 
+              let val = (r.start === r.end && r.session !== 'all') ? 0.5 : 1; 
+              // THUẬT TOÁN LOẠI BỎ NGÀY NGHỈ LÀ T7, CN KHỎI TỔNG KẾT
+              if (!isWeekend) { uNghi += val; }
+              absenceForBQTX += val;
+          } 
+      });
+
       recordsDaily.forEach(r => {
-          if(r.users.includes(uName)) { let val = (r.session === 'all') ? 1 : 0.5; if(r.type === 'viec') uTC += val; if(r.type === 'hoctap') uHT += val; }
+          if(r.users.includes(uName)) { 
+              let val = (r.session === 'all') ? 1 : 0.5; 
+              if(r.type === 'viec') uTC += val; 
+              if(r.type === 'hoctap') uHT += val; 
+              absenceForBQTX += val;
+          }
       });
 
       sumNghi += uNghi; sumTC += uTC; sumHT += uHT;
       let base = 0;
       if (isWorkingDay) { base = 1.0; if(uRole === 'Đội trưởng') base = 0; else if(uRole === 'Phó đội trưởng') base = 0.5; }
-      let absence = uNghi + uTC + uHT; let bqtx = Math.max(0, base - absence); sumBQTX += bqtx;
+      let bqtx = Math.max(0, base - absenceForBQTX); sumBQTX += bqtx;
     });
 
     document.getElementById('sum-nghi').innerText = sumNghi; document.getElementById('sum-tc').innerText = sumTC;
@@ -938,7 +925,6 @@
     let html = '';
     if(totalRec === 0) { html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Chưa có báo cáo nào.</div>'; }
     
-    // Render thẻ Nghỉ (Đã gộp hoàn toàn, tắt nút sửa xoá ở tab này để an toàn)
     groupedLeavesToday.forEach(r => {
       html += `<div class="list-item type-nghi-auto" style="padding-right:14px;">
                  <div class="list-item-header" style="padding-right:0;">
@@ -1043,6 +1029,7 @@
     });
     document.getElementById('list-nghi-dai-han').innerHTML = html;
   }
+  
   function xoaLeave(idsStr) { 
       if(confirm('Xóa lịch nghỉ phép này?')) { 
           let idArr = idsStr.split(','); dsLeaves = dsLeaves.filter(r => !idArr.includes(r.id)); 
@@ -1064,7 +1051,9 @@
           if(startY === yearStr || endY === yearStr) {
               let cur = new Date(l.start); let end = new Date(l.end);
               while(cur <= end) {
-                  if(cur.getFullYear().toString() === yearStr) {
+                  let isWeekend = (cur.getDay() === 0 || cur.getDay() === 6);
+                  // THUẬT TOÁN LOẠI BỎ NGÀY NGHỈ LÀ T7, CN KHỎI TỔNG KẾT NĂM
+                  if(cur.getFullYear().toString() === yearStr && !isWeekend) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
                       l.users.forEach(u => {
                           if(stats[u]) { stats[u].total += val; stats[u].chitiet[l.category] = (stats[u].chitiet[l.category]||0) + val; }
@@ -1159,10 +1148,13 @@
             l.users.forEach(u => { 
                 if(stats[u]) { 
                     dailyAbsence[u] += val;
-                    stats[u].nghiTotal += val; sumNghi += val; 
-                    stats[u].chiTietNghi[l.category] = (stats[u].chiTietNghi[l.category]||0) + val;
-                    if(!globalNghiStats[l.category]) globalNghiStats[l.category] = {total:0, users:{}};
-                    globalNghiStats[l.category].total += val; globalNghiStats[l.category].users[u] = (globalNghiStats[l.category].users[u]||0) + val;
+                    // THUẬT TOÁN LOẠI BỎ NGÀY NGHỈ LÀ T7, CN KHỎI TỔNG KẾT
+                    if(!isWeekend) {
+                        stats[u].nghiTotal += val; sumNghi += val; 
+                        stats[u].chiTietNghi[l.category] = (stats[u].chiTietNghi[l.category]||0) + val;
+                        if(!globalNghiStats[l.category]) globalNghiStats[l.category] = {total:0, users:{}};
+                        globalNghiStats[l.category].total += val; globalNghiStats[l.category].users[u] = (globalNghiStats[l.category].users[u]||0) + val;
+                    }
                 } 
             });
         });
