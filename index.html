@@ -535,7 +535,7 @@
   function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
   // ==========================================
-  // THUẬT TOÁN KIỂM TRA XUNG ĐỘT (CONFLICT) LỊCH
+  // THUẬT TOÁN KIỂM TRA XUNG ĐỘT LỊCH
   // ==========================================
   function isSessionConflict(sess1, sess2) {
       if (sess1 === 'all' || sess2 === 'all') return true;
@@ -612,7 +612,7 @@
   function selectAll(containerId) { let labels = document.querySelectorAll(`#${containerId} .check-item`); let isAllChecked = true; labels.forEach(lbl => { if(!lbl.querySelector('input').checked) isAllChecked = false; }); labels.forEach(lbl => { let cb = lbl.querySelector('input'); cb.checked = !isAllChecked; if(cb.checked) lbl.classList.add('active'); else lbl.classList.remove('active'); }); }
 
   // ==========================================
-  // HỆ THỐNG BẢO MẬT & FACE ID
+  // HỆ THỐNG BẢO MẬT
   // ==========================================
   let isSecurityEnabled = localStorage.getItem('cc_security') === 'true';
 
@@ -793,7 +793,6 @@
   }
 
   function dongModal(id) { editingId = null; document.getElementById(id).style.display = 'none'; }
-
   function formatDateVN(isoStr) { let d = new Date(isoStr); return `${('0'+d.getDate()).slice(-2)}/${('0'+(d.getMonth()+1)).slice(-2)}/${d.getFullYear()}`; }
 
   // ------ HÀM XEM CHI TIẾT NGHỈ NĂM ------
@@ -858,11 +857,8 @@
     if (mode === 'viec') {
         document.getElementById('modal-tang-cuong').style.display = 'flex';
         document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
-        if (dsViecTangCuong.includes(r.taskName)) {
-            document.getElementById('sel-loai-viec').value = r.taskName; document.getElementById('wrap-viec-moi').style.display = 'none';
-        } else {
-            document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName;
-        }
+        if (dsViecTangCuong.includes(r.taskName)) { document.getElementById('sel-loai-viec').value = r.taskName; document.getElementById('wrap-viec-moi').style.display = 'none'; } 
+        else { document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName; }
         document.querySelector(`input[name="sess_viec"][value="${r.session}"]`).checked = true;
         updateCheckboxes('viec', allUsers);
         document.getElementById('btn-submit-viec').innerText = 'CẬP NHẬT';
@@ -870,11 +866,8 @@
     else if (mode === 'hoctap') {
         document.getElementById('modal-hoctap').style.display = 'flex';
         let validOpts = ["Học tập", "Công tác", "Đi tuyến"];
-        if (validOpts.includes(r.taskName)) {
-            document.getElementById('sel-loai-hoctap').value = r.taskName; document.getElementById('txt-hoctap-moi').style.display = 'none';
-        } else {
-            document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName;
-        }
+        if (validOpts.includes(r.taskName)) { document.getElementById('sel-loai-hoctap').value = r.taskName; document.getElementById('txt-hoctap-moi').style.display = 'none'; } 
+        else { document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName; }
         document.querySelector(`input[name="sess_hoctap"][value="${r.session}"]`).checked = true;
         updateCheckboxes('hoctap', allUsers);
         document.getElementById('btn-submit-hoctap').innerText = 'CẬP NHẬT';
@@ -1115,7 +1108,7 @@
           if(startY === yearStr || endY === yearStr) {
               let cur = new Date(l.start); let end = new Date(l.end);
               while(cur <= end) {
-                  // KHÔNG loại bỏ T7, CN khi đếm số phép
+                  // CỘNG ĐỦ SỐ NGÀY (BAO GỒM CẢ T7, CN) TRONG THỐNG KÊ PHÉP NĂM
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
                       l.users.forEach(u => {
@@ -1132,7 +1125,7 @@
           let st = stats[u.name];
           let str = Object.keys(st.chitiet).map(k=>`• ${k}: ${st.chitiet[k]}`).join('<br>');
           
-          let detailBtn = st.total > 0 ? `<div style="margin-top:6px; text-align:right;"><span onclick="xemChiTietNghiNam('${u.name}', '${yearStr}')" style="background:#eaf6ff; color:#1976d2; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:6px; border:1px solid #b3d4fc; cursor:pointer;">Xem lịch 📅</span></div>` : '';
+          let detailBtn = st.total > 0 ? `<div style="margin-top:6px; text-align:left;"><span onclick="xemChiTietNghiNam('${u.name}', '${yearStr}')" style="background:#eaf6ff; color:#1976d2; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:6px; border:1px solid #b3d4fc; cursor:pointer;">Xem lịch 📅</span></div>` : '';
 
           tbody += `<tr>
                       <td style="text-align:left; font-weight:bold; font-size:13px; vertical-align:middle;">${u.name}</td>
@@ -1144,7 +1137,7 @@
   }
 
   // ==========================================
-  // TAB TỔNG HỢP CHU KỲ (KHÔI PHỤC THEO YÊU CẦU CŨ)
+  // TAB TỔNG HỢP CHU KỲ (BỎ QUA T7, CN KHI TÍNH CÔNG/PHÉP)
   // ==========================================
   function clearQuickActive() { document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active')); }
   function chonThangTuyChinh() {
@@ -1216,7 +1209,8 @@
             l.users.forEach(u => { 
                 if(stats[u]) { 
                     dailyAbsence[u] += val;
-                    if(!isWeekend) { // LOẠI BỎ T7, CN TRONG TỔNG HỢP CHU KỲ THEO YÊU CẦU
+                    // LOẠI BỎ T7, CN TRONG TỔNG HỢP CHU KỲ THEO YÊU CẦU
+                    if(!isWeekend) {
                         stats[u].nghiTotal += val; sumNghi += val; 
                         stats[u].chiTietNghi[l.category] = (stats[u].chiTietNghi[l.category]||0) + val;
                         if(!globalNghiStats[l.category]) globalNghiStats[l.category] = {total:0, users:{}};
@@ -1256,9 +1250,15 @@
       let cellHoc = st.hocTotal > 0 ? `<div class="main-val">${st.hocTotal}</div><div class="detail-text">${strHoc}</div>` : `<div style="color:#ccc">-</div>`;
       let cellViec = st.viecTotal > 0 ? `<div class="main-val">${st.viecTotal}</div><div class="detail-text">${strViec}</div>` : `<div style="color:#ccc">-</div>`;
 
-      // Khôi phục lại trạng thái tĩnh, không onclick
+      // Nút "Xem Lịch" được thêm vào cột cuối của bảng Tổng Hợp nếu nhân sự có phát sinh ít nhất 1 dữ liệu
+      let hasData = st.nghiTotal > 0 || st.hocTotal > 0 || st.viecTotal > 0;
+      let detailBtnHTML = hasData ? `<div style="margin-top:4px;"><span onclick="xemChiTietChuKy('${u.name}', '${start}', '${end}')" style="background:#eaf6ff; color:#1976d2; font-size:10px; font-weight:bold; padding:3px 6px; border-radius:4px; border:1px solid #b3d4fc; cursor:pointer;">Xem lịch 📅</span></div>` : '';
+
       tbody += `<tr>
-                  <td class="td-left">${u.name}</td>
+                  <td class="td-left" style="vertical-align:middle;">
+                     ${u.name}
+                     ${detailBtnHTML}
+                  </td>
                   <td class="td-number">${cellNghi}</td>
                   <td class="td-hoctap">${cellHoc}</td>
                   <td class="td-task">${cellViec}</td>
