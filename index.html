@@ -41,7 +41,7 @@
 
     /* ====== FORM INPUTS ====== */
     label { display: block; font-size: 13px; font-weight: bold; color: #555; margin: 8px 0 4px 0; }
-    input[type="text"], input[type="date"], input[type="number"], input[type="password"], select {
+    input[type="text"], input[type="date"], input[type="month"], input[type="number"], input[type="password"], select {
       width: 100%; padding: 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; font-family: inherit; color: #333;
     }
     input:focus, select:focus { outline: none; border-color: #1976d2; background: #fff; box-shadow: 0 0 0 2px rgba(25,118,210,0.1); }
@@ -64,7 +64,7 @@
     .flex-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
     .flex-row > * { flex: 1; margin: 0; }
 
-    /* ====== TOGGLE CSS (CÔNG TẮC BẢO MẬT & THỜI GIAN) ====== */
+    /* ====== TOGGLE CSS ====== */
     .toggle-group { display: flex; background: #eee; border-radius: 8px; overflow: hidden; margin-top: 5px; border: 1px solid #ddd;}
     .toggle-group input[type="radio"] { display: none; }
     .toggle-group label { flex: 1; text-align: center; padding: 10px 4px; margin: 0; font-size: 13px; font-weight: bold; color: #666; cursor: pointer; transition: 0.2s; }
@@ -89,7 +89,7 @@
     .check-role { font-size: 11px; color: #888; font-weight: normal; display: block; margin-top: 2px; }
     .check-item.active .check-role { color: #5fa8e3; }
 
-    /* ====== DANH SÁCH BẢN GHI (CHỨA NÚT SỬA & XÓA) ====== */
+    /* ====== DANH SÁCH BẢN GHI ====== */
     .list-item { background: #fff; border-left: 4px solid #1976d2; padding: 14px; border-radius: 8px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #eee;}
     .list-item.type-hoctap { border-left-color: #00bcd4; }
     .list-item.type-viec { border-left-color: #f39c12; }
@@ -236,6 +236,11 @@
       <div class="card">
         <h3 class="card-title">CHỌN CHU KỲ THỐNG KÊ</h3>
         
+        <div style="display:flex; gap:8px; margin-bottom: 12px; align-items:center;">
+          <input type="month" id="month-year-picker" style="flex:2; padding: 12px; font-weight: bold; color: #1976d2; font-size: 14px; text-align: center;">
+          <button class="btn btn-info" style="flex:1; padding: 12px; margin: 0; font-size: 12px;" onclick="chonThangTuyChinh()">LỌC THÁNG</button>
+        </div>
+
         <div class="quick-actions">
           <button class="quick-btn" id="btn-tuan-truoc" onclick="chonTuanTruoc()">Tuần trước</button>
           <button class="quick-btn" id="btn-tuan-nay" onclick="chonTuanNay()">Tuần này</button>
@@ -349,7 +354,7 @@
       
       <div class="flex-row" style="margin-bottom: 15px;">
         <label style="margin:0; width:80px;">Chọn Năm:</label>
-        <input type="number" id="tk-nam" value="2026" style="padding: 10px;">
+        <input type="number" id="tk-nam" style="padding: 10px;">
         <button class="btn btn-primary" style="margin:0; padding:10px;" onclick="tinhThongKeNghiNam()">XEM</button>
       </div>
 
@@ -493,10 +498,13 @@
   let dsDaily = JSON.parse(localStorage.getItem('cc_daily')) || [];
   let dsLeaves = JSON.parse(localStorage.getItem('cc_leaves_data')) || [];
   
-  let editingId = null; // Cờ theo dõi khi đang Sửa bản ghi
+  let editingId = null; 
 
-  document.getElementById('date-picker').value = new Date().toISOString().split('T')[0];
-  document.getElementById('tk-nam').value = new Date().getFullYear();
+  let today = new Date();
+  document.getElementById('date-picker').value = today.toISOString().split('T')[0];
+  document.getElementById('tk-nam').value = today.getFullYear();
+  // Khởi tạo tháng hiện tại cho ô chọn tháng
+  document.getElementById('month-year-picker').value = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0');
 
   const SES_LABELS = { 'all': '', 'morning': '(Sáng)', 'afternoon': '(Chiều)' };
   const SES_LABELS_FULL = { 'all': 'Cả ngày', 'morning': 'Sáng', 'afternoon': 'Chiều' };
@@ -746,7 +754,7 @@
   }
 
   // ==========================================
-  // SỬA BẢN GHI (CHỨC NĂNG MỚI)
+  // SỬA BẢN GHI
   // ==========================================
   function suaRecordDaily(id) {
     let r = dsDaily.find(x => x.id === id); if (!r) return;
@@ -929,11 +937,21 @@
     if(sorted.length === 0) html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px;">Chưa có lịch nghỉ nào.</div>';
     sorted.forEach(r => {
       let dateText = r.start === r.end ? formatDateVN(r.start) : `${formatDateVN(r.start)} - ${formatDateVN(r.end)}`;
-      let sessText = r.start === r.end ? ` (${SES_LABELS_FULL[r.session]})` : '';
+      
+      // TÍNH TOÁN SỐ NGÀY NGHỈ
+      let durationText = "";
+      if (r.start === r.end) {
+          durationText = (r.session === 'all') ? "1 ngày" : "0.5 ngày";
+      } else {
+          let d1 = new Date(r.start); let d2 = new Date(r.end);
+          let dayDiff = Math.round((d2 - d1) / (1000 * 3600 * 24)) + 1;
+          durationText = dayDiff + " ngày";
+      }
+
       html += `<div class="list-item type-nghi-auto">
                  <button class="btn-edit-item" onclick="suaLeave('${r.id}')">✏️</button>
                  <button class="btn-delete-item" onclick="xoaLeave('${r.id}')">×</button>
-                 <div class="list-item-title">⛱️ ${r.category} ${sessText}</div>
+                 <div class="list-item-header"><span class="list-item-title" style="padding-right:0;">⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span></span></div>
                  <div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div>
                  <div class="list-item-users">👤 ${r.users.join(', ')}</div>
                </div>`;
@@ -983,10 +1001,23 @@
   }
 
   // ==========================================
-  // TAB TỔNG HỢP CHU KỲ
+  // TAB TỔNG HỢP CHU KỲ (THÊM BỘ LỌC THÁNG)
   // ==========================================
   function clearQuickActive() { document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active')); }
   
+  function chonThangTuyChinh() {
+      clearQuickActive();
+      let val = document.getElementById('month-year-picker').value; 
+      if(!val) { alert("Vui lòng chọn tháng/năm!"); return; }
+
+      let parts = val.split('-'); let year = parseInt(parts[0]); let month = parseInt(parts[1]) - 1; 
+      let start = new Date(year, month, 1); let end = new Date(year, month + 1, 0); 
+
+      let formatIsoLocal = (d) => { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+      document.getElementById('cycle-start').value = formatIsoLocal(start);
+      document.getElementById('cycle-end').value = formatIsoLocal(end);
+  }
+
   function chonTuanTruoc() {
     clearQuickActive(); document.getElementById('btn-tuan-truoc').classList.add('active');
     let curr = new Date(); let first = curr.getDate() - curr.getDay() + 1 - 7; 
