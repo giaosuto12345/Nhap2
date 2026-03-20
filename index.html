@@ -200,7 +200,7 @@
           <div>⛱️ Nghỉ: <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
           <div>⚡ T.Cường: <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
           <div>📘 Học/CT: <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
-          <div>✅ C.Lại: <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
+          <div>✅ BQTX: <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
         </div>
         
         <div class="summary-details" id="summary-details-text"></div>
@@ -1071,17 +1071,21 @@
     dsNhanVien.forEach(u => { stats[u.name] = { nghiTotal: 0, hocTotal: 0, viecTotal: 0, chiTietNghi: {}, chiTietViec: {}, chiTietHoc: {} }; });
 
     let curDate = new Date(start); let endDate = new Date(end);
-    let sumNghi = 0, sumHoc = 0, sumViec = 0;
+    let sumNghi = 0, sumHoc = 0, sumViec = 0, sumBQTX_cycle = 0;
     
     let globalTaskStats = {}; let globalHocStats = {}; let globalNghiStats = {};
 
     while(curDate <= endDate) {
         let dStr = curDate.toISOString().split('T')[0];
 
+        let dailyAbsence = {};
+        dsNhanVien.forEach(u => dailyAbsence[u.name] = 0);
+
         dsDaily.filter(r => r.date === dStr).forEach(r => {
             let val = r.session === 'all' ? 1 : 0.5;
             r.users.forEach(u => { 
                 if(stats[u]) { 
+                    dailyAbsence[u] += val;
                     if(r.type === 'hoctap') { 
                         stats[u].hocTotal += val; sumHoc += val; 
                         stats[u].chiTietHoc[r.taskName] = (stats[u].chiTietHoc[r.taskName]||0) + val;
@@ -1104,6 +1108,7 @@
             let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1; 
             l.users.forEach(u => { 
                 if(stats[u]) { 
+                    dailyAbsence[u] += val;
                     stats[u].nghiTotal += val; sumNghi += val; 
                     stats[u].chiTietNghi[l.category] = (stats[u].chiTietNghi[l.category]||0) + val;
 
@@ -1112,6 +1117,15 @@
                 } 
             });
         });
+
+        // Tính BQTX trong kỳ
+        dsNhanVien.forEach(nv => {
+            let base = 1.0;
+            if(nv.role === 'Đội trưởng') base = 0; else if(nv.role === 'Phó đội trưởng') base = 0.5;
+            let bqtx = Math.max(0, base - dailyAbsence[nv.name]);
+            sumBQTX_cycle += bqtx;
+        });
+
         curDate.setDate(curDate.getDate() + 1);
     }
 
@@ -1120,6 +1134,9 @@
     if(Object.keys(globalHocStats).length > 0) { textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT:</span><br>${formatGlobalStat(globalHocStats)}`); }
     if(Object.keys(globalTaskStats).length > 0) { textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG:</span><br>${formatGlobalStat(globalTaskStats)}`); }
     
+    // Thêm tổng BQTX
+    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:14px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
+
     document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
     document.getElementById('cycle-summary-box').style.display = 'block';
 
