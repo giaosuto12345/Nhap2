@@ -18,13 +18,13 @@
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f4f8; padding-bottom: 30px; color: #333; overflow-x: hidden;}
 
-    /* ====== TOP STICKY WRAPPER (Đã dời Tab lên đây) ====== */
+    /* ====== TOP STICKY WRAPPER ====== */
     .top-wrapper { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.08); background: white; }
     
     .header { background: #1976d2; color: white; padding: 14px 15px; text-align: center; display: flex; justify-content: center; align-items: center;}
     .header h2 { margin: 0; font-size: 16px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; }
 
-    /* ====== TOP NAV (Thay thế Bottom Nav) ====== */
+    /* ====== TOP NAV ====== */
     .top-nav { display: flex; justify-content: space-around; background: white; border-bottom: 1px solid #eee; }
     .nav-btn {
       flex: 1; padding: 14px 0; border: none; background: none; font-size: 12px;
@@ -89,16 +89,18 @@
     .check-role { font-size: 11px; color: #888; font-weight: normal; display: block; margin-top: 2px; }
     .check-item.active .check-role { color: #5fa8e3; }
 
-    /* ====== DANH SÁCH BẢN GHI ====== */
+    /* ====== DANH SÁCH BẢN GHI (CHỨA NÚT SỬA & XÓA) ====== */
     .list-item { background: #fff; border-left: 4px solid #1976d2; padding: 14px; border-radius: 8px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #eee;}
     .list-item.type-hoctap { border-left-color: #00bcd4; }
     .list-item.type-viec { border-left-color: #f39c12; }
     .list-item.type-nghi-auto { border-left-color: #e74c3c; background: #fffcfc; }
-    .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; padding-right: 25px;}
-    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; }
+    .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; padding-right: 65px;}
+    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; padding-right: 65px; }
     .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #eee; font-weight: bold; color: #555; white-space: nowrap; margin-left: 8px; }
     .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
-    .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #ffeeee; border: none; width: 26px; height: 26px; border-radius: 50%; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;}
+    
+    .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #ffeeee; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;}
+    .btn-edit-item { position: absolute; top: 12px; right: 46px; color: #1976d2; background: #eaf6ff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
     /* ====== TÓM TẮT TRONG NGÀY ====== */
     .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 14px; border-radius: 12px; margin-bottom: 14px; }
@@ -389,7 +391,7 @@
 
       <div class="flex-row" style="margin-top:20px;">
         <button class="btn" style="background:#bdc3c7; color:#333; box-shadow:none;" onclick="dongModal('modal-hoctap')">HỦY</button>
-        <button class="btn btn-info" onclick="luuRecordDaily('hoctap')">LƯU BÁO CÁO</button>
+        <button id="btn-submit-hoctap" class="btn btn-info" onclick="luuRecordDaily('hoctap')">LƯU BÁO CÁO</button>
       </div>
     </div>
   </div>
@@ -420,7 +422,7 @@
 
       <div class="flex-row" style="margin-top:20px;">
         <button class="btn" style="background:#bdc3c7; color:#333; box-shadow:none;" onclick="dongModal('modal-tang-cuong')">HỦY</button>
-        <button class="btn btn-warning" onclick="luuRecordDaily('viec')">LƯU BÁO CÁO</button>
+        <button id="btn-submit-viec" class="btn btn-warning" onclick="luuRecordDaily('viec')">LƯU BÁO CÁO</button>
       </div>
     </div>
   </div>
@@ -456,7 +458,7 @@
 
       <div class="flex-row" style="margin-top:20px;">
         <button class="btn" style="background:#bdc3c7; color:#333; box-shadow:none;" onclick="dongModal('modal-nghi')">HỦY</button>
-        <button class="btn btn-danger" onclick="luuRecordLeave()">LƯU BÁO CÁO</button>
+        <button id="btn-submit-nghi" class="btn btn-danger" onclick="luuRecordLeave()">LƯU BÁO CÁO</button>
       </div>
     </div>
   </div>
@@ -491,6 +493,8 @@
   let dsDaily = JSON.parse(localStorage.getItem('cc_daily')) || [];
   let dsLeaves = JSON.parse(localStorage.getItem('cc_leaves_data')) || [];
   
+  let editingId = null; // Cờ theo dõi khi đang Sửa bản ghi
+
   document.getElementById('date-picker').value = new Date().toISOString().split('T')[0];
   document.getElementById('tk-nam').value = new Date().getFullYear();
 
@@ -521,7 +525,7 @@
         const challenge = new Uint8Array(32); window.crypto.getRandomValues(challenge);
         const assertion = await navigator.credentials.get({ publicKey: { challenge: challenge, userVerification: "required", timeout: 60000 } });
         if (assertion) { moKhoaThanhCong(); return; }
-      } catch (err) { /* Lỗi âm thầm, đã có nút dự phòng */ }
+      } catch (err) {}
     }
   }
 
@@ -558,12 +562,8 @@
   function thayDoiBaoMat() {
     isSecurityEnabled = document.getElementById('toggle-security').checked;
     localStorage.setItem('cc_security', isSecurityEnabled);
-    
-    if(!isSecurityEnabled) {
-       localStorage.removeItem('faceID_Registered'); // Xóa liên kết nếu tắt bảo mật
-    } else {
-       alert("Đã BẬT bảo mật. Hãy gõ mật khẩu (18121997) ở lần mở app tiếp theo, hoặc bấm ĐĂNG KÝ FACE ID bên dưới.");
-    }
+    if(!isSecurityEnabled) { localStorage.removeItem('faceID_Registered'); } 
+    else { alert("Đã BẬT bảo mật. Hãy gõ mật khẩu (18121997) ở lần mở app tiếp theo, hoặc bấm ĐĂNG KÝ FACE ID bên dưới."); }
     loadCaiDat();
   }
 
@@ -583,7 +583,7 @@
   }
 
   // ==========================================
-  // LOGIC CẬP NHẬT PHIÊN BẢN (CACHE BUSTING)
+  // LOGIC CẬP NHẬT PHIÊN BẢN
   // ==========================================
   function capNhatPhienBanMoi() {
     if(confirm("Tải lại ứng dụng để cập nhật mã nguồn mới nhất? (Không mất dữ liệu đang có)")) {
@@ -593,7 +593,7 @@
   }
 
   // ==========================================
-  // XUẤT EXCEL BÁO CÁO
+  // XUẤT EXCEL & SAO LƯU
   // ==========================================
   function xuatDuLieuRaExcel() {
       var wb = XLSX.utils.book_new();
@@ -616,24 +616,15 @@
       XLSX.writeFile(wb, "BaoCao_ChamCong_" + todayStr + ".xlsx");
   }
 
-  // ==========================================
-  // HỆ THỐNG BACKUP & RESTORE FILE JSON
-  // ==========================================
   function exportBackupJSON() {
-      let data = {
-          cc_users: dsNhanVien, cc_tasks: dsViecTangCuong, cc_leaves: dsLoaiNghi,
-          cc_daily: dsDaily, cc_leaves_data: dsLeaves, cc_security: isSecurityEnabled
-      };
-      let blob = new Blob([JSON.stringify(data)], {type: "application/json"});
-      let url = URL.createObjectURL(blob);
-      let a = document.createElement('a'); a.href = url;
-      a.download = "Backup_AppChamCong_" + new Date().toISOString().split('T')[0] + ".json";
+      let data = { cc_users: dsNhanVien, cc_tasks: dsViecTangCuong, cc_leaves: dsLoaiNghi, cc_daily: dsDaily, cc_leaves_data: dsLeaves, cc_security: isSecurityEnabled };
+      let blob = new Blob([JSON.stringify(data)], {type: "application/json"}); let url = URL.createObjectURL(blob);
+      let a = document.createElement('a'); a.href = url; a.download = "Backup_AppChamCong_" + new Date().toISOString().split('T')[0] + ".json";
       document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
   }
 
   function importBackupJSON(event) {
-      let file = event.target.files[0]; if(!file) return;
-      let reader = new FileReader();
+      let file = event.target.files[0]; if(!file) return; let reader = new FileReader();
       reader.onload = function(e) {
           try {
               let data = JSON.parse(e.target.result);
@@ -643,11 +634,9 @@
               if(data.cc_daily) localStorage.setItem('cc_daily', JSON.stringify(data.cc_daily));
               if(data.cc_leaves_data) localStorage.setItem('cc_leaves_data', JSON.stringify(data.cc_leaves_data));
               if(data.cc_security !== undefined) localStorage.setItem('cc_security', data.cc_security);
-              
               alert("Phục hồi dữ liệu thành công! Ứng dụng sẽ tải lại."); location.reload();
           } catch(err) { alert("File không hợp lệ hoặc bị lỗi!"); }
-      };
-      reader.readAsText(file);
+      }; reader.readAsText(file);
   }
 
   // ==========================================
@@ -671,13 +660,8 @@
   // TAB CÀI ĐẶT
   // ==========================================
   function loadCaiDat() {
-    // Load trạng thái bảo mật
     document.getElementById('toggle-security').checked = isSecurityEnabled;
-    if(isSecurityEnabled && window.PublicKeyCredential) {
-        document.getElementById('btn-setup-faceid').style.display = 'block';
-    } else {
-        document.getElementById('btn-setup-faceid').style.display = 'none';
-    }
+    document.getElementById('btn-setup-faceid').style.display = (isSecurityEnabled && window.PublicKeyCredential) ? 'block' : 'none';
 
     let htmlUsers = '';
     dsNhanVien.forEach((u, i) => {
@@ -724,27 +708,30 @@
   document.getElementById('sel-loai-viec').addEventListener('change', function() { document.getElementById('wrap-viec-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
 
   function moModal(id) {
+    editingId = null; // Đảm bảo luôn Tạo Mới khi bấm Mở thông thường
     document.getElementById(id).style.display = 'flex';
     let selectedDate = document.getElementById('date-picker').value;
     
     if(id === 'modal-nghi') {
+      document.getElementById('btn-submit-nghi').innerText = 'LƯU BÁO CÁO';
       document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join(''); renderCheckboxes('grid-user-nghi');
       document.getElementById('nghi-tu').value = selectedDate; document.getElementById('nghi-den').value = selectedDate; kiemTraHienThiBuoiNghi();
     }
     if(id === 'modal-tang-cuong') {
+      document.getElementById('btn-submit-viec').innerText = 'LƯU BÁO CÁO';
       document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
       document.getElementById('wrap-viec-moi').style.display = 'none'; renderCheckboxes('grid-user-viec'); document.getElementById('t-all').checked = true;
     }
     if(id === 'modal-hoctap') {
+      document.getElementById('btn-submit-hoctap').innerText = 'LƯU BÁO CÁO';
       document.getElementById('sel-loai-hoctap').value = 'Học tập'; document.getElementById('txt-hoctap-moi').style.display = 'none'; renderCheckboxes('grid-user-hoctap'); document.getElementById('h-all').checked = true;
     }
     if(id === 'modal-thongke-nghi') {
-      document.getElementById('tk-nam').value = new Date().getFullYear();
-      tinhThongKeNghiNam();
+      document.getElementById('tk-nam').value = new Date().getFullYear(); tinhThongKeNghiNam();
     }
   }
 
-  function dongModal(id) { document.getElementById(id).style.display = 'none'; }
+  function dongModal(id) { editingId = null; document.getElementById(id).style.display = 'none'; }
 
   function getSelectedUsers(containerId) { let checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`); let users = []; checkboxes.forEach(cb => users.push(cb.value)); return users; }
 
@@ -756,6 +743,58 @@
           r.users.forEach(u => { groups[cat].push(`${u}${sessTag}`); });
       });
       return Object.keys(groups).map(k => `&bull; <b style="color:#2c3e50;">${k}</b>: ${groups[k].join(', ')}`).join('<br>');
+  }
+
+  // ==========================================
+  // SỬA BẢN GHI (CHỨC NĂNG MỚI)
+  // ==========================================
+  function suaRecordDaily(id) {
+    let r = dsDaily.find(x => x.id === id); if (!r) return;
+    editingId = id;
+    
+    if (r.type === 'viec') {
+        document.getElementById('modal-tang-cuong').style.display = 'flex';
+        document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
+        if (dsViecTangCuong.includes(r.taskName)) {
+            document.getElementById('sel-loai-viec').value = r.taskName; document.getElementById('wrap-viec-moi').style.display = 'none';
+        } else {
+            document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName;
+        }
+        document.querySelector(`input[name="sess_viec"][value="${r.session}"]`).checked = true;
+        renderCheckboxes('grid-user-viec');
+        document.querySelectorAll('#grid-user-viec input[type="checkbox"]').forEach(cb => { if(r.users.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+        document.getElementById('btn-submit-viec').innerText = 'CẬP NHẬT';
+    } 
+    else if (r.type === 'hoctap') {
+        document.getElementById('modal-hoctap').style.display = 'flex';
+        let validOpts = ["Học tập", "Công tác", "Đi tuyến"];
+        if (validOpts.includes(r.taskName)) {
+            document.getElementById('sel-loai-hoctap').value = r.taskName; document.getElementById('txt-hoctap-moi').style.display = 'none';
+        } else {
+            document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName;
+        }
+        document.querySelector(`input[name="sess_hoctap"][value="${r.session}"]`).checked = true;
+        renderCheckboxes('grid-user-hoctap');
+        document.querySelectorAll('#grid-user-hoctap input[type="checkbox"]').forEach(cb => { if(r.users.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+        document.getElementById('btn-submit-hoctap').innerText = 'CẬP NHẬT';
+    }
+  }
+
+  function suaLeave(id) {
+    let r = dsLeaves.find(x => x.id === id); if (!r) return;
+    editingId = id;
+    
+    document.getElementById('modal-nghi').style.display = 'flex';
+    document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join('');
+    document.getElementById('sel-loai-nghi').value = r.category;
+    document.getElementById('nghi-tu').value = r.start; document.getElementById('nghi-den').value = r.end;
+    kiemTraHienThiBuoiNghi();
+    
+    if (r.start === r.end) { document.querySelector(`input[name="sess_nghi"][value="${r.session}"]`).checked = true; }
+    
+    renderCheckboxes('grid-user-nghi');
+    document.querySelectorAll('#grid-user-nghi input[type="checkbox"]').forEach(cb => { if(r.users.includes(cb.value)) { cb.checked = true; cb.parentElement.classList.add('active'); } });
+    document.getElementById('btn-submit-nghi').innerText = 'CẬP NHẬT';
   }
 
   // ==========================================
@@ -808,15 +847,30 @@
     
     recordsLeave.forEach(r => {
       let isMulti = r.start !== r.end; let sessionText = isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session];
-      html += `<div class="list-item type-nghi-auto"><div class="list-item-header"><span class="list-item-title">⛱️ Nghỉ: ${r.category}</span><span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${sessionText}</span></div><div class="list-item-users">👤 ${r.users.join(', ')}</div></div>`;
+      html += `<div class="list-item type-nghi-auto">
+                 <button class="btn-edit-item" onclick="suaLeave('${r.id}')">✏️</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${r.id}')">×</button>
+                 <div class="list-item-header"><span class="list-item-title">⛱️ Nghỉ: ${r.category}</span><span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${sessionText}</span></div>
+                 <div class="list-item-users">👤 ${r.users.join(', ')}</div>
+               </div>`;
     });
 
     recordsDaily.forEach(r => {
       let sessionText = SES_LABELS_FULL[r.session];
       if(r.type === 'hoctap') {
-        html += `<div class="list-item type-hoctap"><button class="btn-delete-item" onclick="xoaRecordDaily('${r.id}')">×</button><div class="list-item-header"><span class="list-item-title">📘 ${r.taskName}</span><span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span></div><div class="list-item-users">👤 ${r.users.join(', ')}</div></div>`;
+        html += `<div class="list-item type-hoctap">
+                   <button class="btn-edit-item" onclick="suaRecordDaily('${r.id}')">✏️</button>
+                   <button class="btn-delete-item" onclick="xoaRecordDaily('${r.id}')">×</button>
+                   <div class="list-item-header"><span class="list-item-title">📘 ${r.taskName}</span><span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span></div>
+                   <div class="list-item-users">👤 ${r.users.join(', ')}</div>
+                 </div>`;
       } else if (r.type === 'viec') {
-        html += `<div class="list-item type-viec"><button class="btn-delete-item" onclick="xoaRecordDaily('${r.id}')">×</button><div class="list-item-header"><span class="list-item-title">⚡ T.Cường: ${r.taskName}</span><span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span></div><div class="list-item-users">👤 ${r.users.join(', ')}</div></div>`;
+        html += `<div class="list-item type-viec">
+                   <button class="btn-edit-item" onclick="suaRecordDaily('${r.id}')">✏️</button>
+                   <button class="btn-delete-item" onclick="xoaRecordDaily('${r.id}')">×</button>
+                   <div class="list-item-header"><span class="list-item-title">⚡ T.Cường: ${r.taskName}</span><span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span></div>
+                   <div class="list-item-users">👤 ${r.users.join(', ')}</div>
+                 </div>`;
       }
     });
     document.getElementById('list-records-today').innerHTML = html;
@@ -830,7 +884,15 @@
     if(!taskName) { alert('Vui lòng nhập lý do/công việc!'); return; }
 
     let sess = document.querySelector(`input[name="sess_${type}"]:checked`).value;
-    dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users });
+    
+    if (editingId) { // Chế độ Sửa
+        let index = dsDaily.findIndex(x => x.id === editingId);
+        if(index > -1) { dsDaily[index].taskName = taskName; dsDaily[index].session = sess; dsDaily[index].users = users; }
+        editingId = null;
+    } else { // Chế độ Tạo mới
+        dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users });
+    }
+    
     saveData('cc_daily', dsDaily); dongModal(type === 'viec' ? 'modal-tang-cuong' : 'modal-hoctap'); loadDuLieuNgay();
   }
   function xoaRecordDaily(id) { if(confirm('Xóa bản ghi này khỏi ngày hôm nay?')) { dsDaily = dsDaily.filter(r => r.id !== id); saveData('cc_daily', dsDaily); loadDuLieuNgay(); } }
@@ -850,7 +912,14 @@
     if(den < tu) { alert('Ngày kết thúc không hợp lệ!'); return; }
     let cat = document.getElementById('sel-loai-nghi').value; let sess = document.querySelector('input[name="sess_nghi"]:checked').value;
 
-    dsLeaves.push({ id: Date.now().toString(), start: tu, end: den, category: cat, session: sess, users: users });
+    if (editingId) {
+        let index = dsLeaves.findIndex(x => x.id === editingId);
+        if(index > -1) { dsLeaves[index].start = tu; dsLeaves[index].end = den; dsLeaves[index].category = cat; dsLeaves[index].session = sess; dsLeaves[index].users = users; }
+        editingId = null;
+    } else {
+        dsLeaves.push({ id: Date.now().toString(), start: tu, end: den, category: cat, session: sess, users: users });
+    }
+    
     saveData('cc_leaves_data', dsLeaves); dongModal('modal-nghi'); loadDanhSachNghi();
     if(document.getElementById('tab-ngay').classList.contains('active')) loadDuLieuNgay();
   }
@@ -861,7 +930,13 @@
     sorted.forEach(r => {
       let dateText = r.start === r.end ? formatDateVN(r.start) : `${formatDateVN(r.start)} - ${formatDateVN(r.end)}`;
       let sessText = r.start === r.end ? ` (${SES_LABELS_FULL[r.session]})` : '';
-      html += `<div class="list-item type-nghi-auto"><button class="btn-delete-item" onclick="xoaLeave('${r.id}')">×</button><div class="list-item-title">⛱️ ${r.category} ${sessText}</div><div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div><div class="list-item-users">👤 ${r.users.join(', ')}</div></div>`;
+      html += `<div class="list-item type-nghi-auto">
+                 <button class="btn-edit-item" onclick="suaLeave('${r.id}')">✏️</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${r.id}')">×</button>
+                 <div class="list-item-title">⛱️ ${r.category} ${sessText}</div>
+                 <div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div>
+                 <div class="list-item-users">👤 ${r.users.join(', ')}</div>
+               </div>`;
     });
     document.getElementById('list-nghi-dai-han').innerHTML = html;
   }
@@ -910,9 +985,7 @@
   // ==========================================
   // TAB TỔNG HỢP CHU KỲ
   // ==========================================
-  function clearQuickActive() {
-    document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
-  }
+  function clearQuickActive() { document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active')); }
   
   function chonTuanTruoc() {
     clearQuickActive(); document.getElementById('btn-tuan-truoc').classList.add('active');
