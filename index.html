@@ -100,11 +100,11 @@
     .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #eee; font-weight: bold; color: #555; white-space: nowrap; }
     .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
     
-    /* Nút Sửa / Xóa tròn trịa theo ảnh */
+    /* Nút Sửa / Xóa */
     .btn-edit-item { position: absolute; top: 12px; right: 46px; color: #f39c12; background: #fdf2e9; border: 1px solid #fae5d3; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #fdedec; border: 1px solid #fadbd8; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold;}
 
-    /* ====== TÓM TẮT TRONG NGÀY (THU GỌN 1 DÒNG) ====== */
+    /* ====== TÓM TẮT TRONG NGÀY ====== */
     .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
     .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px; color: #555; font-weight: bold;}
     .summary-day-grid div { background: #fff; padding: 12px 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
@@ -486,6 +486,18 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="modal-chi-tiet-nhan-su">
+    <div class="modal-content" style="background: #f9fbff;">
+      <div class="close-modal" onclick="dongModal('modal-chi-tiet-nhan-su')">&times;</div>
+      <h3 id="detail-modal-title" style="margin-top:0; font-size:16px; color:#1976d2; border-bottom:2px solid #b3d4fc; padding-bottom:8px; text-transform:uppercase;">CHI TIẾT LỊCH TRÌNH</h3>
+      <p id="detail-modal-subtitle" style="font-size:12px; color:#555; font-weight:bold; margin-top:0; margin-bottom:15px;"></p>
+      
+      <div id="detail-modal-body" style="max-height: 50vh; overflow-y: auto;">
+         </div>
+      <button class="btn btn-primary" style="margin-top:15px;" onclick="dongModal('modal-chi-tiet-nhan-su')">ĐÓNG</button>
+    </div>
+  </div>
+
 <script>
   // ==========================================
   // KHỞI TẠO DỮ LIỆU MẶC ĐỊNH
@@ -520,9 +532,9 @@
   let editingId = null; 
 
   let today = new Date();
-  // Format datetime correctly for input
+  // Set default values securely with local format
   let dd = String(today.getDate()).padStart(2, '0');
-  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); 
   let yyyy = today.getFullYear();
   let todayStrLocal = yyyy + '-' + mm + '-' + dd;
 
@@ -794,8 +806,97 @@
   }
 
   function dongModal(id) { editingId = null; document.getElementById(id).style.display = 'none'; }
-
   function formatDateVN(isoStr) { let d = new Date(isoStr); return `${('0'+d.getDate()).slice(-2)}/${('0'+(d.getMonth()+1)).slice(-2)}/${d.getFullYear()}`; }
+
+  // ------ HÀM XEM CHI TIẾT NGHỈ NĂM ------
+  function xemChiTietNghiNam(userName, yearStr) {
+      let details = [];
+      let leaveBlocks = dsLeaves.filter(l => l.users.includes(userName));
+      leaveBlocks.forEach(l => {
+          let startY = l.start.substring(0,4); let endY = l.end.substring(0,4);
+          if(startY === yearStr || endY === yearStr) {
+              let cur = new Date(Math.max(new Date(l.start), new Date(`${yearStr}-01-01`)));
+              let end = new Date(Math.min(new Date(l.end), new Date(`${yearStr}-12-31`)));
+              let validDays = 0;
+              while(cur <= end) {
+                   validDays += (l.start === l.end && l.session !== 'all') ? 0.5 : 1; 
+                   cur.setDate(cur.getDate()+1);
+              }
+              if(validDays > 0) {
+                   let dateText = l.start === l.end ? formatDateVN(l.start) : `${formatDateVN(l.start)} - ${formatDateVN(l.end)}`;
+                   let sessText = l.start === l.end ? ` (${SES_LABELS_FULL[l.session]})` : '';
+                   details.push({date: l.start, html: `<div style="padding:10px; border-left:4px solid #e74c3c; background:#fffcfc; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <div style="font-weight:bold; color:#e74c3c; font-size:13px; margin-bottom:4px;">⛱️ ${l.category}${sessText}</div>
+                        <div style="font-size:11px; color:#555; display:flex; justify-content:space-between;">
+                            <span>📅 ${dateText}</span> 
+                            <span style="color:#c0392b; font-weight:900;">+${validDays} ngày</span>
+                        </div>
+                   </div>`});
+              }
+          }
+      });
+
+      details.sort((a,b) => new Date(b.date) - new Date(a.date));
+      document.getElementById('detail-modal-title').innerText = `CHI TIẾT LỊCH NGHỈ`;
+      document.getElementById('detail-modal-subtitle').innerText = `Nhân sự: ${userName.toUpperCase()} (Năm ${yearStr})`;
+      document.getElementById('detail-modal-body').innerHTML = details.length ? details.map(d=>d.html).join('') : '<div style="padding:20px; text-align:center; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Không có dữ liệu nghỉ phép trong năm này</div>';
+      document.getElementById('modal-chi-tiet-nhan-su').style.display = 'flex';
+  }
+
+  // ------ HÀM XEM CHI TIẾT TỔNG HỢP CHU KỲ ------
+  function xemChiTietChuKy(userName, startStr, endStr) {
+      let details = [];
+      let curDate = new Date(startStr); let endDate = new Date(endStr);
+
+      while(curDate <= endDate) {
+          let dStr = curDate.toISOString().split('T')[0];
+
+          dsDaily.filter(r => r.date === dStr && r.users.includes(userName)).forEach(r => {
+              let sessText = SES_LABELS_FULL[r.session];
+              if(r.type === 'hoctap') {
+                  details.push({date: dStr, html: `<div style="padding:10px; border-left:4px solid #00bcd4; background:#fff; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                      <div style="font-weight:bold; color:#00bcd4; font-size:13px; margin-bottom:4px;">📘 ${r.taskName} (${sessText})</div>
+                      <div style="font-size:11px; color:#555;">📅 ${formatDateVN(dStr)}</div>
+                  </div>`});
+              } else if (r.type === 'viec') {
+                  details.push({date: dStr, html: `<div style="padding:10px; border-left:4px solid #f39c12; background:#fff; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                      <div style="font-weight:bold; color:#f39c12; font-size:13px; margin-bottom:4px;">⚡ T.Cường: ${r.taskName} (${sessText})</div>
+                      <div style="font-size:11px; color:#555;">📅 ${formatDateVN(dStr)}</div>
+                  </div>`});
+              }
+          });
+          curDate.setDate(curDate.getDate() + 1);
+      }
+
+      let leaveBlocks = dsLeaves.filter(l => l.users.includes(userName) && l.start <= endStr && l.end >= startStr);
+      leaveBlocks.forEach(l => {
+          let cur = new Date(Math.max(new Date(l.start), new Date(startStr)));
+          let end = new Date(Math.min(new Date(l.end), new Date(endStr)));
+          let validDays = 0;
+          while(cur <= end) {
+               let isWeekend = (cur.getDay() === 0 || cur.getDay() === 6);
+               if(!isWeekend) validDays += (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
+               cur.setDate(cur.getDate()+1);
+          }
+          if(validDays > 0) {
+               let dateText = l.start === l.end ? formatDateVN(l.start) : `${formatDateVN(l.start)} - ${formatDateVN(l.end)}`;
+               let sessText = l.start === l.end ? ` (${SES_LABELS_FULL[l.session]})` : '';
+               details.push({date: l.start, html: `<div style="padding:10px; border-left:4px solid #e74c3c; background:#fffcfc; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                    <div style="font-weight:bold; color:#e74c3c; font-size:13px; margin-bottom:4px;">⛱️ Nghỉ: ${l.category}${sessText}</div>
+                    <div style="font-size:11px; color:#555; display:flex; justify-content:space-between;">
+                        <span>📅 ${dateText}</span> 
+                        <span style="color:#c0392b; font-weight:900;">+${validDays} ngày</span>
+                    </div>
+               </div>`});
+          }
+      });
+
+      details.sort((a,b) => new Date(b.date) - new Date(a.date));
+      document.getElementById('detail-modal-title').innerText = `CHI TIẾT LỊCH TRÌNH`;
+      document.getElementById('detail-modal-subtitle').innerText = `Nhân sự: ${userName.toUpperCase()}\nTừ ${formatDateVN(startStr)} đến ${formatDateVN(endStr)}`;
+      document.getElementById('detail-modal-body').innerHTML = details.length ? details.map(d=>d.html).join('') : '<div style="padding:20px; text-align:center; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Không có dữ liệu trong khoảng thời gian này</div>';
+      document.getElementById('modal-chi-tiet-nhan-su').style.display = 'flex';
+  }
 
   function formatGroupedUsers(records, categoryField, isLeave = false) {
       let groups = {};
@@ -806,7 +907,7 @@
       });
       return Object.keys(groups).map(k => {
           let uniqueUsers = [...new Set(groups[k])];
-          return `&bull; <span style="color:#555;">${k}:</span> ${uniqueUsers.join(', ')}`;
+          return `&bull; <b style="color:#2c3e50;">${k}</b>: ${uniqueUsers.join(', ')}`;
       }).join('<br>');
   }
 
@@ -882,13 +983,23 @@
     let recordsDaily = dsDaily.filter(r => r.date === targetDate);
     let recordsLeave = dsLeaves.filter(l => targetDate >= l.start && targetDate <= l.end);
 
-    let groupedLeavesToday = Object.values(recordsLeave.reduce((acc, r) => {
+    let groupedLeavesToday = [];
+    recordsLeave.forEach(r => {
+        let dObj = new Date(targetDate);
+        let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
+        if (isWeekend) return; 
+
         let isMulti = r.start !== r.end; let effectiveSession = isMulti ? 'multi' : r.session;
         let key = r.category + '|' + effectiveSession; 
-        if(!acc[key]) { acc[key] = { category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users] }; } 
-        else { r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
-        return acc;
-    }, {}));
+        
+        let existing = groupedLeavesToday.find(x => x.key === key);
+        if(!existing) { 
+            groupedLeavesToday.push({ key: key, category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users] }); 
+        } 
+        else { 
+            r.users.forEach(u => { if(!existing.combinedUsers.includes(u)) existing.combinedUsers.push(u); }); 
+        }
+    });
 
     let groupedDaily = Object.values(recordsDaily.reduce((acc, r) => {
         let key = r.type + '|' + r.taskName + '|' + r.session;
@@ -921,7 +1032,7 @@
       recordsLeave.forEach(r => { 
           if(r.users.includes(uName)) { 
               let val = (r.start === r.end && r.session !== 'all') ? 0.5 : 1; 
-              if (!isWeekend) { uNghi += val; } // Bỏ qua T7, CN khi đếm số ngày ở Tab Ngày
+              if (!isWeekend) { uNghi += val; }
               absenceForBQTX += val;
           } 
       });
@@ -949,7 +1060,10 @@
     if (tcRecords.length > 0) { detailText.push(`<span style="color:#f39c12; font-weight:bold;">⚡ Tăng cường:</span><br>${formatGroupedUsers(tcRecords, 'taskName', false)}`); }
     let htRecords = recordsDaily.filter(r => r.type === 'hoctap');
     if (htRecords.length > 0) { detailText.push(`<span style="color:#00bcd4; font-weight:bold;">📘 Học tập/CT:</span><br>${formatGroupedUsers(htRecords, 'taskName', false)}`); }
-    if (recordsLeave.length > 0) { detailText.push(`<span style="color:#e74c3c; font-weight:bold;">⛱️ Nghỉ:</span><br>${formatGroupedUsers(recordsLeave, 'category', true)}`); }
+    
+    if (!isWeekend && recordsLeave.length > 0) { 
+        detailText.push(`<span style="color:#e74c3c; font-weight:bold;">⛱️ Nghỉ:</span><br>${formatGroupedUsers(recordsLeave, 'category', true)}`); 
+    }
     
     document.getElementById('summary-details-text').innerHTML = detailText.length > 0 ? detailText.join('<div style="margin-top:6px;"></div>') : '<i style="color:#888;">Chưa có báo cáo chi tiết</i>';
 
@@ -971,14 +1085,14 @@
       if(r.type === 'hoctap') {
         html += `<div class="list-item type-hoctap">
                    <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'hoctap')">✏️</button>
-                   <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">×</button>
+                   <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
                    <div class="list-item-header"><span class="list-item-title">📘 ${r.taskName}</span><span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span></div>
                    <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  </div>`;
       } else if (r.type === 'viec') {
         html += `<div class="list-item type-viec">
                    <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'viec')">✏️</button>
-                   <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">×</button>
+                   <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
                    <div class="list-item-header"><span class="list-item-title">⚡ T.Cường: ${r.taskName}</span><span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span></div>
                    <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  </div>`;
@@ -1051,7 +1165,7 @@
 
       html += `<div class="list-item type-nghi-auto">
                  <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
-                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">×</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
                  <div class="list-item-header"><span class="list-item-title" style="padding-right:0;">⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span></span></div>
                  <div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div>
                  <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
@@ -1080,7 +1194,6 @@
           if(startY === yearStr || endY === yearStr) {
               let cur = new Date(l.start); let end = new Date(l.end);
               while(cur <= end) {
-                  // KHÔNG loại bỏ T7, CN khi đếm số phép
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
                       l.users.forEach(u => {
@@ -1095,7 +1208,7 @@
       let tbody = '';
       dsNhanVien.forEach(u => {
           let st = stats[u.name];
-          let str = Object.keys(st.chitiet).map(k=>`• ${k}: ${st.chitiet[k]}`).join('<br>');
+          let str = Object.keys(st.chitiet).map(k=>`• <span style="color:#555;">${k}:</span> ${st.chitiet[k]}`).join('<br>');
           
           let detailBtn = st.total > 0 ? `<div style="margin-top:6px; text-align:left;"><span onclick="xemChiTietNghiNam('${u.name}', '${yearStr}')" style="background:#eaf6ff; color:#1976d2; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:6px; border:1px solid #b3d4fc; cursor:pointer;">Xem lịch 📅</span></div>` : '';
 
@@ -1109,7 +1222,7 @@
   }
 
   // ==========================================
-  // TAB TỔNG HỢP CHU KỲ 
+  // TAB TỔNG HỢP CHU KỲ (BỎ QUA T7, CN KHI TÍNH CÔNG/PHÉP)
   // ==========================================
   function clearQuickActive() { document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active')); }
   function chonThangTuyChinh() {
