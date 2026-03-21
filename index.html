@@ -16,27 +16,27 @@
 
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f4f8; padding-bottom: 30px; color: #333; overflow-x: hidden;}
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f7f9; padding-bottom: 30px; color: #333; overflow-x: hidden;}
 
     /* ====== TOP STICKY WRAPPER ====== */
-    .top-wrapper { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.08); background: white; }
+    .top-wrapper { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.06); background: white; }
     
-    .header { background: #1976d2; color: white; padding: 14px 15px; text-align: center; display: flex; justify-content: center; align-items: center;}
+    .header { background: #1976d2; color: white; padding: 16px 15px; text-align: center; display: flex; justify-content: center; align-items: center;}
     .header h2 { margin: 0; font-size: 16px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; }
 
     /* ====== TOP NAV ====== */
     .top-nav { display: flex; justify-content: space-around; background: white; border-bottom: 1px solid #eee; }
     .nav-btn {
-      flex: 1; padding: 14px 0; border: none; background: none; font-size: 12px;
-      font-weight: 800; color: #a0aab5; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+      flex: 1; padding: 12px 0; border: none; background: none; font-size: 12px;
+      font-weight: 800; color: #95a5a6; cursor: pointer; display: flex; flex-direction: column; align-items: center;
       transition: 0.2s;
     }
     .nav-btn.active { color: #1976d2; border-bottom: 3px solid #1976d2; }
-    .nav-icon { font-size: 26px; margin-bottom: 4px; transition: 0.2s; }
+    .nav-icon { font-size: 24px; margin-bottom: 4px; transition: 0.2s; }
     .nav-btn.active .nav-icon { transform: scale(1.15); }
 
     .container { padding: 12px 10px; max-width: 800px; margin: 0 auto; }
-    .card { background: white; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;}
+    .card { background: white; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #eef2f5;}
     .card-title { font-size: 14px; font-weight: 800; color: #1976d2; border-bottom: 2px solid #eaf6ff; padding-bottom: 8px; margin-bottom: 12px; margin-top: 0; text-transform: uppercase; }
 
     /* ====== FORM INPUTS ====== */
@@ -70,10 +70,10 @@
     .toggle-group label { flex: 1; text-align: center; padding: 10px 4px; margin: 0; font-size: 13px; font-weight: bold; color: #666; cursor: pointer; transition: 0.2s; }
     .toggle-group input[type="radio"]:checked + label { background: #1976d2; color: white; }
 
-    .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+    .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
     input:checked + .slider { background-color: #27ae60; }
     input:checked + .slider:before { transform: translateX(22px); }
 
@@ -89,7 +89,7 @@
     .check-role { font-size: 11px; color: #888; font-weight: normal; display: block; margin-top: 2px; }
     .check-item.active .check-role { color: #5fa8e3; }
 
-    /* ====== DANH SÁCH BẢN GHI ====== */
+    /* ====== DANH SÁCH BẢN GHI TỐI ƯU ====== */
     .list-item { background: #fff; border-left: 4px solid #1976d2; padding: 14px; border-radius: 10px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #eee;}
     .list-item.type-hoctap { border-left-color: #00bcd4; }
     .list-item.type-viec { border-left-color: #f39c12; }
@@ -101,16 +101,17 @@
     .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
     .list-item-note { font-size: 12px; color: #7f8c8d; font-style: italic; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee; }
     
+    /* Nút Sửa / Xóa tròn trịa theo ảnh */
     .btn-edit-item { position: absolute; top: 12px; right: 46px; color: #f39c12; background: #fdf2e9; border: 1px solid #fae5d3; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #fdedec; border: 1px solid #fadbd8; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold;}
 
     /* ====== TÓM TẮT TRONG NGÀY ====== */
-    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
-    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px; color: #555; font-weight: bold;}
-    .summary-day-grid div { background: #fff; padding: 12px 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
-    .val-b { font-weight: 900; font-size: 16px; margin: 0; }
+    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 14px; border-radius: 12px; margin-bottom: 12px; }
+    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; color: #555; font-weight: bold;}
+    .summary-day-grid div { background: #fff; padding: 14px 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+    .val-b { font-weight: 900; font-size: 18px; margin-top: 6px; }
     
-    .summary-details { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #b3d4fc; font-size: 13px; color: #444; line-height: 1.6; text-align: left; font-weight: normal; }
+    .summary-details { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #b3d4fc; font-size: 13px; color: #444; line-height: 1.6; text-align: left; font-weight: normal; }
 
     /* ====== BẢNG TỔNG HỢP ====== */
     .table-wrapper { width: 100%; border-radius: 8px; border: 1px solid #eee; overflow: hidden; }
@@ -205,10 +206,10 @@
 
       <div class="summary-day-box" style="margin-top:0;">
         <div class="summary-day-grid">
-          <div><span style="color:#555;">⛱️ Nghỉ:</span> <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
-          <div><span style="color:#555;">⚡ T.Cường:</span> <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
-          <div><span style="color:#555;">📘 Học/CT:</span> <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
-          <div><span style="color:#555;">✅ BQTX:</span> <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
+          <div><span style="color:#555;">⛱️ Nghỉ</span> <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
+          <div><span style="color:#555;">⚡ T.Cường</span> <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
+          <div><span style="color:#555;">📘 Học/CT</span> <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
+          <div><span style="color:#555;">✅ BQTX</span> <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
         </div>
         <div class="summary-details" id="summary-details-text"></div>
       </div>
@@ -239,8 +240,12 @@
     </div>
 
     <div id="tab-nghi" class="tab-content container">
-      
-      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-bottom: 15px;">
+      <div class="flex-row">
+        <button class="btn btn-danger" onclick="moModal('modal-nghi')">⛱️ TẠO LỊCH NGHỈ</button>
+        <button class="btn btn-primary" style="background:#9b59b6;" onclick="moModal('modal-thongke-nghi')">📊 THỐNG KÊ NĂM</button>
+      </div>
+
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
         <h3 class="card-title" style="margin-left:4px; margin-bottom:8px;">🔍 BỘ LỌC TÌM KIẾM</h3>
         <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px; background:white; padding:12px; border-radius:12px; border:1px solid #eef2f5; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
             <div style="display:flex; gap:8px;">
@@ -256,11 +261,6 @@
                 <button class="btn btn-small" style="flex:1; padding:10px; margin:0; background:#ffeeee; color:#e74c3c; border:1px solid #fadbd8;" onclick="resetFilterNghi()">XÓA LỌC</button>
             </div>
         </div>
-      </div>
-
-      <div class="flex-row">
-        <button class="btn btn-danger" onclick="moModal('modal-nghi')">⛱️ TẠO LỊCH NGHỈ</button>
-        <button class="btn btn-primary" style="background:#9b59b6;" onclick="moModal('modal-thongke-nghi')">📊 THỐNG KÊ NĂM</button>
       </div>
 
       <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
@@ -521,7 +521,7 @@
       <p id="detail-modal-subtitle" style="font-size:12px; color:#555; font-weight:bold; margin-top:0; margin-bottom:15px;"></p>
       
       <div id="detail-modal-body" style="max-height: 50vh; overflow-y: auto;">
-      </div>
+         </div>
       <button class="btn btn-primary" style="margin-top:15px;" onclick="dongModal('modal-chi-tiet-nhan-su')">ĐÓNG</button>
     </div>
   </div>
@@ -1206,7 +1206,11 @@
       html += `<div class="list-item type-nghi-auto">
                  <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
                  <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
-                 <div class="list-item-header"><span class="list-item-title" style="padding-right:0;">⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span></span></div>
+                 <div class="list-item-header">
+                    <span class="list-item-title" style="padding-right:0;">
+                       ⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span>
+                    </span>
+                 </div>
                  <div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div>
                  <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  ${noteHtml}
@@ -1284,6 +1288,13 @@
   function initChuKy() { let savedEnd = localStorage.getItem('cc_last_end_date'); if(savedEnd) { let nextStart = new Date(savedEnd); nextStart.setDate(nextStart.getDate() + 1); document.getElementById('cycle-start').value = nextStart.toISOString().split('T')[0]; autoCalcEndDate(); } }
   function autoCalcEndDate() { let startVal = document.getElementById('cycle-start').value; if(startVal) { let end = new Date(startVal); end.setMonth(end.getMonth() + 1); end.setDate(end.getDate() - 1); document.getElementById('cycle-end').value = end.toISOString().split('T')[0]; } }
 
+  function formatGlobalStat(statsObj) {
+      return Object.keys(statsObj).map(key => {
+          let item = statsObj[key]; let userArr = Object.keys(item.users).map(u => `${u}: ${item.users[u]}`);
+          return `&bull; <b style="color:#2c3e50;">${key}: ${item.total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span>`;
+      }).join('<br>');
+  }
+
   function xemTongHop() {
     let start = document.getElementById('cycle-start').value; let end = document.getElementById('cycle-end').value;
     if(!start || !end) { alert('Chọn đầy đủ khoảng thời gian!'); return; }
@@ -1293,8 +1304,11 @@
     let curDate = new Date(start); let endDate = new Date(end);
     let sumNghi = 0, sumHoc = 0, sumViec = 0, sumBQTX_cycle = 0;
 
+    let globalTaskStats = {}; let globalHocStats = {}; let globalNghiStats = {};
+
     while(curDate <= endDate) {
         let dStr = curDate.toISOString().split('T')[0];
+        
         let dayOfWeek = curDate.getDay();
         let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
         let isWorkingDay = true;
@@ -1310,8 +1324,20 @@
             r.users.forEach(u => { 
                 if(stats[u]) { 
                     dailyAbsence[u] += val;
-                    if(r.type === 'hoctap') { stats[u].hocTotal += val; sumHoc += val; stats[u].chiTietHoc[taskTitle] = (stats[u].chiTietHoc[taskTitle]||0) + val; } 
-                    if(r.type === 'viec') { stats[u].viecTotal += val; sumViec += val; stats[u].chiTietViec[taskTitle] = (stats[u].chiTietViec[taskTitle]||0) + val; } 
+                    if(r.type === 'hoctap') { 
+                        stats[u].hocTotal += val; sumHoc += val; 
+                        stats[u].chiTietHoc[taskTitle] = (stats[u].chiTietHoc[taskTitle]||0) + val;
+                        
+                        if(!globalHocStats[taskTitle]) globalHocStats[taskTitle] = {total:0, users:{}};
+                        globalHocStats[taskTitle].total += val; globalHocStats[taskTitle].users[u] = (globalHocStats[taskTitle].users[u]||0) + val;
+                    } 
+                    if(r.type === 'viec') { 
+                        stats[u].viecTotal += val; sumViec += val; 
+                        stats[u].chiTietViec[taskTitle] = (stats[u].chiTietViec[taskTitle]||0) + val;
+                        
+                        if(!globalTaskStats[taskTitle]) globalTaskStats[taskTitle] = {total:0, users:{}};
+                        globalTaskStats[taskTitle].total += val; globalTaskStats[taskTitle].users[u] = (globalTaskStats[taskTitle].users[u]||0) + val;
+                    } 
                 } 
             });
         });
@@ -1327,6 +1353,9 @@
                     if(!isWeekend) {
                         stats[u].nghiTotal += val; sumNghi += val; 
                         stats[u].chiTietNghi[catTitle] = (stats[u].chiTietNghi[catTitle]||0) + val;
+                        
+                        if(!globalNghiStats[catTitle]) globalNghiStats[catTitle] = {total:0, users:{}};
+                        globalNghiStats[catTitle].total += val; globalNghiStats[catTitle].users[u] = (globalNghiStats[catTitle].users[u]||0) + val;
                     }
                 } 
             });
@@ -1341,6 +1370,15 @@
 
         curDate.setDate(curDate.getDate() + 1);
     }
+
+    let textSummary = [];
+    if(Object.keys(globalNghiStats).length > 0) { textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: <span style="font-size:16px;">${sumNghi}</span></span><br>${formatGlobalStat(globalNghiStats)}`); }
+    if(Object.keys(globalHocStats).length > 0) { textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: <span style="font-size:16px;">${sumHoc}</span></span><br>${formatGlobalStat(globalHocStats)}`); }
+    if(Object.keys(globalTaskStats).length > 0) { textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG: <span style="font-size:16px;">${sumViec}</span></span><br>${formatGlobalStat(globalTaskStats)}`); }
+    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:15px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
+
+    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
+    document.getElementById('cycle-summary-box').style.display = 'block';
 
     let tbody = '';
     dsNhanVien.forEach(u => {
@@ -1361,16 +1399,6 @@
                 </tr>`;
     });
     
-    // TỔNG KẾT ĐỘI
-    let textSummary = [];
-    if(sumNghi > 0) textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: ${sumNghi}</span>`);
-    if(sumHoc > 0) textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: ${sumHoc}</span>`);
-    if(sumViec > 0) textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG: ${sumViec}</span>`);
-    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:14px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
-
-    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
-    document.getElementById('cycle-summary-box').style.display = 'block';
-
     document.querySelector('#table-tong-hop tbody').innerHTML = tbody || '<tr><td colspan="4">Chưa có nhân sự</td></tr>';
     document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td>${sumNghi}</td><td>${sumHoc}</td><td>${sumViec}</td></tr>`;
   }
