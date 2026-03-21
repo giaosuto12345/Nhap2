@@ -78,7 +78,7 @@
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
     .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-    input:checked + .slider { background-color: #f39c12; } /* Màu vàng như ảnh */
+    input:checked + .slider { background-color: #f39c12; } 
     input:checked + .slider:before { transform: translateX(22px); }
 
     /* ====== CHECKBOX NHÂN VIÊN ====== */
@@ -93,7 +93,7 @@
     .check-role { font-size: 11px; color: #888; font-weight: normal; display: block; margin-top: 2px; }
     .check-item.active .check-role { color: #5fa8e3; }
 
-    /* ====== DANH SÁCH BẢN GHI (CHUẨN ẢNH) ====== */
+    /* ====== DANH SÁCH BẢN GHI ====== */
     .list-item { background: #fff; border-left: 3px solid #1976d2; padding: 14px; border-radius: 10px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;}
     .list-item.type-hoctap { border-left-color: #00bcd4; }
     .list-item.type-viec { border-left-color: #f39c12; }
@@ -110,7 +110,7 @@
     .btn-edit-item { position: absolute; top: 14px; right: 50px; color: #f39c12; background: #fdf2e9; border: 1px solid #fae5d3; width: 30px; height: 30px; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .btn-delete-item { position: absolute; top: 14px; right: 14px; color: #e74c3c; background: #fdedec; border: 1px solid #fadbd8; width: 30px; height: 30px; border-radius: 50%; font-size: 15px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold;}
 
-    /* ====== TÓM TẮT TRONG NGÀY (LƯỚI 2x2 THEO ẢNH) ====== */
+    /* ====== TÓM TẮT TRONG NGÀY (LƯỚI 2x2 DẠNG NGANG THEO ẢNH) ====== */
     .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;}
     .summary-day-grid div { background: #fff; padding: 15px 10px; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #eaf6ff; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .sum-lbl { font-size: 13px; font-weight: bold; color: #444; margin-bottom: 8px;}
@@ -147,6 +147,9 @@
     .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 16px 16px 0 0; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .close-modal { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #888; cursor: pointer; line-height: 1; background: #f0f0f0; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10;}
+
+    .tag-chip { display: inline-block; background: #eaf6ff; color: #1976d2; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; margin: 0 6px 8px 0; border: 1px solid #b3d4fc; }
+    .tag-chip.task { background: #fff8e1; color: #f39c12; border-color: #ffe0b2; }
 
     /* MÀN HÌNH KHÓA */
     #lock-screen {
@@ -244,11 +247,12 @@
 
     <div id="tab-nghi" class="tab-content container">
       <div class="flex-row">
-        <button class="btn" style="background:#e74c3c;" onclick="moModal('modal-nghi')">⛱️ TẠO LỊCH NGHỈ</button>
-        <button class="btn" style="background:#9b59b6;" onclick="moModal('modal-thongke-nghi')">📊 THỐNG KÊ NĂM</button>
+        <button class="btn btn-danger" onclick="moModal('modal-nghi')">⛱️ TẠO LỊCH NGHỈ</button>
+        <button class="btn btn-purple" onclick="moModal('modal-thongke-nghi')">📊 THỐNG KÊ NĂM</button>
       </div>
 
       <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
+        <h3 class="card-title" style="margin-left:4px; margin-bottom:8px;">🔍 BỘ LỌC TÌM KIẾM</h3>
         <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px; background:white; padding:15px; border-radius:12px; border:1px solid #eef2f5; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
             <div style="display:flex; gap:8px;">
                 <select id="filter-nghi-user" onchange="loadDanhSachNghi()" style="flex:1; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
@@ -1077,22 +1081,21 @@
         detailText.push(`<span style="color:#e74c3c; font-weight:bold;">⛱️ Nghỉ:</span><br>${formatGroupedUsers(recordsLeave, 'category', true)}`); 
     }
     
-    document.getElementById('summary-details-text').innerHTML = detailText.length > 0 ? detailText.join('<div style="margin-top:8px;"></div>') : '<i style="color:#888;">Chưa có báo cáo chi tiết</i>';
+    document.getElementById('summary-details-text').innerHTML = detailText.length > 0 ? detailText.join('<div style="margin-top:6px;"></div>') : '<i style="color:#888;">Chưa có báo cáo chi tiết</i>';
 
     let html = '';
     if(totalRec === 0) { html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Chưa có báo cáo nào.</div>'; }
     
     groupedLeavesToday.forEach(r => {
       let noteHtml = r.note ? `<div class="list-item-note">📝 ${r.note}</div>` : '';
-      let idsStr = r.ids.join(',');
-      html += `<div class="list-item type-nghi-auto">
-                 <div class="list-item-header">
+      html += `<div class="list-item type-nghi-auto" style="padding-right:14px;">
+                 <div class="list-item-header" style="padding-right:0;">
                      <span class="list-item-title">
-                       <span style="color:#e74c3c; font-size:16px;">⛱️</span> Nghỉ: ${r.category}
+                       <span style="display:flex; align-items:center; gap:6px;"><span style="color:#e74c3c; font-size:18px;">⛱️</span> Nghỉ: ${r.category}</span>
                      </span>
                      <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
                  </div>
-                 <div class="list-item-users"><span style="color:#1976d2; font-size:16px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                 <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
                  ${noteHtml}
                </div>`;
     });
@@ -1106,11 +1109,11 @@
                    <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
                    <div class="list-item-header">
                       <span class="list-item-title">
-                         <span style="color:#00bcd4; font-size:16px;">📘</span> ${r.taskName}
+                         <span style="display:flex; align-items:center; gap:6px;"><span style="color:#00bcd4; font-size:18px;">📘</span> ${r.taskName}</span>
                       </span>
                       <span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span>
                    </div>
-                   <div class="list-item-users"><span style="color:#1976d2; font-size:16px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                   <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
                    ${noteHtml}
                  </div>`;
       } else if (r.type === 'viec') {
@@ -1119,11 +1122,11 @@
                    <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
                    <div class="list-item-header">
                       <span class="list-item-title">
-                         <span style="color:#f39c12; font-size:16px;">⚡</span> T.Cường: ${r.taskName}
+                         <span style="display:flex; align-items:center; gap:6px;"><span style="color:#f39c12; font-size:18px;">⚡</span> T.Cường: ${r.taskName}</span>
                       </span>
                       <span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span>
                    </div>
-                   <div class="list-item-users"><span style="color:#1976d2; font-size:16px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                   <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
                    ${noteHtml}
                  </div>`;
       }
@@ -1216,11 +1219,13 @@
       html += `<div class="list-item type-nghi-auto">
                  <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
                  <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
-                 <div class="list-item-title" style="padding-right:0; margin-bottom:8px; display:flex; flex-direction:row;">
-                    <span style="font-size:16px;">⛱️</span> ${r.category} <span style="color:#1976d2; margin-left:6px;">- ${durationText}</span>
+                 <div class="list-item-header" style="margin-bottom:10px;">
+                    <span class="list-item-title" style="padding-right:0;">
+                       <span style="display:flex; align-items:center; gap:6px;"><span style="font-size:16px;">⛱️</span> ${r.category} <span style="color:#1976d2; margin-left:4px;">- ${durationText}</span></span>
+                    </span>
                  </div>
                  <div class="list-item-date">📅 ${dateText}</div>
-                 <div class="list-item-users"><span style="color:#1976d2; font-size:16px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                 <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
                  ${noteHtml}
                </div>`;
     });
@@ -1266,7 +1271,7 @@
           let st = stats[u.name];
           let str = Object.keys(st.chitiet).map(k=>`• <span style="color:#555;">${k}:</span> ${st.chitiet[k]}`).join('<br>');
           
-          let detailBtn = st.total > 0 ? `<div style="margin-top:6px; text-align:left;"><span onclick="xemChiTietNghiNam('${u.name}', '${yearStr}')" class="btn-xem-lich">Xem lịch 📅</span></div>` : '';
+          let detailBtn = st.total > 0 ? `<div style="margin-top:6px; text-align:left;"><span onclick="xemChiTietNghiNam('${u.name}', '${yearStr}')" style="background:#eaf6ff; color:#1976d2; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:6px; border:1px solid #b3d4fc; cursor:pointer;">Xem lịch 📅</span></div>` : '';
 
           tbody += `<tr>
                       <td style="text-align:left; font-weight:bold; font-size:13px; vertical-align:middle;">${u.name}</td>
@@ -1305,8 +1310,6 @@
     let curDate = new Date(start); let endDate = new Date(end);
     let sumNghi = 0, sumHoc = 0, sumViec = 0, sumBQTX_cycle = 0;
 
-    let globalTaskStats = {}; let globalHocStats = {}; let globalNghiStats = {};
-
     while(curDate <= endDate) {
         let dStr = curDate.toISOString().split('T')[0];
         let dayOfWeek = curDate.getDay();
@@ -1324,18 +1327,8 @@
             r.users.forEach(u => { 
                 if(stats[u]) { 
                     dailyAbsence[u] += val;
-                    if(r.type === 'hoctap') { 
-                        stats[u].hocTotal += val; sumHoc += val; 
-                        stats[u].chiTietHoc[taskTitle] = (stats[u].chiTietHoc[taskTitle]||0) + val;
-                        if(!globalHocStats[taskTitle]) globalHocStats[taskTitle] = {total:0, users:{}};
-                        globalHocStats[taskTitle].total += val; globalHocStats[taskTitle].users[u] = (globalHocStats[taskTitle].users[u]||0) + val;
-                    } 
-                    if(r.type === 'viec') { 
-                        stats[u].viecTotal += val; sumViec += val; 
-                        stats[u].chiTietViec[taskTitle] = (stats[u].chiTietViec[taskTitle]||0) + val;
-                        if(!globalTaskStats[taskTitle]) globalTaskStats[taskTitle] = {total:0, users:{}};
-                        globalTaskStats[taskTitle].total += val; globalTaskStats[taskTitle].users[u] = (globalTaskStats[taskTitle].users[u]||0) + val;
-                    } 
+                    if(r.type === 'hoctap') { stats[u].hocTotal += val; sumHoc += val; stats[u].chiTietHoc[taskTitle] = (stats[u].chiTietHoc[taskTitle]||0) + val; } 
+                    if(r.type === 'viec') { stats[u].viecTotal += val; sumViec += val; stats[u].chiTietViec[taskTitle] = (stats[u].chiTietViec[taskTitle]||0) + val; } 
                 } 
             });
         });
@@ -1351,8 +1344,6 @@
                     if(!isWeekend) {
                         stats[u].nghiTotal += val; sumNghi += val; 
                         stats[u].chiTietNghi[catTitle] = (stats[u].chiTietNghi[catTitle]||0) + val;
-                        if(!globalNghiStats[catTitle]) globalNghiStats[catTitle] = {total:0, users:{}};
-                        globalNghiStats[catTitle].total += val; globalNghiStats[catTitle].users[u] = (globalNghiStats[catTitle].users[u]||0) + val;
                     }
                 } 
             });
@@ -1368,36 +1359,14 @@
         curDate.setDate(curDate.getDate() + 1);
     }
 
-    // TỔNG KẾT ĐỘI CHUẨN ẢNH (Gắn số tổng lên cạnh Tên Category)
+    // TỔNG KẾT ĐỘI
     let textSummary = [];
-    
-    if(Object.keys(globalNghiStats).length > 0) { 
-        let detailHtml = Object.keys(globalNghiStats).map(k => {
-            let userArr = Object.keys(globalNghiStats[k].users).map(u => `${u}: ${globalNghiStats[k].users[u]}`);
-            return `&bull; <b style="color:#2c3e50;">${k}: ${globalNghiStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span>`;
-        }).join('<br>');
-        textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ:</span><br>${detailHtml}`); 
-    }
-    
-    if(Object.keys(globalTaskStats).length > 0) { 
-        let detailHtml = Object.keys(globalTaskStats).map(k => {
-            let userArr = Object.keys(globalTaskStats[k].users).map(u => `${u}: ${globalTaskStats[k].users[u]}`);
-            return `&bull; <b style="color:#2c3e50;">${k}: ${globalTaskStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span>`;
-        }).join('<br>');
-        textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG:</span><br>${detailHtml}`); 
-    }
-    
-    if(Object.keys(globalHocStats).length > 0) { 
-        let detailHtml = Object.keys(globalHocStats).map(k => {
-            let userArr = Object.keys(globalHocStats[k].users).map(u => `${u}: ${globalHocStats[k].users[u]}`);
-            return `&bull; <b style="color:#2c3e50;">${k}: ${globalHocStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span>`;
-        }).join('<br>');
-        textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT:</span><br>${detailHtml}`); 
-    }
-    
-    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:15px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
+    if(sumNghi > 0) textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: <span style="font-size:16px;">${sumNghi}</span></span>`);
+    if(sumHoc > 0) textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: <span style="font-size:16px;">${sumHoc}</span></span>`);
+    if(sumViec > 0) textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG: <span style="font-size:16px;">${sumViec}</span></span>`);
+    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX: <span style="font-size:16px;">${sumBQTX_cycle} công</span></span>`);
 
-    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:8px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
+    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
     document.getElementById('cycle-summary-box').style.display = 'block';
 
     let tbody = '';
@@ -1411,7 +1380,6 @@
       let cellHoc = st.hocTotal > 0 ? `<div class="main-val">${st.hocTotal}</div><div class="detail-text">${strHoc}</div>` : `<div style="color:#ccc">-</div>`;
       let cellViec = st.viecTotal > 0 ? `<div class="main-val">${st.viecTotal}</div><div class="detail-text">${strViec}</div>` : `<div style="color:#ccc">-</div>`;
 
-      // Trả bảng tổng hợp về tĩnh, không có nút "Xem Lịch"
       tbody += `<tr>
                   <td class="td-left" style="vertical-align:middle;">${u.name}</td>
                   <td class="td-number">${cellNghi}</td>
