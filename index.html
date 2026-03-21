@@ -16,52 +16,56 @@
 
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f4f8; padding-bottom: 30px; color: #333; overflow-x: hidden;}
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f7f9; padding-bottom: 30px; color: #333; overflow-x: hidden;}
 
     /* ====== TOP STICKY WRAPPER ====== */
-    .top-wrapper { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.08); background: white; }
+    .top-wrapper { position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); background: white; }
     
-    .header { background: #1976d2; color: white; padding: 14px 15px; text-align: center; display: flex; justify-content: center; align-items: center;}
+    .header { background: #1976d2; color: white; padding: 18px 15px; text-align: center; display: flex; justify-content: center; align-items: center;}
     .header h2 { margin: 0; font-size: 16px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; }
 
     /* ====== TOP NAV ====== */
     .top-nav { display: flex; justify-content: space-around; background: white; border-bottom: 1px solid #eee; }
     .nav-btn {
-      flex: 1; padding: 14px 0; border: none; background: none; font-size: 12px;
+      flex: 1; padding: 12px 0; border: none; background: none; font-size: 11px;
       font-weight: 800; color: #a0aab5; cursor: pointer; display: flex; flex-direction: column; align-items: center;
       transition: 0.2s;
     }
     .nav-btn.active { color: #1976d2; border-bottom: 3px solid #1976d2; }
-    .nav-icon { font-size: 26px; margin-bottom: 4px; transition: 0.2s; }
-    .nav-btn.active .nav-icon { transform: scale(1.15); }
+    .nav-icon { font-size: 22px; margin-bottom: 4px; transition: 0.2s; }
+    .nav-btn.active .nav-icon { transform: scale(1.1); }
 
-    .container { padding: 12px 10px; max-width: 800px; margin: 0 auto; }
-    .card { background: white; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;}
-    .card-title { font-size: 14px; font-weight: 800; color: #1976d2; border-bottom: 2px solid #eaf6ff; padding-bottom: 8px; margin-bottom: 12px; margin-top: 0; text-transform: uppercase; }
+    .container { padding: 12px; max-width: 800px; margin: 0 auto; }
+    
+    /* ====== CARDS ====== */
+    .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #eef2f5;}
+    .card-title { font-size: 14px; font-weight: 800; color: #1976d2; margin-bottom: 15px; margin-top: 0; text-transform: uppercase; }
 
     /* ====== FORM INPUTS ====== */
     label { display: block; font-size: 13px; font-weight: bold; color: #555; margin: 8px 0 4px 0; }
     input[type="text"], input[type="date"], input[type="month"], input[type="number"], input[type="password"], select {
-      width: 100%; padding: 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; font-family: inherit; color: #333;
+      width: 100%; padding: 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; font-family: inherit; color: #333;
     }
-    input:focus, select:focus { outline: none; border-color: #1976d2; background: #fff; box-shadow: 0 0 0 2px rgba(25,118,210,0.1); }
+    input:focus, select:focus { outline: none; border-color: #1976d2; box-shadow: 0 0 0 2px rgba(25,118,210,0.1); }
 
     .date-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px;}
     .date-row { display: flex; align-items: center; gap: 8px; }
     .date-row label { margin: 0; width: 70px; font-size: 13px;}
 
     /* ====== BUTTONS ====== */
-    .btn { display: block; width: 100%; padding: 12px; font-size: 13px; font-weight: 800; text-align: center; border: none; border-radius: 8px; cursor: pointer; color: white; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-transform: uppercase;}
+    .btn { display: block; width: 100%; padding: 14px; font-size: 13px; font-weight: 800; text-align: center; border: none; border-radius: 8px; cursor: pointer; color: white; transition: 0.2s; text-transform: uppercase;}
     .btn:active { transform: scale(0.97); }
     .btn-primary { background: #1976d2; }
     .btn-warning { background: #f39c12; }
     .btn-info { background: #00bcd4; }
     .btn-danger { background: #e74c3c; }
     .btn-success { background: #27ae60; }
-    .btn-update { background: #ff9800; }
+    .btn-purple { background: #9b59b6; }
+    .btn-outline { background: white; color: #1976d2; border: 1px solid #1976d2; }
+    
     .btn-small { padding: 6px 10px; font-size: 12px; border-radius: 6px; font-weight: bold; border: 1px solid #1976d2; background: #eaf6ff; color: #1976d2; cursor: pointer; }
 
-    .flex-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+    .flex-row { display: flex; gap: 10px; align-items: center; margin-bottom: 15px; }
     .flex-row > * { flex: 1; margin: 0; }
 
     /* ====== TOGGLE CSS ====== */
@@ -74,7 +78,7 @@
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
     .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-    input:checked + .slider { background-color: #27ae60; }
+    input:checked + .slider { background-color: #f39c12; } 
     input:checked + .slider:before { transform: translateX(22px); }
 
     /* ====== CHECKBOX NHÂN VIÊN ====== */
@@ -89,54 +93,60 @@
     .check-role { font-size: 11px; color: #888; font-weight: normal; display: block; margin-top: 2px; }
     .check-item.active .check-role { color: #5fa8e3; }
 
-    /* ====== DANH SÁCH BẢN GHI ====== */
-    .list-item { background: #fff; border-left: 4px solid #1976d2; padding: 14px; border-radius: 8px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #eee;}
+    /* ====== DANH SÁCH BẢN GHI (CHUẨN ẢNH) ====== */
+    .list-item { background: #fff; border-left: 3px solid #1976d2; padding: 14px; border-radius: 10px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;}
     .list-item.type-hoctap { border-left-color: #00bcd4; }
     .list-item.type-viec { border-left-color: #f39c12; }
-    .list-item.type-nghi-auto { border-left-color: #e74c3c; background: #fffcfc; }
-    .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; padding-right: 65px;}
-    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; padding-right: 65px; }
-    .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #eee; font-weight: bold; color: #555; white-space: nowrap; margin-left: 8px; }
-    .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
-    .list-item-note { font-size: 11px; color: #7f8c8d; font-style: italic; margin-top: 4px; }
+    .list-item.type-nghi-auto { border-left-color: #e74c3c; }
     
-    .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #ffeeee; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;}
-    .btn-edit-item { position: absolute; top: 12px; right: 46px; color: #1976d2; background: #eaf6ff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; padding-right: 70px;}
+    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
+    .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #fdf2e9; font-weight: bold; color: #d35400; white-space: nowrap; margin-top: 2px;}
+    
+    .list-item-users { font-size: 13px; color: #333; line-height: 1.5; font-weight: bold; display: flex; align-items: center; gap: 6px;}
+    .list-item-date { font-size: 12px; color: #c0392b; font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;}
+    .list-item-note { font-size: 12px; color: #7f8c8d; font-style: italic; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee; }
+    
+    /* Nút Sửa / Xóa tròn trịa theo ảnh */
+    .btn-edit-item { position: absolute; top: 14px; right: 50px; color: #f39c12; background: #fdf2e9; border: 1px solid #fae5d3; width: 30px; height: 30px; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .btn-delete-item { position: absolute; top: 14px; right: 14px; color: #e74c3c; background: #fdedec; border: 1px solid #fadbd8; width: 30px; height: 30px; border-radius: 50%; font-size: 15px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold;}
 
-    /* ====== TÓM TẮT TRONG NGÀY ====== */
-    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 14px; border-radius: 12px; margin-bottom: 14px; }
-    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; color: #555; font-weight: bold;}
-    .summary-day-grid div { background: #fff; padding: 12px 6px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .val-b { font-weight: 900; font-size: 16px; display: block; margin-top: 6px; }
-    .summary-details { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #b3d4fc; font-size: 13px; color: #444; line-height: 1.6; text-align: left; font-weight: normal; }
+    /* ====== TÓM TẮT TRONG NGÀY (LƯỚI 2x2 CHUẨN ẢNH) ====== */
+    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px;}
+    .summary-day-grid div { background: #fff; padding: 15px 10px; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #eaf6ff; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .sum-lbl { font-size: 13px; font-weight: bold; color: #444; margin-bottom: 8px;}
+    .val-b { font-weight: 900; font-size: 20px; margin: 0; }
+    
+    .summary-details { margin-top: 15px; padding-top: 12px; border-top: 1px dashed #b3d4fc; font-size: 13px; color: #444; line-height: 1.6; text-align: left; }
 
     /* ====== BẢNG TỔNG HỢP ====== */
     .table-wrapper { width: 100%; border-radius: 8px; border: 1px solid #eee; overflow: hidden; }
     table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: center; table-layout: fixed; background: white; }
-    th, td { padding: 8px 4px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; vertical-align: top; word-break: break-word;}
+    th, td { padding: 10px 4px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; vertical-align: middle; word-break: break-word;}
     th { background: #eaf6ff; color: #1976d2; font-weight: 800; position: sticky; top: 0; font-size: 10px; text-transform: uppercase; }
-    td.td-left { text-align: left; font-weight: 800; color: #333; font-size: 13px; width: 25%;}
-    td.td-number { color: #e74c3c; width: 25%; }
-    td.td-hoctap { color: #00bcd4; width: 25%; }
-    td.td-task { color: #f39c12; width: 25%; }
+    td.td-left { text-align: left; font-weight: 800; color: #333; font-size: 13px; width: 25%; padding-left: 8px;}
+    td.td-number { color: #e74c3c; width: 25%; font-weight: bold;}
+    td.td-hoctap { color: #ccc; width: 25%; }
+    td.td-task { color: #f39c12; width: 25%; font-weight: bold;}
     tr.total-row td { background: #fdf2e9; font-weight: 900; color: #d35400; font-size: 14px; }
-    .main-val { font-weight: 900; font-size: 15px; margin-bottom: 4px;}
-    .detail-text { font-size: 11px; color: #666; font-weight: normal; display: block; line-height: 1.4; text-align: left;}
+
+    .detail-text { font-size: 11px; color: #666; font-weight: normal; display: block; line-height: 1.4; text-align: left; margin-top: 4px;}
 
     /* ====== QUICK ACTIONS ====== */
     .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;}
-    .quick-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; color: #555; cursor: pointer; text-align: center; transition: 0.2s;}
+    .quick-btn { background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: bold; color: #555; cursor: pointer; text-align: center; transition: 0.2s;}
     .quick-btn.active { background: #1976d2; color: #fff; border-color: #1976d2; box-shadow: 0 2px 8px rgba(25,118,210,0.3); }
 
-    /* ====== DANH SÁCH CÀI ĐẶT (MỚI) ====== */
-    .setting-item { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 6px;}
+    /* ====== DANH SÁCH CÀI ĐẶT ====== */
+    .setting-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);}
     .setting-info { display: flex; flex-direction: column; gap: 2px; }
     .setting-info strong { font-size: 14px; color: #1976d2; }
     .setting-info span { font-size: 11px; color: #888; }
     .setting-actions { display: flex; gap: 4px; }
-    .setting-actions button { width: 30px; height: 30px; border: none; border-radius: 6px; background: #fff; box-shadow:0 1px 2px rgba(0,0,0,0.1); color: #555; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .setting-actions button.edit { color: #f39c12; }
-    .setting-actions button.del { color: #e74c3c; background: #ffeeee; box-shadow:none;}
+    .setting-actions button { width: 30px; height: 30px; border: none; border-radius: 6px; background: #f0f4f8; color: #555; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .setting-actions button.edit { background: #fff3cd; color: #f39c12; border: 1px solid #ffe69c;}
+    .setting-actions button.del { background: #fdedec; color: #e74c3c; border: 1px solid #fadbd8;}
 
     /* ====== TABS ====== */
     .tab-content { display: none; animation: fadeIn 0.2s ease-out; }
@@ -148,9 +158,6 @@
     .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 16px 16px 0 0; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .close-modal { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #888; cursor: pointer; line-height: 1; background: #f0f0f0; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10;}
-
-    .tag-chip { display: inline-block; background: #eaf6ff; color: #1976d2; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; margin: 0 6px 8px 0; border: 1px solid #b3d4fc; }
-    .tag-chip.task { background: #fff8e1; color: #f39c12; border-color: #ffe0b2; }
 
     /* MÀN HÌNH KHÓA */
     #lock-screen {
@@ -201,26 +208,32 @@
     </div>
 
     <div id="tab-ngay" class="tab-content active container">
-      <div class="summary-day-box">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #b3d4fc; padding-bottom:10px; margin-bottom:12px;">
-           <div style="font-weight:900; color:#1976d2; font-size:15px; text-transform:uppercase;">📊 TỔNG KẾT QUÂN SỐ</div>
-           <input type="date" id="date-picker" style="width:140px; padding:8px; font-size:14px; border:1px solid #1976d2; color:#1976d2; font-weight:bold; background:#fff;" onchange="loadDuLieuNgay()">
-        </div>
-
-        <div class="summary-day-grid">
-          <div>⛱️ Nghỉ: <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
-          <div>⚡ T.Cường: <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
-          <div>📘 Học/CT: <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
-          <div>✅ BQTX: <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
-        </div>
-        
-        <div class="summary-details" id="summary-details-text"></div>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; margin-top:4px;">
+         <div style="font-weight:900; color:#1976d2; font-size:15px; display:flex; align-items:center; gap:6px;">
+            <span style="font-size:20px;">📊</span> TỔNG KẾT QUÂN SỐ
+         </div>
+         <div style="background:white; border:1px solid #1976d2; border-radius:8px; padding:6px 10px; box-shadow: 0 1px 3px rgba(25,118,210,0.1);">
+             <input type="date" id="date-picker" style="border:none; padding:0; background:transparent; color:#1976d2; font-weight:bold; font-size:14px; outline:none; text-align:right;" onchange="loadDuLieuNgay()">
+         </div>
       </div>
 
-      <div id="wrap-lam-cuoi-tuan" style="display:none; justify-content:space-between; align-items:center; background:#fff3cd; padding:12px 14px; border-radius:12px; border:1px solid #ffe69c; margin-bottom:12px;">
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-bottom:0;">
+        <div class="summary-day-box">
+            <div class="summary-day-grid">
+              <div><span class="sum-lbl">⛱️ Nghỉ:</span> <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
+              <div><span class="sum-lbl">⚡ T.Cường:</span> <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
+              <div><span class="sum-lbl">📘 Học/CT:</span> <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
+              <div><span class="sum-lbl">✅ BQTX:</span> <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
+            </div>
+            <div class="summary-details" id="summary-details-text"></div>
+        </div>
+      </div>
+
+      <div id="wrap-lam-cuoi-tuan" style="display:none; justify-content:space-between; align-items:center; background:#fffdf1; padding:15px; border-radius:12px; border:1px solid #ffe0b2; margin-bottom:15px; margin-top: 10px;">
           <div>
-            <span style="font-weight:bold; color:#b97a00; font-size:14px;">🌟 Làm việc ngày nghỉ</span>
-            <span style="display:block; font-size:11px; color:#d48f00; margin-top:4px;">Bật công tắc để tính công BQTX</span>
+            <span style="font-weight:bold; color:#d35400; font-size:14px;">🌟 Làm việc ngày nghỉ</span>
+            <span style="display:block; font-size:12px; color:#d35400; margin-top:4px;">Bật công tắc để tính công BQTX</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="chk-lam-cuoi-tuan" onchange="toggleCuoiTuan()">
@@ -228,15 +241,15 @@
           </label>
       </div>
 
-      <div class="flex-row">
+      <div class="flex-row" style="margin-top: 15px; margin-bottom: 20px;">
         <button class="btn btn-info" onclick="moModal('modal-hoctap')">📘 HỌC TẬP/C.TÁC</button>
         <button class="btn btn-warning" onclick="moModal('modal-tang-cuong')">⚡ TĂNG CƯỜNG</button>
       </div>
 
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; padding: 0 4px;">
           <h3 class="card-title" style="margin:0; border:none; padding:0;">CHI TIẾT BÁO CÁO</h3>
-          <span id="count-records" style="font-size:12px; font-weight:bold; color:#888; background:#eee; padding:4px 10px; border-radius:12px;">0 bản ghi</span>
+          <span id="count-records" style="font-size:12px; font-weight:bold; color:#888; background:#e0e0e0; padding:4px 12px; border-radius:12px;">0 bản ghi</span>
         </div>
         <div id="list-records-today"></div>
       </div>
@@ -244,28 +257,30 @@
 
     <div id="tab-nghi" class="tab-content container">
       <div class="flex-row">
-        <button class="btn btn-danger" onclick="moModal('modal-nghi')">⛱️ TẠO LỊCH NGHỈ</button>
-        <button class="btn btn-primary" style="background:#9b59b6;" onclick="moModal('modal-thongke-nghi')">📊 THỐNG KÊ NĂM</button>
+        <button class="btn" style="background:#e74c3c;" onclick="moModal('modal-nghi')">⛱️ TẠO LỊCH NGHỈ</button>
+        <button class="btn btn-purple" onclick="moModal('modal-thongke-nghi')">📊 THỐNG KÊ NĂM</button>
       </div>
-      
-      <div class="card" style="padding:12px; margin-bottom:15px; background:#fdfdfd; border:1px solid #eef2f5;">
-        <h3 class="card-title" style="margin-top:0; margin-bottom:10px; font-size:13px; color:#1976d2;">🔍 BỘ LỌC TÌM KIẾM</h3>
-        <div style="display:flex; gap:8px; margin-bottom:8px;">
-            <select id="filter-nghi-user" onchange="loadDanhSachNghi()" style="flex:1; padding:10px; font-size:13px; font-weight:bold; color:#1976d2;">
-                <option value="all">Tất cả nhân sự</option>
-            </select>
-            <select id="filter-nghi-reason" onchange="loadDanhSachNghi()" style="flex:1; padding:10px; font-size:13px; font-weight:bold; color:#1976d2;">
-                <option value="all">Tất cả lý do</option>
-            </select>
-        </div>
-        <div style="display:flex; gap:8px; align-items:center;">
-            <input type="month" id="filter-nghi-month" onchange="loadDanhSachNghi()" style="flex:2; padding:10px; font-size:13px; font-weight:bold; color:#1976d2;">
-            <button class="btn btn-small" style="flex:1; padding:10px; margin:0; background:#ffeeee; color:#e74c3c; border:1px solid #fadbd8;" onclick="resetFilterNghi()">XÓA LỌC</button>
+
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px; background:white; padding:15px; border-radius:12px; border:1px solid #eef2f5; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+            <div style="font-weight:800; font-size:13px; color:#1976d2; margin-bottom:4px;">🔍 BỘ LỌC TÌM KIẾM</div>
+            <div style="display:flex; gap:8px;">
+                <select id="filter-nghi-user" onchange="loadDanhSachNghi()" style="flex:1; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
+                    <option value="all">Tất cả nhân sự</option>
+                </select>
+                <select id="filter-nghi-reason" onchange="loadDanhSachNghi()" style="flex:1; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
+                    <option value="all">Tất cả lý do</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <input type="month" id="filter-nghi-month" onchange="loadDanhSachNghi()" style="flex:2; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
+                <button class="btn btn-small" style="flex:1; padding:12px; margin:0; background:#ffeeee; color:#e74c3c; border:1px solid #fadbd8;" onclick="resetFilterNghi()">XÓA LỌC</button>
+            </div>
         </div>
       </div>
 
-      <div class="card">
-        <h3 class="card-title">LỊCH SỬ ĐĂNG KÝ NGHỈ</h3>
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
+        <h3 class="card-title" style="margin-left:4px; margin-bottom:12px;">LỊCH SỬ ĐĂNG KÝ NGHỈ</h3>
         <div id="list-nghi-dai-han"></div>
       </div>
     </div>
@@ -294,8 +309,8 @@
         <button class="btn btn-primary" onclick="xemTongHop()" style="margin-top: 15px;">📊 TẠO BẢNG TỔNG HỢP</button>
       </div>
 
-      <div id="cycle-summary-box" class="summary-day-box" style="display:none; margin-bottom: 12px;">
-          <div style="font-weight: 900; color: #1976d2; font-size: 14px; text-align: center; border-bottom: 1px solid #b3d4fc; padding-bottom: 10px; margin-bottom: 10px;">📊 TỔNG KẾT TOÀN ĐỘI TRONG KỲ</div>
+      <div id="cycle-summary-box" class="card" style="display:none; margin-bottom: 15px; background: #fdfdfd; border: 1px solid #b3d4fc;">
+          <div style="font-weight: 900; color: #1976d2; font-size: 14px; text-align: center; border-bottom: 1px solid #b3d4fc; padding-bottom: 10px; margin-bottom: 12px;">📊 TỔNG KẾT TOÀN ĐỘI TRONG KỲ</div>
           <div id="cycle-summary-text" style="font-size: 13px; color: #333; line-height: 1.6; text-align:left;"></div>
       </div>
 
@@ -321,10 +336,8 @@
 
     <div id="tab-cai-dat" class="tab-content container">
       
-      <div class="card" style="background:#fdfdfd; border-color:#e0e0e0; text-align:center;">
-        <h3 class="card-title" style="color:#ff9800; margin-bottom:5px;">🔄 CẬP NHẬT ỨNG DỤNG</h3>
-        <p style="font-size:12px; color:#555; margin-bottom:12px;">Bấm nút dưới để tải lại (Phá Cache iOS) nếu có bản cập nhật mới.</p>
-        <button class="btn btn-update" onclick="capNhatPhienBanMoi()">TẢI PHIÊN BẢN MỚI NHẤT</button>
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-bottom:15px;">
+        <button class="btn btn-update" style="padding:14px;" onclick="capNhatPhienBanMoi()">🔄 TẢI PHIÊN BẢN MỚI NHẤT</button>
       </div>
 
       <div class="card" style="background:#fffcfc; border-color:#fadbd8;">
@@ -342,62 +355,54 @@
         <button id="btn-setup-faceid" class="btn btn-success" style="display: none; padding:10px; font-size:12px;" onclick="dangKyFaceID()">ĐĂNG KÝ FACE ID / VÂN TAY</button>
       </div>
 
-      <div class="card" style="background:#f4fbff; border-color:#b3d4fc; text-align:center;">
-        <h3 class="card-title" style="color:#27ae60; margin-bottom:5px;">💾 SAO LƯU DỮ LIỆU</h3>
-        <p style="font-size:12px; color:#555; margin-bottom:12px;">Xuất/Nhập file JSON để chuyển máy hoặc tránh mất dữ liệu.</p>
+      <div class="card" style="background:#fdfdfd; text-align:center;">
+        <p style="font-size:13px; color:#555; margin-top:0; margin-bottom:15px;">Xuất/Nhập file JSON để chuyển máy hoặc tránh mất dữ liệu.</p>
         <div class="flex-row">
           <button class="btn btn-success" onclick="exportBackupJSON()">📥 TẢI XUỐNG</button>
           <button class="btn btn-primary" onclick="document.getElementById('import-file').click()">📤 PHỤC HỒI</button>
         </div>
         <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importBackupJSON(event)">
-        <button class="btn" style="background:#fff; color:#1976d2; border:1px solid #1976d2; margin-top: 10px;" onclick="xuatDuLieuRaExcel()">Xuất Excel Báo Cáo</button>
+        <button class="btn btn-outline" style="margin-top: 10px; padding: 12px; font-size:13px;" onclick="xuatDuLieuRaExcel()">XUẤT EXCEL BÁO CÁO</button>
       </div>
 
       <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eaf6ff; padding-bottom: 8px; margin-bottom: 12px;">
-            <h3 class="card-title" style="border:none; padding:0; margin:0;">👥 DANH SÁCH NHÂN SỰ</h3>
-            <button onclick="toggleSettingList('list-users', 'btn-toggle-u')" id="btn-toggle-u" style="background:#eaf6ff; border:1px solid #1976d2; color:#1976d2; border-radius:6px; font-size:11px; font-weight:bold; padding:4px 8px; cursor:pointer;">Danh sách ▼</button>
-        </div>
-        <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <h3 class="card-title" style="margin:0; margin-bottom:12px; padding:0; border:none;">👥 DANH SÁCH NHÂN SỰ</h3>
+        <div style="display:flex; gap:8px; margin-bottom:15px;">
           <input type="text" id="input-new-user" placeholder="Tên NV..." style="flex:2;">
           <input type="text" id="input-new-role" placeholder="Chức vụ" style="flex:1;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themNhanVien()">THÊM</button>
         </div>
-        <div id="list-users" style="max-height: 350px; overflow-y: auto; display:none;"></div>
+        <div id="list-users" style="max-height: 400px; overflow-y: auto;"></div>
       </div>
 
       <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eaf6ff; padding-bottom: 8px; margin-bottom: 12px;">
-            <h3 class="card-title" style="border:none; padding:0; margin:0;">⚡ MẪU VIỆC TĂNG CƯỜNG</h3>
-            <button onclick="toggleSettingList('list-tasks', 'btn-toggle-t')" id="btn-toggle-t" style="background:#eaf6ff; border:1px solid #1976d2; color:#1976d2; border-radius:6px; font-size:11px; font-weight:bold; padding:4px 8px; cursor:pointer;">Danh sách ▼</button>
-        </div>
-        <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <h3 class="card-title" style="margin:0; margin-bottom:12px; padding:0; border:none;">⚡ MẪU VIỆC TĂNG CƯỜNG</h3>
+        <div style="display:flex; gap:8px; margin-bottom:15px;">
           <input type="text" id="input-new-task" placeholder="Tên công việc..." style="flex:3;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themViec()">THÊM</button>
         </div>
-        <div id="list-tasks" style="max-height: 250px; overflow-y: auto; display:none;"></div>
+        <div id="list-tasks" style="max-height: 300px; overflow-y: auto;"></div>
       </div>
 
       <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eaf6ff; padding-bottom: 8px; margin-bottom: 12px;">
-            <h3 class="card-title" style="border:none; padding:0; margin:0;">⛱️ MẪU LÝ DO NGHỈ</h3>
-            <button onclick="toggleSettingList('list-leaves', 'btn-toggle-l')" id="btn-toggle-l" style="background:#eaf6ff; border:1px solid #1976d2; color:#1976d2; border-radius:6px; font-size:11px; font-weight:bold; padding:4px 8px; cursor:pointer;">Danh sách ▼</button>
-        </div>
-        <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <h3 class="card-title" style="margin:0; margin-bottom:12px; padding:0; border:none;">⛱️ MẪU LÝ DO NGHỈ</h3>
+        <div style="display:flex; gap:8px; margin-bottom:15px;">
           <input type="text" id="input-new-leave" placeholder="Loại nghỉ..." style="flex:3;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themLoaiNghi()">THÊM</button>
         </div>
-        <div id="list-leaves" style="max-height: 250px; overflow-y: auto; display:none;"></div>
+        <div id="list-leaves" style="max-height: 300px; overflow-y: auto;"></div>
       </div>
 
-      <button class="btn" style="background:#e74c3c; box-shadow:none; margin-top:20px;" onclick="xoaToanBoDuLieu()">⚠️ KHÔI PHỤC DỮ LIỆU GỐC</button>
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top:20px;">
+        <button class="btn" style="background:#e74c3c; box-shadow:none; padding:14px;" onclick="xoaToanBoDuLieu()">⚠️ KHÔI PHỤC DỮ LIỆU GỐC</button>
+      </div>
     </div>
   </div> 
 
   <div class="modal-overlay" id="modal-thongke-nghi">
     <div class="modal-content">
       <div class="close-modal" onclick="dongModal('modal-thongke-nghi')">&times;</div>
-      <h3 style="margin-top:0; font-size:15px; color:#9b59b6; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">📊 THỐNG KÊ NGHỈ NĂM</h3>
+      <h3 style="margin-top:0; font-size:16px; color:#9b59b6; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">📊 THỐNG KÊ NGHỈ NĂM</h3>
       
       <div class="flex-row" style="margin-bottom: 15px;">
         <label style="margin:0; width:80px;">Chọn Năm:</label>
@@ -417,7 +422,7 @@
   <div class="modal-overlay" id="modal-hoctap">
     <div class="modal-content">
       <div class="close-modal" onclick="dongModal('modal-hoctap')">&times;</div>
-      <h3 style="margin-top:0; font-size:15px; color:#00bcd4; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">📘 Học tập / Công tác</h3>
+      <h3 style="margin-top:0; font-size:16px; color:#00bcd4; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">📘 Học tập / Công tác</h3>
       
       <label>1. Phân loại:</label>
       <select id="sel-loai-hoctap" style="font-weight:bold; color:#1976d2; font-size:14px; padding: 12px;">
@@ -454,7 +459,7 @@
   <div class="modal-overlay" id="modal-tang-cuong">
     <div class="modal-content">
       <div class="close-modal" onclick="dongModal('modal-tang-cuong')">&times;</div>
-      <h3 style="margin-top:0; font-size:15px; color:#f39c12; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">⚡ Ghi nhận Tăng Cường</h3>
+      <h3 style="margin-top:0; font-size:16px; color:#f39c12; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">⚡ Ghi nhận Tăng Cường</h3>
       
       <label>1. Chọn công việc:</label>
       <select id="sel-loai-viec" style="font-weight:bold; color:#1976d2; font-size:14px; padding: 12px;"></select>
@@ -488,7 +493,7 @@
   <div class="modal-overlay" id="modal-nghi">
     <div class="modal-content">
       <div class="close-modal" onclick="dongModal('modal-nghi')">&times;</div>
-      <h3 style="margin-top:0; font-size:15px; color:#e74c3c; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">⛱️ Đăng ký Nghỉ</h3>
+      <h3 style="margin-top:0; font-size:16px; color:#e74c3c; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">⛱️ Đăng ký Nghỉ</h3>
       
       <label>1. Phân loại nghỉ:</label>
       <select id="sel-loai-nghi" style="font-weight:bold; color:#1976d2; font-size:14px; padding: 12px;"></select>
@@ -784,4 +789,703 @@
 
   function exportBackupJSON() {
       let data = { cc_users: dsNhanVien, cc_tasks: dsViecTangCuong, cc_leaves: dsLoaiNghi, cc_daily: dsDaily, cc_leaves_data: dsLeaves, cc_security: isSecurityEnabled, cc_weekend_work: dsWeekendWork };
-      let blob = new Blob([JSON.stringify(data)], {type: "application/
+      let blob = new Blob([JSON.stringify(data)], {type: "application/json"}); let url = URL.createObjectURL(blob);
+      let a = document.createElement('a'); a.href = url; a.download = "Backup_AppChamCong_" + new Date().toISOString().split('T')[0] + ".json";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  }
+
+  function importBackupJSON(event) {
+      let file = event.target.files[0]; if(!file) return; let reader = new FileReader();
+      reader.onload = function(e) {
+          try {
+              let data = JSON.parse(e.target.result);
+              if(data.cc_users) localStorage.setItem('cc_users', JSON.stringify(data.cc_users));
+              if(data.cc_tasks) localStorage.setItem('cc_tasks', JSON.stringify(data.cc_tasks));
+              if(data.cc_leaves) localStorage.setItem('cc_leaves', JSON.stringify(data.cc_leaves));
+              if(data.cc_daily) localStorage.setItem('cc_daily', JSON.stringify(data.cc_daily));
+              if(data.cc_leaves_data) localStorage.setItem('cc_leaves_data', JSON.stringify(data.cc_leaves_data));
+              if(data.cc_security !== undefined) localStorage.setItem('cc_security', data.cc_security);
+              if(data.cc_weekend_work) localStorage.setItem('cc_weekend_work', JSON.stringify(data.cc_weekend_work));
+              alert("Phục hồi dữ liệu thành công! Ứng dụng sẽ tải lại."); location.reload();
+          } catch(err) { alert("File không hợp lệ hoặc bị lỗi!"); }
+      }; reader.readAsText(file);
+  }
+
+  // ==========================================
+  // HÀM CHUYỂN TAB CƠ BẢN
+  // ==========================================
+  function switchTab(tabId, title) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    document.getElementById('nav-' + tabId).classList.add('active');
+    document.getElementById('header-title').innerText = title;
+    window.scrollTo(0,0);
+
+    if(tabId === 'tab-cai-dat') loadCaiDat();
+    if(tabId === 'tab-ngay') loadDuLieuNgay();
+    if(tabId === 'tab-nghi') { updateFilterOptions(); loadDanhSachNghi(); }
+    if(tabId === 'tab-tong-hop') initChuKy();
+  }
+
+  // ==========================================
+  // XỬ LÝ CÀI ĐẶT (EDIT/MOVE/DELETE)
+  // ==========================================
+  function loadCaiDat() {
+    let htmlUsers = '';
+    dsNhanVien.forEach((u, i) => {
+      htmlUsers += `<div class="setting-item">
+                      <div class="setting-info"><strong>${u.name}</strong><span>${u.role || 'Thành viên'}</span></div>
+                      <div class="setting-actions">
+                        <button onclick="moveUser(${i}, -1)">▲</button>
+                        <button onclick="moveUser(${i}, 1)">▼</button>
+                        <button class="edit" onclick="editUser(${i})">✏️</button>
+                        <button class="del" onclick="xoaNhanVien(${i})">✖</button>
+                      </div>
+                    </div>`;
+    });
+    document.getElementById('list-users').innerHTML = htmlUsers;
+
+    let htmlTasks = '';
+    dsViecTangCuong.forEach((t, i) => {
+      htmlTasks += `<div class="setting-item">
+                      <div class="setting-info"><strong>${t}</strong></div>
+                      <div class="setting-actions">
+                        <button onclick="moveTask(${i}, -1)">▲</button>
+                        <button onclick="moveTask(${i}, 1)">▼</button>
+                        <button class="edit" onclick="editTask(${i})">✏️</button>
+                        <button class="del" onclick="xoaViec(${i})">✖</button>
+                      </div>
+                    </div>`;
+    });
+    document.getElementById('list-tasks').innerHTML = htmlTasks;
+
+    let htmlLeaves = '';
+    dsLoaiNghi.forEach((l, i) => {
+      htmlLeaves += `<div class="setting-item">
+                      <div class="setting-info"><strong>${l}</strong></div>
+                      <div class="setting-actions">
+                        <button onclick="moveLeave(${i}, -1)">▲</button>
+                        <button onclick="moveLeave(${i}, 1)">▼</button>
+                        <button class="edit" onclick="editLeave(${i})">✏️</button>
+                        <button class="del" onclick="xoaLoaiNghi(${i})">✖</button>
+                      </div>
+                    </div>`;
+    });
+    document.getElementById('list-leaves').innerHTML = htmlLeaves;
+  }
+
+  function themNhanVien() { let n = document.getElementById('input-new-user').value.trim(); let r = document.getElementById('input-new-role').value.trim(); if(n && !dsNhanVien.some(u => u.name === n)) { dsNhanVien.push({name: n, role: r}); saveData('cc_users', dsNhanVien); document.getElementById('input-new-user').value = ''; document.getElementById('input-new-role').value = ''; loadCaiDat(); } }
+  function xoaNhanVien(i) { if(confirm("Xóa nhân sự này?")) { dsNhanVien.splice(i, 1); saveData('cc_users', dsNhanVien); loadCaiDat(); } }
+  function editUser(i) { 
+      let newName = prompt("Nhập tên mới:", dsNhanVien[i].name);
+      if (newName !== null && newName.trim() !== "") {
+          let newRole = prompt("Nhập chức vụ mới:", dsNhanVien[i].role);
+          let oldName = dsNhanVien[i].name; newName = newName.trim();
+          dsNhanVien[i].name = newName; dsNhanVien[i].role = newRole !== null ? newRole.trim() : "";
+          if (oldName !== newName) {
+              dsDaily.forEach(r => { let idx = r.users.indexOf(oldName); if (idx > -1) r.users[idx] = newName; });
+              dsLeaves.forEach(r => { let idx = r.users.indexOf(oldName); if (idx > -1) r.users[idx] = newName; });
+              saveData('cc_daily', dsDaily); saveData('cc_leaves_data', dsLeaves);
+          }
+          saveData('cc_users', dsNhanVien); loadCaiDat();
+      }
+  }
+  function moveUser(i, dir) { if (i + dir < 0 || i + dir >= dsNhanVien.length) return; let temp = dsNhanVien[i]; dsNhanVien[i] = dsNhanVien[i + dir]; dsNhanVien[i + dir] = temp; saveData('cc_users', dsNhanVien); loadCaiDat(); }
+
+  function themViec() { let v = document.getElementById('input-new-task').value.trim(); if(v && !dsViecTangCuong.includes(v)) { dsViecTangCuong.push(v); saveData('cc_tasks', dsViecTangCuong); document.getElementById('input-new-task').value = ''; loadCaiDat(); } }
+  function xoaViec(i) { if(confirm("Xóa mẫu việc này?")) { dsViecTangCuong.splice(i, 1); saveData('cc_tasks', dsViecTangCuong); loadCaiDat(); } }
+  function editTask(i) {
+      let newVal = prompt("Sửa tên công việc:", dsViecTangCuong[i]);
+      if (newVal !== null && newVal.trim() !== "") {
+          let oldVal = dsViecTangCuong[i]; dsViecTangCuong[i] = newVal.trim();
+          dsDaily.forEach(r => { if(r.type === 'viec' && r.taskName === oldVal) r.taskName = newVal.trim(); });
+          saveData('cc_daily', dsDaily); saveData('cc_tasks', dsViecTangCuong); loadCaiDat();
+      }
+  }
+  function moveTask(i, dir) { if (i + dir < 0 || i + dir >= dsViecTangCuong.length) return; let temp = dsViecTangCuong[i]; dsViecTangCuong[i] = dsViecTangCuong[i + dir]; dsViecTangCuong[i + dir] = temp; saveData('cc_tasks', dsViecTangCuong); loadCaiDat(); }
+
+  function themLoaiNghi() { let v = document.getElementById('input-new-leave').value.trim(); if(v && !dsLoaiNghi.includes(v)) { dsLoaiNghi.push(v); saveData('cc_leaves', dsLoaiNghi); document.getElementById('input-new-leave').value = ''; loadCaiDat(); } }
+  function xoaLoaiNghi(i) { if(confirm("Xóa lý do nghỉ này?")) { dsLoaiNghi.splice(i, 1); saveData('cc_leaves', dsLoaiNghi); loadCaiDat(); } }
+  function editLeave(i) {
+      let newVal = prompt("Sửa lý do nghỉ:", dsLoaiNghi[i]);
+      if (newVal !== null && newVal.trim() !== "") {
+          let oldVal = dsLoaiNghi[i]; dsLoaiNghi[i] = newVal.trim();
+          dsLeaves.forEach(r => { if(r.category === oldVal) r.category = newVal.trim(); });
+          saveData('cc_leaves_data', dsLeaves); saveData('cc_leaves', dsLoaiNghi); loadCaiDat();
+      }
+  }
+  function moveLeave(i, dir) { if (i + dir < 0 || i + dir >= dsLoaiNghi.length) return; let temp = dsLoaiNghi[i]; dsLoaiNghi[i] = dsLoaiNghi[i + dir]; dsLoaiNghi[i + dir] = temp; saveData('cc_leaves', dsLoaiNghi); loadCaiDat(); }
+
+  function xoaToanBoDuLieu() { if(confirm("Khôi phục toàn bộ danh sách về mặc định và XÓA SẠCH Lịch sử chấm công?")) { localStorage.clear(); location.reload(); } }
+
+  // ==========================================
+  // XỬ LÝ MODAL (POPUP FORM)
+  // ==========================================
+  document.getElementById('sel-loai-hoctap').addEventListener('change', function() { document.getElementById('txt-hoctap-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
+  document.getElementById('sel-loai-viec').addEventListener('change', function() { document.getElementById('wrap-viec-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
+
+  function moModal(id) {
+    editingId = null; 
+    document.getElementById(id).style.display = 'flex';
+    let selectedDate = document.getElementById('date-picker').value;
+    
+    if(id === 'modal-nghi') {
+      document.getElementById('btn-submit-nghi').innerText = 'LƯU BÁO CÁO';
+      document.getElementById('txt-note-nghi').value = '';
+      document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join(''); 
+      document.getElementById('nghi-tu').value = selectedDate; document.getElementById('nghi-den').value = selectedDate; 
+      kiemTraHienThiBuoiNghi(); updateCheckboxes('nghi', []); 
+    }
+    if(id === 'modal-tang-cuong') {
+      document.getElementById('btn-submit-viec').innerText = 'LƯU BÁO CÁO';
+      document.getElementById('txt-note-viec').value = '';
+      document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
+      document.getElementById('wrap-viec-moi').style.display = 'none'; document.getElementById('t-all').checked = true;
+      updateCheckboxes('viec', []);
+    }
+    if(id === 'modal-hoctap') {
+      document.getElementById('btn-submit-hoctap').innerText = 'LƯU BÁO CÁO';
+      document.getElementById('txt-note-hoctap').value = '';
+      document.getElementById('sel-loai-hoctap').value = 'Học tập'; document.getElementById('txt-hoctap-moi').style.display = 'none'; document.getElementById('h-all').checked = true;
+      updateCheckboxes('hoctap', []);
+    }
+  }
+
+  function dongModal(id) { editingId = null; document.getElementById(id).style.display = 'none'; }
+  function formatDateVN(isoStr) { let d = new Date(isoStr); return `${('0'+d.getDate()).slice(-2)}/${('0'+(d.getMonth()+1)).slice(-2)}/${d.getFullYear()}`; }
+
+  function formatGroupedUsersBullet(records, categoryField) {
+      let groups = {};
+      records.forEach(r => {
+          let cat = r[categoryField]; 
+          r.users.forEach(u => { 
+              if(!groups[cat]) groups[cat] = [];
+              groups[cat].push(u); 
+          });
+      });
+      return Object.keys(groups).map(k => {
+          let uniqueUsers = [...new Set(groups[k])];
+          return `<div style="margin-left:4px; margin-bottom:4px; color:#444;">&bull; <b>${k}</b>: ${uniqueUsers.join(', ')}</div>`;
+      }).join('');
+  }
+
+  // ==========================================
+  // CẬP NHẬT (SỬA) BẢN GHI TỪ THẺ GỘP CHUNG
+  // ==========================================
+  function suaRecordDaily(idStr, mode) {
+    let idArr = idStr.split(',');
+    let r = dsDaily.find(x => x.id === idArr[0]); if (!r) return;
+    editingId = idStr;
+    
+    let allUsers = [];
+    dsDaily.filter(x => idArr.includes(x.id)).forEach(item => { item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); }); });
+
+    if (mode === 'viec') {
+        document.getElementById('modal-tang-cuong').style.display = 'flex';
+        document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
+        if (dsViecTangCuong.includes(r.taskName)) {
+            document.getElementById('sel-loai-viec').value = r.taskName; document.getElementById('wrap-viec-moi').style.display = 'none';
+        } else {
+            document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName;
+        }
+        document.querySelector(`input[name="sess_viec"][value="${r.session}"]`).checked = true;
+        document.getElementById('txt-note-viec').value = r.note || '';
+        updateCheckboxes('viec', allUsers);
+        document.getElementById('btn-submit-viec').innerText = 'CẬP NHẬT';
+    } 
+    else if (mode === 'hoctap') {
+        document.getElementById('modal-hoctap').style.display = 'flex';
+        let validOpts = ["Học tập", "Công tác", "Đi tuyến"];
+        if (validOpts.includes(r.taskName)) {
+            document.getElementById('sel-loai-hoctap').value = r.taskName; document.getElementById('txt-hoctap-moi').style.display = 'none';
+        } else {
+            document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName;
+        }
+        document.querySelector(`input[name="sess_hoctap"][value="${r.session}"]`).checked = true;
+        document.getElementById('txt-note-hoctap').value = r.note || '';
+        updateCheckboxes('hoctap', allUsers);
+        document.getElementById('btn-submit-hoctap').innerText = 'CẬP NHẬT';
+    }
+  }
+
+  function suaLeave(idStr) {
+    let idArr = idStr.split(',');
+    let r = dsLeaves.find(x => x.id === idArr[0]); if (!r) return;
+    editingId = idStr;
+
+    let allUsers = [];
+    dsLeaves.filter(x => idArr.includes(x.id)).forEach(item => { item.users.forEach(u => { if(!allUsers.includes(u)) allUsers.push(u); }); });
+    
+    document.getElementById('modal-nghi').style.display = 'flex';
+    document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join('');
+    document.getElementById('sel-loai-nghi').value = r.category;
+    document.getElementById('nghi-tu').value = r.start; document.getElementById('nghi-den').value = r.end;
+    document.getElementById('txt-note-nghi').value = r.note || '';
+    kiemTraHienThiBuoiNghi();
+    
+    if (r.start === r.end) { document.querySelector(`input[name="sess_nghi"][value="${r.session}"]`).checked = true; }
+    updateCheckboxes('nghi', allUsers);
+    document.getElementById('btn-submit-nghi').innerText = 'CẬP NHẬT';
+  }
+
+  // ==========================================
+  // LÀM VIỆC CUỐI TUẦN & TAB 1: CHẤM CÔNG NGÀY
+  // ==========================================
+  function toggleCuoiTuan() {
+    let dateStr = document.getElementById('date-picker').value;
+    let isChecked = document.getElementById('chk-lam-cuoi-tuan').checked;
+    if (isChecked) { if (!dsWeekendWork.includes(dateStr)) dsWeekendWork.push(dateStr); } 
+    else { dsWeekendWork = dsWeekendWork.filter(d => d !== dateStr); }
+    saveData('cc_weekend_work', dsWeekendWork); loadDuLieuNgay(); 
+  }
+
+  function loadDuLieuNgay() {
+    let targetDate = document.getElementById('date-picker').value;
+    let recordsDaily = dsDaily.filter(r => r.date === targetDate);
+    let recordsLeave = dsLeaves.filter(l => targetDate >= l.start && targetDate <= l.end);
+
+    let groupedLeavesToday = [];
+    recordsLeave.forEach(r => {
+        let dObj = new Date(targetDate);
+        let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
+        if (isWeekend) return; 
+
+        let isMulti = r.start !== r.end; let effectiveSession = isMulti ? 'multi' : r.session;
+        let noteKey = r.note || '';
+        let key = r.category + '|' + effectiveSession + '|' + noteKey; 
+        
+        let existing = groupedLeavesToday.find(x => x.key === key);
+        if(!existing) { 
+            groupedLeavesToday.push({ key: key, category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users], note: r.note, ids: [r.id] }); 
+        } 
+        else { 
+            existing.ids.push(r.id);
+            r.users.forEach(u => { if(!existing.combinedUsers.includes(u)) existing.combinedUsers.push(u); }); 
+        }
+    });
+
+    let groupedDaily = Object.values(recordsDaily.reduce((acc, r) => {
+        let noteKey = r.note || '';
+        let key = r.type + '|' + r.taskName + '|' + r.session + '|' + noteKey;
+        if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
+        else { acc[key].ids.push(r.id); r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
+        return acc;
+    }, {}));
+
+    let totalRec = groupedDaily.length + groupedLeavesToday.length;
+    document.getElementById('count-records').innerText = `${totalRec} bản ghi`;
+
+    let dObj = new Date(targetDate);
+    let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
+    let isWorkingDay = true;
+
+    if (isWeekend) {
+        document.getElementById('wrap-lam-cuoi-tuan').style.display = 'flex';
+        let isChecked = dsWeekendWork.includes(targetDate);
+        document.getElementById('chk-lam-cuoi-tuan').checked = isChecked;
+        if (!isChecked) isWorkingDay = false; 
+    } else {
+        document.getElementById('wrap-lam-cuoi-tuan').style.display = 'none';
+    }
+
+    let sumNghi = 0, sumTC = 0, sumHT = 0, sumBQTX = 0;
+    dsNhanVien.forEach(nv => {
+      let uName = nv.name; let uRole = nv.role; let uNghi = 0, uTC = 0, uHT = 0;
+      let absenceForBQTX = 0;
+
+      recordsLeave.forEach(r => { 
+          if(r.users.includes(uName)) { 
+              let val = (r.start === r.end && r.session !== 'all') ? 0.5 : 1; 
+              if (!isWeekend) { uNghi += val; } 
+              absenceForBQTX += val;
+          } 
+      });
+
+      recordsDaily.forEach(r => {
+          if(r.users.includes(uName)) { 
+              let val = (r.session === 'all') ? 1 : 0.5; 
+              if(r.type === 'viec') uTC += val; 
+              if(r.type === 'hoctap') uHT += val; 
+              absenceForBQTX += val;
+          }
+      });
+
+      sumNghi += uNghi; sumTC += uTC; sumHT += uHT;
+      let base = 0;
+      if (isWorkingDay) { base = 1.0; if(uRole === 'Đội trưởng') base = 0; else if(uRole === 'Phó đội trưởng') base = 0.5; }
+      let bqtx = Math.max(0, base - absenceForBQTX); sumBQTX += bqtx;
+    });
+
+    document.getElementById('sum-nghi').innerText = sumNghi; document.getElementById('sum-tc').innerText = sumTC;
+    document.getElementById('sum-ht').innerText = sumHT; document.getElementById('sum-bqtx').innerText = sumBQTX;
+
+    // HIỂN THỊ CHI TIẾT TÓM TẮT DƯỚI 4 Ô
+    let detailText = [];
+    let tcRecords = recordsDaily.filter(r => r.type === 'viec');
+    if (tcRecords.length > 0) { 
+        let htmlStr = `<div style="color:#f39c12; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">⚡ Tăng cường:</div>`;
+        htmlStr += formatGroupedUsersBullet(tcRecords, 'taskName');
+        detailText.push(htmlStr); 
+    }
+    
+    if (!isWeekend && recordsLeave.length > 0) { 
+        let htmlStr = `<div style="color:#e74c3c; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">⛱️ Nghỉ:</div>`;
+        htmlStr += formatGroupedUsersBullet(recordsLeave, 'category');
+        detailText.push(htmlStr); 
+    }
+
+    let htRecords = recordsDaily.filter(r => r.type === 'hoctap');
+    if (htRecords.length > 0) { 
+        let htmlStr = `<div style="color:#00bcd4; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">📘 Học tập/CT:</div>`;
+        htmlStr += formatGroupedUsersBullet(htRecords, 'taskName');
+        detailText.push(htmlStr); 
+    }
+    
+    document.getElementById('summary-details-text').innerHTML = detailText.length > 0 ? detailText.join('') : '<i style="color:#888;">Chưa có báo cáo chi tiết</i>';
+
+    let html = '';
+    if(totalRec === 0) { html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Chưa có báo cáo nào.</div>'; }
+    
+    groupedLeavesToday.forEach(r => {
+      let idsStr = r.ids.join(',');
+      html += `<div class="list-item type-nghi-auto">
+                 <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
+                 <div class="list-item-header">
+                    <span class="list-item-title">
+                       <span style="display:flex; align-items:center; gap:6px;"><span style="color:#e74c3c; font-size:18px;">⛱️</span> Nghỉ: ${r.category}</span>
+                    </span>
+                    <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
+                 </div>
+                 <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+               </div>`;
+    });
+
+    groupedDaily.forEach(r => {
+      let sessionText = SES_LABELS_FULL[r.session]; let idsStr = r.ids.join(',');
+      if(r.type === 'hoctap') {
+        html += `<div class="list-item type-hoctap">
+                   <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'hoctap')">✏️</button>
+                   <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
+                   <div class="list-item-header">
+                      <span class="list-item-title">
+                         <span style="display:flex; align-items:center; gap:6px;"><span style="color:#00bcd4; font-size:18px;">📘</span> ${r.taskName}</span>
+                      </span>
+                      <span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span>
+                   </div>
+                   <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                 </div>`;
+      } else if (r.type === 'viec') {
+        html += `<div class="list-item type-viec">
+                   <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'viec')">✏️</button>
+                   <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
+                   <div class="list-item-header">
+                      <span class="list-item-title">
+                         <span style="display:flex; align-items:center; gap:6px;"><span style="color:#f39c12; font-size:18px;">⚡</span> T.Cường: ${r.taskName}</span>
+                      </span>
+                      <span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span>
+                   </div>
+                   <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                 </div>`;
+      }
+    });
+    document.getElementById('list-records-today').innerHTML = html;
+  }
+
+  function luuRecordDaily(type) {
+    let users = getSelectedUsers(`grid-user-${type}`); if(users.length === 0) { alert('Vui lòng chọn ít nhất 1 nhân sự!'); return; }
+    let taskName = "";
+    if(type === 'viec') { let sel = document.getElementById('sel-loai-viec').value; taskName = sel === 'khac' ? document.getElementById('txt-viec-moi').value.trim() : sel; if(sel === 'khac' && taskName && !dsViecTangCuong.includes(taskName)) { dsViecTangCuong.push(taskName); saveData('cc_tasks', dsViecTangCuong); } } 
+    else { let sel = document.getElementById('sel-loai-hoctap').value; taskName = sel === 'khac' ? document.getElementById('txt-hoctap-moi').value.trim() : sel; }
+    if(!taskName) { alert('Vui lòng nhập lý do/công việc!'); return; }
+
+    let sess = document.querySelector(`input[name="sess_${type}"]:checked`).value;
+    let note = document.getElementById(`txt-note-${type}`).value.trim();
+    
+    if (editingId) { let idArr = editingId.split(','); dsDaily = dsDaily.filter(x => !idArr.includes(x.id)); editingId = null; }
+    dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users, note: note });
+    saveData('cc_daily', dsDaily); dongModal(type === 'viec' ? 'modal-tang-cuong' : 'modal-hoctap'); loadDuLieuNgay();
+  }
+  
+  function xoaRecordDaily(idsStr) { 
+      if(confirm('Xóa bản ghi này khỏi ngày hôm nay?')) { 
+          let idArr = idsStr.split(','); dsDaily = dsDaily.filter(r => !idArr.includes(r.id)); 
+          saveData('cc_daily', dsDaily); loadDuLieuNgay(); 
+      } 
+  }
+
+  // ==========================================
+  // TAB 2: QUẢN LÝ NGHỈ PHÉP
+  // ==========================================
+  function kiemTraHienThiBuoiNghi() {
+    let tu = document.getElementById('nghi-tu').value; let den = document.getElementById('nghi-den').value;
+    if(tu === den) { document.getElementById('wrap-buoi-nghi').style.display = 'block'; } 
+    else { document.getElementById('wrap-buoi-nghi').style.display = 'none'; document.getElementById('n-all').checked = true; }
+  }
+
+  function luuRecordLeave() {
+    let users = getSelectedUsers('grid-user-nghi'); if(users.length === 0) { alert('Vui lòng chọn ít nhất 1 nhân sự!'); return; }
+    let tu = document.getElementById('nghi-tu').value; let den = document.getElementById('nghi-den').value;
+    if(den < tu) { alert('Ngày kết thúc không hợp lệ!'); return; }
+    let cat = document.getElementById('sel-loai-nghi').value; let sess = document.querySelector('input[name="sess_nghi"]:checked').value;
+    let note = document.getElementById('txt-note-nghi').value.trim();
+
+    if (editingId) { let idArr = editingId.split(','); dsLeaves = dsLeaves.filter(x => !idArr.includes(x.id)); editingId = null; }
+    dsLeaves.push({ id: Date.now().toString(), start: tu, end: den, category: cat, session: sess, users: users, note: note });
+    
+    saveData('cc_leaves_data', dsLeaves); dongModal('modal-nghi'); loadDanhSachNghi();
+    if(document.getElementById('tab-ngay').classList.contains('active')) loadDuLieuNgay();
+  }
+
+  function loadDanhSachNghi() {
+    updateFilterOptions();
+    let fUser = document.getElementById('filter-nghi-user').value;
+    let fReason = document.getElementById('filter-nghi-reason').value;
+    let fMonth = document.getElementById('filter-nghi-month').value;
+
+    let filteredLeaves = dsLeaves.filter(l => {
+        let matchU = (fUser === 'all' || l.users.includes(fUser));
+        let matchR = (fReason === 'all' || l.category === fReason);
+        let matchM = true;
+        if (fMonth) {
+            let sm = l.start.substring(0, 7); let em = l.end.substring(0, 7);
+            matchM = (sm <= fMonth && em >= fMonth) || (sm === fMonth) || (em === fMonth);
+        }
+        return matchU && matchR && matchM;
+    });
+
+    let grouped = Object.values(filteredLeaves.reduce((acc, r) => {
+        let noteKey = r.note || '';
+        let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end + '|' + noteKey;
+        if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
+        else { acc[key].ids.push(r.id); r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
+        return acc;
+    }, {}));
+
+    let html = ''; let sorted = grouped.sort((a,b) => new Date(b.start) - new Date(a.start));
+    if(sorted.length === 0) html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px;">Chưa có lịch nghỉ nào.</div>';
+    
+    sorted.forEach(r => {
+      let dateText = r.start === r.end ? formatDateVN(r.start) : `${formatDateVN(r.start)} - ${formatDateVN(r.end)}`;
+      let durationText = "";
+      if (r.start === r.end) { durationText = (r.session === 'all') ? "1 ngày" : "0.5 ngày"; } 
+      else { let d1 = new Date(r.start); let d2 = new Date(r.end); let dayDiff = Math.round((d2 - d1) / (1000 * 3600 * 24)) + 1; durationText = dayDiff + " ngày"; }
+
+      let idsStr = r.ids.join(',');
+      let noteHtml = r.note ? `<div class="list-item-note">📝 ${r.note}</div>` : '';
+
+      html += `<div class="list-item type-nghi-auto">
+                 <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
+                 <div class="list-item-header">
+                    <span class="list-item-title" style="padding-right:0;">
+                       <span style="display:flex; align-items:center; gap:6px;"><span style="font-size:16px;">⛱️</span> ${r.category} <span style="color:#1976d2; margin-left:4px;">- ${durationText}</span></span>
+                    </span>
+                 </div>
+                 <div class="list-item-date">📅 ${dateText}</div>
+                 <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                 ${noteHtml}
+               </div>`;
+    });
+    document.getElementById('list-nghi-dai-han').innerHTML = html;
+  }
+  
+  function xoaLeave(idsStr) { 
+      if(confirm('Xóa lịch nghỉ phép này?')) { 
+          let idArr = idsStr.split(','); dsLeaves = dsLeaves.filter(r => !idArr.includes(r.id)); 
+          saveData('cc_leaves_data', dsLeaves); loadDanhSachNghi(); 
+          if(document.getElementById('tab-ngay').classList.contains('active')) loadDuLieuNgay();
+      } 
+  }
+
+  function tinhThongKeNghiNam() {
+      let yearStr = document.getElementById('tk-nam').value;
+      if(!yearStr) return;
+      
+      let stats = {};
+      dsNhanVien.forEach(u => { stats[u.name] = { total: 0, chitiet: {} }; });
+
+      dsLeaves.forEach(l => {
+          let startY = l.start.substring(0,4); let endY = l.end.substring(0,4);
+          if(startY === yearStr || endY === yearStr) {
+              let cur = new Date(l.start); let end = new Date(l.end);
+              while(cur <= end) {
+                  if(cur.getFullYear().toString() === yearStr) {
+                      let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
+                      let reason = l.category;
+                      if (l.note) reason += ` (${l.note})`; 
+                      
+                      l.users.forEach(u => {
+                          if(stats[u]) { stats[u].total += val; stats[u].chitiet[reason] = (stats[u].chitiet[reason]||0) + val; }
+                      });
+                  }
+                  cur.setDate(cur.getDate()+1);
+              }
+          }
+      });
+
+      let tbody = '';
+      dsNhanVien.forEach(u => {
+          let st = stats[u.name];
+          let str = Object.keys(st.chitiet).map(k=>`• <span style="color:#555;">${k}:</span> ${st.chitiet[k]}`).join('<br>');
+          
+          tbody += `<tr>
+                      <td style="text-align:left; font-weight:bold; font-size:13px; vertical-align:middle;">${u.name}</td>
+                      <td style="color:#e74c3c; font-weight:bold; font-size:15px; text-align:center; vertical-align:middle;">${st.total > 0 ? st.total : '-'}</td>
+                      <td style="text-align:left; font-size:12px; color:#666; line-height:1.4; padding:8px 4px;">${str}</td>
+                    </tr>`;
+      });
+      document.querySelector('#table-thongke-nam tbody').innerHTML = tbody;
+  }
+
+  // ==========================================
+  // TAB TỔNG HỢP CHU KỲ
+  // ==========================================
+  function clearQuickActive() { document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active')); }
+  function chonThangTuyChinh() {
+      clearQuickActive(); let val = document.getElementById('month-year-picker').value; if(!val) { alert("Vui lòng chọn tháng/năm!"); return; }
+      let parts = val.split('-'); let year = parseInt(parts[0]); let month = parseInt(parts[1]) - 1; 
+      let start = new Date(year, month, 1); let end = new Date(year, month + 1, 0); 
+      let formatIsoLocal = (d) => { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+      document.getElementById('cycle-start').value = formatIsoLocal(start); document.getElementById('cycle-end').value = formatIsoLocal(end);
+  }
+  function chonTuanTruoc() { clearQuickActive(); document.getElementById('btn-tuan-truoc').classList.add('active'); let curr = new Date(); let first = curr.getDate() - curr.getDay() + 1 - 7; let start = new Date(curr.setDate(first)); let end = new Date(start); end.setDate(end.getDate() + 6); document.getElementById('cycle-start').value = start.toISOString().split('T')[0]; document.getElementById('cycle-end').value = end.toISOString().split('T')[0]; }
+  function chonTuanNay() { clearQuickActive(); document.getElementById('btn-tuan-nay').classList.add('active'); let curr = new Date(); let first = curr.getDate() - curr.getDay() + 1; let last = first + 6; document.getElementById('cycle-start').value = new Date(curr.setDate(first)).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(curr.setDate(last)).toISOString().split('T')[0]; }
+  function chonThangTruoc() { clearQuickActive(); document.getElementById('btn-thang-truoc').classList.add('active'); let date = new Date(); document.getElementById('cycle-start').value = new Date(date.getFullYear(), date.getMonth() - 1, 1).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(date.getFullYear(), date.getMonth(), 0).toISOString().split('T')[0]; }
+  function chonThangNay() { clearQuickActive(); document.getElementById('btn-thang-nay').classList.add('active'); let date = new Date(); document.getElementById('cycle-start').value = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0]; document.getElementById('cycle-end').value = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0]; }
+  
+  function initChuKy() { let savedEnd = localStorage.getItem('cc_last_end_date'); if(savedEnd) { let nextStart = new Date(savedEnd); nextStart.setDate(nextStart.getDate() + 1); document.getElementById('cycle-start').value = nextStart.toISOString().split('T')[0]; autoCalcEndDate(); } }
+  function autoCalcEndDate() { let startVal = document.getElementById('cycle-start').value; if(startVal) { let end = new Date(startVal); end.setMonth(end.getMonth() + 1); end.setDate(end.getDate() - 1); document.getElementById('cycle-end').value = end.toISOString().split('T')[0]; } }
+
+  function xemTongHop() {
+    let start = document.getElementById('cycle-start').value; let end = document.getElementById('cycle-end').value;
+    if(!start || !end) { alert('Chọn đầy đủ khoảng thời gian!'); return; }
+    localStorage.setItem('cc_last_end_date', end);
+
+    let stats = {}; dsNhanVien.forEach(u => { stats[u.name] = { nghiTotal: 0, hocTotal: 0, viecTotal: 0, chiTietNghi: {}, chiTietViec: {}, chiTietHoc: {} }; });
+    let curDate = new Date(start); let endDate = new Date(end);
+    let sumNghi = 0, sumHoc = 0, sumViec = 0, sumBQTX_cycle = 0;
+
+    let globalTaskStats = {}; let globalHocStats = {}; let globalNghiStats = {};
+
+    while(curDate <= endDate) {
+        let dStr = curDate.toISOString().split('T')[0];
+        let dayOfWeek = curDate.getDay();
+        let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+        let isWorkingDay = true;
+        if(isWeekend && !dsWeekendWork.includes(dStr)) { isWorkingDay = false; }
+
+        let dailyAbsence = {}; dsNhanVien.forEach(u => dailyAbsence[u.name] = 0);
+
+        dsDaily.filter(r => r.date === dStr).forEach(r => {
+            let val = r.session === 'all' ? 1 : 0.5;
+            let taskTitle = r.taskName;
+            if(r.note) taskTitle += ` (${r.note})`; 
+
+            r.users.forEach(u => { 
+                if(stats[u]) { 
+                    dailyAbsence[u] += val;
+                    if(r.type === 'hoctap') { 
+                        stats[u].hocTotal += val; sumHoc += val; 
+                        stats[u].chiTietHoc[taskTitle] = (stats[u].chiTietHoc[taskTitle]||0) + val;
+                        
+                        if(!globalHocStats[taskTitle]) globalHocStats[taskTitle] = {total:0, users:{}};
+                        globalHocStats[taskTitle].total += val; globalHocStats[taskTitle].users[u] = (globalHocStats[taskTitle].users[u]||0) + val;
+                    } 
+                    if(r.type === 'viec') { 
+                        stats[u].viecTotal += val; sumViec += val; 
+                        stats[u].chiTietViec[taskTitle] = (stats[u].chiTietViec[taskTitle]||0) + val;
+                        
+                        if(!globalTaskStats[taskTitle]) globalTaskStats[taskTitle] = {total:0, users:{}};
+                        globalTaskStats[taskTitle].total += val; globalTaskStats[taskTitle].users[u] = (globalTaskStats[taskTitle].users[u]||0) + val;
+                    } 
+                } 
+            });
+        });
+
+        dsLeaves.filter(l => dStr >= l.start && dStr <= l.end).forEach(l => {
+            let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1; 
+            let catTitle = l.category;
+            if(l.note) catTitle += ` (${l.note})`;
+
+            l.users.forEach(u => { 
+                if(stats[u]) { 
+                    dailyAbsence[u] += val;
+                    if(!isWeekend) {
+                        stats[u].nghiTotal += val; sumNghi += val; 
+                        stats[u].chiTietNghi[catTitle] = (stats[u].chiTietNghi[catTitle]||0) + val;
+                        
+                        if(!globalNghiStats[catTitle]) globalNghiStats[catTitle] = {total:0, users:{}};
+                        globalNghiStats[catTitle].total += val; globalNghiStats[catTitle].users[u] = (globalNghiStats[catTitle].users[u]||0) + val;
+                    }
+                } 
+            });
+        });
+
+        dsNhanVien.forEach(nv => {
+            let base = 0;
+            if(isWorkingDay) { base = 1.0; if(nv.role === 'Đội trưởng') base = 0; else if(nv.role === 'Phó đội trưởng') base = 0.5; }
+            let bqtx = Math.max(0, base - dailyAbsence[nv.name]);
+            sumBQTX_cycle += bqtx;
+        });
+
+        curDate.setDate(curDate.getDate() + 1);
+    }
+
+    let textSummary = [];
+    
+    if(Object.keys(globalNghiStats).length > 0) { 
+        let detailHtml = Object.keys(globalNghiStats).map(k => {
+            let userArr = Object.keys(globalNghiStats[k].users).map(u => `${u}: ${globalNghiStats[k].users[u]}`);
+            return `<div style="margin-left:4px; margin-bottom:4px; color:#444;">&bull; <b style="color:#2c3e50;">${k}: ${globalNghiStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span></div>`;
+        }).join('');
+        textSummary.push(`<div style="color:#e74c3c; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">⛱️ NGHỈ: <span style="font-size:16px;">${sumNghi}</span></div>${detailHtml}`); 
+    }
+    
+    if(Object.keys(globalTaskStats).length > 0) { 
+        let detailHtml = Object.keys(globalTaskStats).map(k => {
+            let userArr = Object.keys(globalTaskStats[k].users).map(u => `${u}: ${globalTaskStats[k].users[u]}`);
+            return `<div style="margin-left:4px; margin-bottom:4px; color:#444;">&bull; <b style="color:#2c3e50;">${k}: ${globalTaskStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span></div>`;
+        }).join('');
+        textSummary.push(`<div style="color:#f39c12; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">⚡ TĂNG CƯỜNG: <span style="font-size:16px;">${sumViec}</span></div>${detailHtml}`); 
+    }
+    
+    if(Object.keys(globalHocStats).length > 0) { 
+        let detailHtml = Object.keys(globalHocStats).map(k => {
+            let userArr = Object.keys(globalHocStats[k].users).map(u => `${u}: ${globalHocStats[k].users[u]}`);
+            return `<div style="margin-left:4px; margin-bottom:4px; color:#444;">&bull; <b style="color:#2c3e50;">${k}: ${globalHocStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span></div>`;
+        }).join('');
+        textSummary.push(`<div style="color:#00bcd4; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">📘 HỌC TẬP/CT: <span style="font-size:16px;">${sumHoc}</span></div>${detailHtml}`); 
+    }
+    
+    textSummary.push(`<div style="margin-top:12px; padding-top:12px; border-top: 1px dashed #b3d4fc;"><span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:15px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span></div>`);
+
+    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
+    document.getElementById('cycle-summary-box').style.display = 'block';
+
+    let tbody = '';
+    dsNhanVien.forEach(u => {
+      let st = stats[u.name];
+      let strNghi = Object.keys(st.chiTietNghi).map(k=>`&bull; <span style="color:#555;">${k}:</span> ${st.chiTietNghi[k]}`).join('<br>');
+      let strHoc = Object.keys(st.chiTietHoc).map(k=>`&bull; <span style="color:#555;">${k}:</span> ${st.chiTietHoc[k]}`).join('<br>');
+      let strViec = Object.keys(st.chiTietViec).map(k=>`&bull; <span style="color:#555;">${k}:</span> ${st.chiTietViec[k]}`).join('<br>');
+      
+      let cellNghi = st.nghiTotal > 0 ? `<div class="main-val">${st.nghiTotal}</div><div class="detail-text">${strNghi}</div>` : `<div style="color:#ccc">-</div>`;
+      let cellHoc = st.hocTotal > 0 ? `<div class="main-val">${st.hocTotal}</div><div class="detail-text">${strHoc}</div>` : `<div style="color:#ccc">-</div>`;
+      let cellViec = st.viecTotal > 0 ? `<div class="main-val">${st.viecTotal}</div><div class="detail-text">${strViec}</div>` : `<div style="color:#ccc">-</div>`;
+
+      tbody += `<tr>
+                  <td class="td-left" style="vertical-align:middle;">${u.name}</td>
+                  <td class="td-number">${cellNghi}</td>
+                  <td class="td-hoctap">${cellHoc}</td>
+                  <td class="td-task">${cellViec}</td>
+                </tr>`;
+    });
+    
+    document.querySelector('#table-tong-hop tbody').innerHTML = tbody || '<tr><td colspan="4">Chưa có nhân sự</td></tr>';
+    document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td>${sumNghi}</td><td>${sumHoc}</td><td>${sumViec}</td></tr>`;
+  }
+</script>
+</body>
+</html>
