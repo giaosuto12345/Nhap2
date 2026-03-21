@@ -16,56 +16,52 @@
 
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f6f9; padding-bottom: 30px; color: #333; overflow-x: hidden;}
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f7f9; padding-bottom: 30px; color: #333; overflow-x: hidden;}
 
     /* ====== TOP STICKY WRAPPER ====== */
-    .top-wrapper { position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); background: white; }
+    .top-wrapper { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.06); background: white; }
     
-    .header { background: #1976d2; color: white; padding: 18px 15px; text-align: center; display: flex; justify-content: center; align-items: center;}
+    .header { background: #1976d2; color: white; padding: 16px 15px; text-align: center; display: flex; justify-content: center; align-items: center;}
     .header h2 { margin: 0; font-size: 16px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; }
 
     /* ====== TOP NAV ====== */
     .top-nav { display: flex; justify-content: space-around; background: white; border-bottom: 1px solid #eee; }
     .nav-btn {
-      flex: 1; padding: 12px 0; border: none; background: none; font-size: 11px;
-      font-weight: 800; color: #a0aab5; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+      flex: 1; padding: 12px 0; border: none; background: none; font-size: 12px;
+      font-weight: 800; color: #95a5a6; cursor: pointer; display: flex; flex-direction: column; align-items: center;
       transition: 0.2s;
     }
     .nav-btn.active { color: #1976d2; border-bottom: 3px solid #1976d2; }
-    .nav-icon { font-size: 22px; margin-bottom: 4px; transition: 0.2s; }
-    .nav-btn.active .nav-icon { transform: scale(1.1); }
+    .nav-icon { font-size: 24px; margin-bottom: 4px; transition: 0.2s; }
+    .nav-btn.active .nav-icon { transform: scale(1.15); }
 
     .container { padding: 12px; max-width: 800px; margin: 0 auto; }
-    
-    /* ====== CARDS ====== */
-    .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #eef2f5;}
-    .card-title { font-size: 14px; font-weight: 800; color: #1976d2; margin-bottom: 15px; margin-top: 0; text-transform: uppercase; }
+    .card { background: white; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #eef2f5;}
+    .card-title { font-size: 14px; font-weight: 800; color: #1976d2; border-bottom: 2px solid #eaf6ff; padding-bottom: 8px; margin-bottom: 12px; margin-top: 0; text-transform: uppercase; }
 
     /* ====== FORM INPUTS ====== */
     label { display: block; font-size: 13px; font-weight: bold; color: #555; margin: 8px 0 4px 0; }
     input[type="text"], input[type="date"], input[type="month"], input[type="number"], input[type="password"], select {
-      width: 100%; padding: 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; font-family: inherit; color: #333;
+      width: 100%; padding: 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; font-family: inherit; color: #333;
     }
-    input:focus, select:focus { outline: none; border-color: #1976d2; box-shadow: 0 0 0 2px rgba(25,118,210,0.1); }
+    input:focus, select:focus { outline: none; border-color: #1976d2; background: #fff; box-shadow: 0 0 0 2px rgba(25,118,210,0.1); }
 
     .date-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px;}
     .date-row { display: flex; align-items: center; gap: 8px; }
     .date-row label { margin: 0; width: 70px; font-size: 13px;}
 
     /* ====== BUTTONS ====== */
-    .btn { display: block; width: 100%; padding: 14px; font-size: 13px; font-weight: 800; text-align: center; border: none; border-radius: 8px; cursor: pointer; color: white; transition: 0.2s; text-transform: uppercase;}
+    .btn { display: block; width: 100%; padding: 12px; font-size: 13px; font-weight: 800; text-align: center; border: none; border-radius: 8px; cursor: pointer; color: white; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-transform: uppercase;}
     .btn:active { transform: scale(0.97); }
     .btn-primary { background: #1976d2; }
     .btn-warning { background: #f39c12; }
     .btn-info { background: #00bcd4; }
     .btn-danger { background: #e74c3c; }
     .btn-success { background: #27ae60; }
-    .btn-purple { background: #9b59b6; }
-    .btn-outline { background: white; color: #1976d2; border: 1px solid #1976d2; }
-    
+    .btn-update { background: #ff9800; }
     .btn-small { padding: 6px 10px; font-size: 12px; border-radius: 6px; font-weight: bold; border: 1px solid #1976d2; background: #eaf6ff; color: #1976d2; cursor: pointer; }
 
-    .flex-row { display: flex; gap: 10px; align-items: center; margin-bottom: 15px; }
+    .flex-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
     .flex-row > * { flex: 1; margin: 0; }
 
     /* ====== TOGGLE CSS ====== */
@@ -74,15 +70,15 @@
     .toggle-group label { flex: 1; text-align: center; padding: 10px 4px; margin: 0; font-size: 13px; font-weight: bold; color: #666; cursor: pointer; transition: 0.2s; }
     .toggle-group input[type="radio"]:checked + label { background: #1976d2; color: white; }
 
-    .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+    .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-    input:checked + .slider { background-color: #f39c12; } 
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: #27ae60; }
     input:checked + .slider:before { transform: translateX(22px); }
 
     /* ====== CHECKBOX NHÂN VIÊN ====== */
-    .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 250px; overflow-y: auto; padding: 4px; }
+    .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 8px; max-height: 250px; overflow-y: auto; padding: 4px; }
     .check-item { display: flex; align-items: center; background: #f8f9fa; padding: 12px; border-radius: 10px; border: 1px solid #ddd; cursor: pointer; transition: 0.2s; margin: 0;}
     .check-item.active { background: #eaf6ff; border-color: #1976d2; color: #1976d2; }
     .check-item input { display: none; }
@@ -94,47 +90,45 @@
     .check-item.active .check-role { color: #5fa8e3; }
 
     /* ====== DANH SÁCH BẢN GHI ====== */
-    .list-item { background: #fff; border-left: 3px solid #1976d2; padding: 14px; border-radius: 10px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;}
+    .list-item { background: #fff; border-left: 4px solid #1976d2; padding: 14px; border-radius: 10px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #eee;}
     .list-item.type-hoctap { border-left-color: #00bcd4; }
     .list-item.type-viec { border-left-color: #f39c12; }
-    .list-item.type-nghi-auto { border-left-color: #e74c3c; }
+    .list-item.type-nghi-auto { border-left-color: #e74c3c; background: #fffdfd; }
     
-    .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; padding-right: 70px;}
-    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
-    .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #fdf2e9; font-weight: bold; color: #d35400; white-space: nowrap; margin-top: 2px;}
+    .list-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-right: 70px;}
+    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; display: flex; align-items: center; gap: 6px; }
+    .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #eee; font-weight: bold; color: #555; white-space: nowrap; }
+    .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
+    .list-item-note { font-size: 12px; color: #7f8c8d; font-style: italic; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee; }
     
-    .list-item-users { font-size: 13px; color: #333; line-height: 1.5; font-weight: bold; display: flex; align-items: center; gap: 6px;}
-    .list-item-date { font-size: 12px; color: #c0392b; font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;}
-    
-    /* Nút Sửa / Xóa tròn trịa theo ảnh */
-    .btn-edit-item { position: absolute; top: 14px; right: 50px; color: #f39c12; background: #fdf2e9; border: 1px solid #fae5d3; width: 30px; height: 30px; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-    .btn-delete-item { position: absolute; top: 14px; right: 14px; color: #e74c3c; background: #fdedec; border: 1px solid #fadbd8; width: 30px; height: 30px; border-radius: 50%; font-size: 15px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold;}
+    /* Nút Sửa / Xóa */
+    .btn-edit-item { position: absolute; top: 12px; right: 46px; color: #f39c12; background: #fdf2e9; border: 1px solid #fae5d3; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #fdedec; border: 1px solid #fadbd8; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold;}
 
-    /* ====== TÓM TẮT TRONG NGÀY (LƯỚI 2x2 DẠNG NGANG THEO ẢNH) ====== */
-    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;}
-    .summary-day-grid div { background: #fff; padding: 15px 10px; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #eaf6ff; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .sum-lbl { font-size: 13px; font-weight: bold; color: #444; margin-bottom: 8px;}
-    .val-b { font-weight: 900; font-size: 20px; margin: 0; }
+    /* ====== TÓM TẮT TRONG NGÀY ====== */
+    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
+    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px; color: #555; font-weight: bold;}
+    .summary-day-grid div { background: #fff; padding: 12px 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+    .val-b { font-weight: 900; font-size: 16px; margin: 0; }
     
-    .summary-details { padding-top: 15px; border-top: 1px dashed #e0e0e0; font-size: 13px; color: #333; line-height: 1.6; text-align: left; }
+    .summary-details { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #b3d4fc; font-size: 13px; color: #444; line-height: 1.6; text-align: left; font-weight: normal; }
 
     /* ====== BẢNG TỔNG HỢP ====== */
     .table-wrapper { width: 100%; border-radius: 8px; border: 1px solid #eee; overflow: hidden; }
     table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: center; table-layout: fixed; background: white; }
-    th, td { padding: 10px 4px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; vertical-align: middle; word-break: break-word;}
+    th, td { padding: 8px 4px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; vertical-align: top; word-break: break-word;}
     th { background: #eaf6ff; color: #1976d2; font-weight: 800; position: sticky; top: 0; font-size: 10px; text-transform: uppercase; }
-    td.td-left { text-align: left; font-weight: 800; color: #333; font-size: 13px; width: 25%; padding-left: 8px;}
-    td.td-number { color: #e74c3c; width: 25%; font-weight: bold;}
-    td.td-hoctap { color: #ccc; width: 25%; }
-    td.td-task { color: #f39c12; width: 25%; font-weight: bold;}
+    td.td-left { text-align: left; font-weight: 800; color: #333; font-size: 13px; width: 25%;}
+    td.td-number { color: #e74c3c; width: 25%; }
+    td.td-hoctap { color: #00bcd4; width: 25%; }
+    td.td-task { color: #f39c12; width: 25%; }
     tr.total-row td { background: #fdf2e9; font-weight: 900; color: #d35400; font-size: 14px; }
-
-    .detail-text { font-size: 11px; color: #666; font-weight: normal; display: block; line-height: 1.4; text-align: left; margin-top: 4px;}
-    .btn-xem-lich { display: inline-block; margin-top: 6px; background: #eaf6ff; color: #1976d2; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 6px; border: 1px solid #b3d4fc; cursor: pointer; }
+    .main-val { font-weight: 900; font-size: 15px; margin-bottom: 4px;}
+    .detail-text { font-size: 11px; color: #666; font-weight: normal; display: block; line-height: 1.4; text-align: left;}
 
     /* ====== QUICK ACTIONS ====== */
     .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;}
-    .quick-btn { background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: bold; color: #555; cursor: pointer; text-align: center; transition: 0.2s;}
+    .quick-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; color: #555; cursor: pointer; text-align: center; transition: 0.2s;}
     .quick-btn.active { background: #1976d2; color: #fff; border-color: #1976d2; box-shadow: 0 2px 8px rgba(25,118,210,0.3); }
 
     /* ====== TABS ====== */
@@ -210,20 +204,20 @@
          </div>
       </div>
 
-      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-bottom:0;">
+      <div class="summary-day-box" style="margin-top:0;">
         <div class="summary-day-grid">
-          <div><span class="sum-lbl">⛱️ Nghỉ:</span> <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
-          <div><span class="sum-lbl">⚡ T.Cường:</span> <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
-          <div><span class="sum-lbl">📘 Học/CT:</span> <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
-          <div><span class="sum-lbl">✅ BQTX:</span> <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
+          <div><span style="color:#555;">⛱️ Nghỉ:</span> <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
+          <div><span style="color:#555;">⚡ T.Cường:</span> <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
+          <div><span style="color:#555;">📘 Học/CT:</span> <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
+          <div><span style="color:#555;">✅ BQTX:</span> <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
         </div>
         <div class="summary-details" id="summary-details-text"></div>
       </div>
 
-      <div id="wrap-lam-cuoi-tuan" style="display:none; justify-content:space-between; align-items:center; background:#fffdf1; padding:15px; border-radius:12px; border:1px solid #ffe0b2; margin-bottom:15px; margin-top: 10px;">
+      <div id="wrap-lam-cuoi-tuan" style="display:none; justify-content:space-between; align-items:center; background:#fff9e6; padding:12px 14px; border-radius:10px; border:1px solid #ffe0b2; margin-bottom:14px;">
           <div>
             <span style="font-weight:bold; color:#d35400; font-size:14px;">🌟 Làm việc ngày nghỉ</span>
-            <span style="display:block; font-size:12px; color:#d35400; margin-top:4px;">Bật công tắc để tính công BQTX</span>
+            <span style="display:block; font-size:11px; color:#d35400; margin-top:2px;">Bật công tắc để tính công BQTX</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="chk-lam-cuoi-tuan" onchange="toggleCuoiTuan()">
@@ -231,7 +225,7 @@
           </label>
       </div>
 
-      <div class="flex-row" style="margin-top: 15px; margin-bottom: 20px;">
+      <div class="flex-row" style="margin-bottom: 16px;">
         <button class="btn btn-info" onclick="moModal('modal-hoctap')">📘 HỌC TẬP/C.TÁC</button>
         <button class="btn btn-warning" onclick="moModal('modal-tang-cuong')">⚡ TĂNG CƯỜNG</button>
       </div>
@@ -248,25 +242,7 @@
     <div id="tab-nghi" class="tab-content container">
       <div class="flex-row">
         <button class="btn btn-danger" onclick="moModal('modal-nghi')">⛱️ TẠO LỊCH NGHỈ</button>
-        <button class="btn btn-purple" onclick="moModal('modal-thongke-nghi')">📊 THỐNG KÊ NĂM</button>
-      </div>
-
-      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
-        <h3 class="card-title" style="margin-left:4px; margin-bottom:8px;">🔍 BỘ LỌC TÌM KIẾM</h3>
-        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px; background:white; padding:15px; border-radius:12px; border:1px solid #eef2f5; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
-            <div style="display:flex; gap:8px;">
-                <select id="filter-nghi-user" onchange="loadDanhSachNghi()" style="flex:1; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
-                    <option value="all">Tất cả nhân sự</option>
-                </select>
-                <select id="filter-nghi-reason" onchange="loadDanhSachNghi()" style="flex:1; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
-                    <option value="all">Tất cả lý do</option>
-                </select>
-            </div>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <input type="month" id="filter-nghi-month" onchange="loadDanhSachNghi()" style="flex:2; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
-                <button class="btn btn-small" style="flex:1; padding:12px; margin:0; background:#ffeeee; color:#e74c3c; border:1px solid #fadbd8;" onclick="resetFilterNghi()">XÓA LỌC</button>
-            </div>
-        </div>
+        <button class="btn btn-primary" style="background:#9b59b6;" onclick="moModal('modal-thongke-nghi')">📊 THỐNG KÊ NĂM</button>
       </div>
 
       <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
@@ -299,8 +275,8 @@
         <button class="btn btn-primary" onclick="xemTongHop()" style="margin-top: 15px;">📊 TẠO BẢNG TỔNG HỢP</button>
       </div>
 
-      <div id="cycle-summary-box" class="card" style="display:none; margin-bottom: 15px; background: #fdfdfd; border: 1px solid #b3d4fc;">
-          <div style="font-weight: 900; color: #1976d2; font-size: 14px; text-align: center; border-bottom: 1px solid #b3d4fc; padding-bottom: 10px; margin-bottom: 12px;">📊 TỔNG KẾT TOÀN ĐỘI TRONG KỲ</div>
+      <div id="cycle-summary-box" class="summary-day-box" style="display:none; margin-bottom: 12px;">
+          <div style="font-weight: 900; color: #1976d2; font-size: 14px; text-align: center; border-bottom: 1px solid #b3d4fc; padding-bottom: 10px; margin-bottom: 10px;">📊 TỔNG KẾT TOÀN ĐỘI TRONG KỲ</div>
           <div id="cycle-summary-text" style="font-size: 13px; color: #333; line-height: 1.6; text-align:left;"></div>
       </div>
 
@@ -327,18 +303,40 @@
     <div id="tab-cai-dat" class="tab-content container">
       
       <div class="card" style="background:#fdfdfd; border-color:#e0e0e0; text-align:center;">
-        <p style="font-size:13px; color:#555; margin-top:0; margin-bottom:15px;">Xuất/Nhập file JSON để chuyển máy hoặc tránh mất dữ liệu.</p>
+        <h3 class="card-title" style="color:#ff9800; margin-bottom:5px;">🔄 CẬP NHẬT ỨNG DỤNG</h3>
+        <p style="font-size:12px; color:#555; margin-bottom:12px;">Bấm nút dưới để tải lại (Phá Cache iOS) nếu có bản cập nhật mới.</p>
+        <button class="btn btn-update" onclick="capNhatPhienBanMoi()">TẢI PHIÊN BẢN MỚI NHẤT</button>
+      </div>
+
+      <div class="card" style="background:#fffcfc; border-color:#fadbd8;">
+        <h3 class="card-title" style="color:#e74c3c; margin-bottom:10px;">🔒 BẢO MẬT ỨNG DỤNG</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+            <div>
+              <span style="font-size: 14px; font-weight: bold; color: #333;">Yêu cầu mật khẩu mở App</span>
+              <span style="display:block; font-size: 11px; color:#888; margin-top:4px;">* Mật khẩu mặc định: 18121997</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="toggle-security" onchange="thayDoiBaoMat()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <button id="btn-setup-faceid" class="btn btn-success" style="display: none; padding:10px; font-size:12px;" onclick="dangKyFaceID()">ĐĂNG KÝ FACE ID / VÂN TAY</button>
+      </div>
+
+      <div class="card" style="background:#f4fbff; border-color:#b3d4fc; text-align:center;">
+        <h3 class="card-title" style="color:#27ae60; margin-bottom:5px;">💾 SAO LƯU DỮ LIỆU</h3>
+        <p style="font-size:12px; color:#555; margin-bottom:12px;">Xuất/Nhập file JSON để chuyển máy hoặc tránh mất dữ liệu.</p>
         <div class="flex-row">
           <button class="btn btn-success" onclick="exportBackupJSON()">📥 TẢI XUỐNG</button>
           <button class="btn btn-primary" onclick="document.getElementById('import-file').click()">📤 PHỤC HỒI</button>
         </div>
         <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importBackupJSON(event)">
-        <button class="btn btn-outline" style="margin-top: 10px; padding: 12px; font-size:13px;" onclick="xuatDuLieuRaExcel()">XUẤT EXCEL BÁO CÁO</button>
+        <button class="btn" style="background:#fff; color:#1976d2; border:1px solid #1976d2; margin-top: 10px;" onclick="xuatDuLieuRaExcel()">Xuất Excel Báo Cáo</button>
       </div>
 
       <div class="card">
         <h3 class="card-title">👥 DANH SÁCH NHÂN SỰ</h3>
-        <div style="display:flex; gap:8px; margin-bottom:15px;">
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
           <input type="text" id="input-new-user" placeholder="Tên NV..." style="flex:2;">
           <input type="text" id="input-new-role" placeholder="Chức vụ" style="flex:1;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themNhanVien()">THÊM</button>
@@ -348,7 +346,7 @@
 
       <div class="card">
         <h3 class="card-title">⚡ MẪU VIỆC TĂNG CƯỜNG</h3>
-        <div style="display:flex; gap:8px; margin-bottom:15px;">
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
           <input type="text" id="input-new-task" placeholder="Tên công việc..." style="flex:3;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themViec()">THÊM</button>
         </div>
@@ -357,38 +355,21 @@
 
       <div class="card">
         <h3 class="card-title">⛱️ MẪU LÝ DO NGHỈ</h3>
-        <div style="display:flex; gap:8px; margin-bottom:15px;">
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
           <input type="text" id="input-new-leave" placeholder="Loại nghỉ..." style="flex:3;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themLoaiNghi()">THÊM</button>
         </div>
         <div id="list-leaves"></div>
       </div>
 
-      <div class="card" style="background:#fffcfc; border-color:#fadbd8; margin-top:20px;">
-        <h3 class="card-title" style="color:#e74c3c; margin-bottom:10px;">🔒 BẢO MẬT & RESET</h3>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
-            <div>
-              <span style="font-size: 14px; font-weight: bold; color: #333;">Yêu cầu mật khẩu mở App</span>
-              <span style="display:block; font-size: 11px; color:#888; margin-top:4px;">Mật khẩu mặc định: 18121997</span>
-            </div>
-            <label class="switch">
-                <input type="checkbox" id="toggle-security" onchange="thayDoiBaoMat()">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <button id="btn-setup-faceid" class="btn btn-success" style="display: none; padding:12px; font-size:12px; margin-bottom: 15px;" onclick="dangKyFaceID()">ĐĂNG KÝ FACE ID / VÂN TAY</button>
-        <hr style="border: 0; border-top: 1px dashed #fadbd8; margin: 15px 0;">
-        <button class="btn" style="background:#e74c3c; box-shadow:none; padding:14px;" onclick="xoaToanBoDuLieu()">⚠️ KHÔI PHỤC DỮ LIỆU GỐC</button>
-      </div>
-      
-      <button class="btn btn-update" style="margin-top: 15px; padding:14px;" onclick="capNhatPhienBanMoi()">🔄 TẢI PHIÊN BẢN MỚI</button>
+      <button class="btn" style="background:#e74c3c; box-shadow:none; margin-top:20px;" onclick="xoaToanBoDuLieu()">⚠️ KHÔI PHỤC DỮ LIỆU GỐC</button>
     </div>
   </div> 
 
   <div class="modal-overlay" id="modal-thongke-nghi">
     <div class="modal-content">
       <div class="close-modal" onclick="dongModal('modal-thongke-nghi')">&times;</div>
-      <h3 style="margin-top:0; font-size:16px; color:#9b59b6; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">📊 THỐNG KÊ NGHỈ NĂM</h3>
+      <h3 style="margin-top:0; font-size:15px; color:#9b59b6; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">📊 THỐNG KÊ NGHỈ NĂM</h3>
       
       <div class="flex-row" style="margin-bottom: 15px;">
         <label style="margin:0; width:80px;">Chọn Năm:</label>
@@ -408,7 +389,7 @@
   <div class="modal-overlay" id="modal-hoctap">
     <div class="modal-content">
       <div class="close-modal" onclick="dongModal('modal-hoctap')">&times;</div>
-      <h3 style="margin-top:0; font-size:16px; color:#00bcd4; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">📘 Học tập / Công tác</h3>
+      <h3 style="margin-top:0; font-size:15px; color:#00bcd4; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">📘 Học tập / Công tác</h3>
       
       <label>1. Phân loại:</label>
       <select id="sel-loai-hoctap" style="font-weight:bold; color:#1976d2; font-size:14px; padding: 12px;">
@@ -445,7 +426,7 @@
   <div class="modal-overlay" id="modal-tang-cuong">
     <div class="modal-content">
       <div class="close-modal" onclick="dongModal('modal-tang-cuong')">&times;</div>
-      <h3 style="margin-top:0; font-size:16px; color:#f39c12; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">⚡ Ghi nhận Tăng Cường</h3>
+      <h3 style="margin-top:0; font-size:15px; color:#f39c12; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">⚡ Ghi nhận Tăng Cường</h3>
       
       <label>1. Chọn công việc:</label>
       <select id="sel-loai-viec" style="font-weight:bold; color:#1976d2; font-size:14px; padding: 12px;"></select>
@@ -479,7 +460,7 @@
   <div class="modal-overlay" id="modal-nghi">
     <div class="modal-content">
       <div class="close-modal" onclick="dongModal('modal-nghi')">&times;</div>
-      <h3 style="margin-top:0; font-size:16px; color:#e74c3c; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">⛱️ Đăng ký Nghỉ</h3>
+      <h3 style="margin-top:0; font-size:15px; color:#e74c3c; border-bottom:1px solid #eee; padding-bottom:10px; text-transform:uppercase;">⛱️ Đăng ký Nghỉ</h3>
       
       <label>1. Phân loại nghỉ:</label>
       <select id="sel-loai-nghi" style="font-weight:bold; color:#1976d2; font-size:14px; padding: 12px;"></select>
@@ -518,11 +499,11 @@
   <div class="modal-overlay" id="modal-chi-tiet-nhan-su">
     <div class="modal-content" style="background: #f9fbff;">
       <div class="close-modal" onclick="dongModal('modal-chi-tiet-nhan-su')">&times;</div>
-      <h3 id="detail-modal-title" style="margin-top:0; font-size:16px; color:#1976d2; border-bottom:2px solid #b3d4fc; padding-bottom:8px; text-transform:uppercase;">CHI TIẾT LỊCH TRÌNH</h3>
-      <p id="detail-modal-subtitle" style="font-size:13px; color:#555; font-weight:bold; margin-top:0; margin-bottom:15px;"></p>
+      <h3 id="detail-modal-title" style="margin-top:0; font-size:16px; color:#1976d2; border-bottom:2px solid #b3d4fc; padding-bottom:8px; text-transform:uppercase;">CHI TIẾT LỊCH NGHỈ</h3>
+      <p id="detail-modal-subtitle" style="font-size:12px; color:#555; font-weight:bold; margin-top:0; margin-bottom:15px;"></p>
       
       <div id="detail-modal-body" style="max-height: 50vh; overflow-y: auto;">
-      </div>
+         </div>
       <button class="btn btn-primary" style="margin-top:15px;" onclick="dongModal('modal-chi-tiet-nhan-su')">ĐÓNG</button>
     </div>
   </div>
@@ -574,32 +555,6 @@
   const SES_LABELS_FULL = { 'all': 'Cả ngày', 'morning': 'Sáng', 'afternoon': 'Chiều' };
 
   function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
-
-  // ==========================================
-  // BỘ LỌC TÌM KIẾM Ở TAB NGHỈ PHÉP
-  // ==========================================
-  function updateFilterOptions() {
-      let selU = document.getElementById('filter-nghi-user');
-      let oldU = selU.value;
-      let uHtml = '<option value="all">Tất cả nhân sự</option>';
-      dsNhanVien.forEach(u => uHtml += `<option value="${u.name}">${u.name}</option>`);
-      selU.innerHTML = uHtml;
-      selU.value = oldU || 'all';
-
-      let selR = document.getElementById('filter-nghi-reason');
-      let oldR = selR.value;
-      let rHtml = '<option value="all">Tất cả lý do</option>';
-      dsLoaiNghi.forEach(l => rHtml += `<option value="${l}">${l}</option>`);
-      selR.innerHTML = rHtml;
-      selR.value = oldR || 'all';
-  }
-
-  function resetFilterNghi() {
-      document.getElementById('filter-nghi-user').value = 'all';
-      document.getElementById('filter-nghi-reason').value = 'all';
-      document.getElementById('filter-nghi-month').value = '';
-      loadDanhSachNghi();
-  }
 
   // ==========================================
   // THUẬT TOÁN KIỂM TRA XUNG ĐỘT LỊCH
@@ -822,12 +777,12 @@
 
     if(tabId === 'tab-cai-dat') loadCaiDat();
     if(tabId === 'tab-ngay') loadDuLieuNgay();
-    if(tabId === 'tab-nghi') { updateFilterOptions(); loadDanhSachNghi(); }
+    if(tabId === 'tab-nghi') loadDanhSachNghi();
     if(tabId === 'tab-tong-hop') initChuKy();
   }
 
   // ==========================================
-  // XỬ LÝ MODAL (POPUP FORM)
+  // XỬ LÝ MODAL (POPUP FORM) & XEM CHI TIẾT
   // ==========================================
   document.getElementById('sel-loai-hoctap').addEventListener('change', function() { document.getElementById('txt-hoctap-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
   document.getElementById('sel-loai-viec').addEventListener('change', function() { document.getElementById('wrap-viec-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
@@ -883,11 +838,11 @@
               if(validDays > 0) {
                    let dateText = l.start === l.end ? formatDateVN(l.start) : `${formatDateVN(l.start)} - ${formatDateVN(l.end)}`;
                    let sessText = l.start === l.end ? ` (${SES_LABELS_FULL[l.session]})` : '';
-                   let noteHtml = l.note ? `<div style="font-size:12px; color:#7f8c8d; margin-top:4px; font-style:italic;">📝 ${l.note}</div>` : '';
+                   let noteHtml = l.note ? `<div style="font-size:11px; color:#7f8c8d; margin-top:4px; font-style:italic;">📝 ${l.note}</div>` : '';
                    
-                   details.push({date: l.start, html: `<div style="padding:14px; border-left:4px solid #e74c3c; background:#fff; margin-bottom:10px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.05); border: 1px solid #eee;">
-                        <div style="font-weight:bold; color:#e74c3c; font-size:14px; margin-bottom:6px;">⛱️ ${l.category}${sessText}</div>
-                        <div style="font-size:12px; color:#555; display:flex; justify-content:space-between;">
+                   details.push({date: l.start, html: `<div style="padding:10px; border-left:4px solid #e74c3c; background:#fffcfc; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <div style="font-weight:bold; color:#e74c3c; font-size:13px; margin-bottom:4px;">⛱️ ${l.category}${sessText}</div>
+                        <div style="font-size:11px; color:#555; display:flex; justify-content:space-between;">
                             <span>📅 ${dateText}</span> 
                             <span style="color:#c0392b; font-weight:900;">+${validDays} ngày</span>
                         </div>
@@ -908,7 +863,7 @@
       let groups = {};
       records.forEach(r => {
           let cat = r[categoryField]; 
-          if(r.note) cat += ` (${r.note})`; 
+          if(r.note) cat += ` (${r.note})`; // Thêm ghi chú vào loại để gom nhóm chi tiết ở báo cáo
           
           let sessTag = (r.session === 'all' || (isLeave && r.start !== r.end)) ? '' : ` ${SES_LABELS[r.session]}`;
           r.users.forEach(u => { 
@@ -918,7 +873,7 @@
       });
       return Object.keys(groups).map(k => {
           let uniqueUsers = [...new Set(groups[k])];
-          return `&bull; <span style="color:#555; font-weight:bold;">${k}:</span> <span style="color:#2c3e50;">${uniqueUsers.join(', ')}</span>`;
+          return `&bull; <span style="color:#555;">${k}:</span> ${uniqueUsers.join(', ')}`;
       }).join('<br>');
   }
 
@@ -1090,12 +1045,10 @@
       let noteHtml = r.note ? `<div class="list-item-note">📝 ${r.note}</div>` : '';
       html += `<div class="list-item type-nghi-auto" style="padding-right:14px;">
                  <div class="list-item-header" style="padding-right:0;">
-                     <span class="list-item-title">
-                       <span style="display:flex; align-items:center; gap:6px;"><span style="color:#e74c3c; font-size:18px;">⛱️</span> Nghỉ: ${r.category}</span>
-                     </span>
+                     <span class="list-item-title">⛱️ Nghỉ: ${r.category}</span>
                      <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
                  </div>
-                 <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                 <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  ${noteHtml}
                </div>`;
     });
@@ -1107,26 +1060,16 @@
         html += `<div class="list-item type-hoctap">
                    <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'hoctap')">✏️</button>
                    <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
-                   <div class="list-item-header">
-                      <span class="list-item-title">
-                         <span style="display:flex; align-items:center; gap:6px;"><span style="color:#00bcd4; font-size:18px;">📘</span> ${r.taskName}</span>
-                      </span>
-                      <span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span>
-                   </div>
-                   <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                   <div class="list-item-header"><span class="list-item-title">📘 ${r.taskName}</span><span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span></div>
+                   <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                    ${noteHtml}
                  </div>`;
       } else if (r.type === 'viec') {
         html += `<div class="list-item type-viec">
                    <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'viec')">✏️</button>
                    <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
-                   <div class="list-item-header">
-                      <span class="list-item-title">
-                         <span style="display:flex; align-items:center; gap:6px;"><span style="color:#f39c12; font-size:18px;">⚡</span> T.Cường: ${r.taskName}</span>
-                      </span>
-                      <span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span>
-                   </div>
-                   <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                   <div class="list-item-header"><span class="list-item-title">⚡ T.Cường: ${r.taskName}</span><span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span></div>
+                   <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                    ${noteHtml}
                  </div>`;
       }
@@ -1180,23 +1123,7 @@
   }
 
   function loadDanhSachNghi() {
-    updateFilterOptions();
-    let fUser = document.getElementById('filter-nghi-user').value;
-    let fReason = document.getElementById('filter-nghi-reason').value;
-    let fMonth = document.getElementById('filter-nghi-month').value;
-
-    let filteredLeaves = dsLeaves.filter(l => {
-        let matchU = (fUser === 'all' || l.users.includes(fUser));
-        let matchR = (fReason === 'all' || l.category === fReason);
-        let matchM = true;
-        if (fMonth) {
-            let sm = l.start.substring(0, 7); let em = l.end.substring(0, 7);
-            matchM = (sm <= fMonth && em >= fMonth) || (sm === fMonth) || (em === fMonth);
-        }
-        return matchU && matchR && matchM;
-    });
-
-    let grouped = Object.values(filteredLeaves.reduce((acc, r) => {
+    let grouped = Object.values(dsLeaves.reduce((acc, r) => {
         let noteKey = r.note || '';
         let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end + '|' + noteKey;
         if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
@@ -1219,13 +1146,9 @@
       html += `<div class="list-item type-nghi-auto">
                  <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
                  <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
-                 <div class="list-item-header" style="margin-bottom:10px;">
-                    <span class="list-item-title" style="padding-right:0;">
-                       <span style="display:flex; align-items:center; gap:6px;"><span style="font-size:16px;">⛱️</span> ${r.category} <span style="color:#1976d2; margin-left:4px;">- ${durationText}</span></span>
-                    </span>
-                 </div>
-                 <div class="list-item-date">📅 ${dateText}</div>
-                 <div class="list-item-users"><span style="color:#1976d2; font-size:18px;">👤</span> ${r.combinedUsers.join(', ')}</div>
+                 <div class="list-item-header"><span class="list-item-title" style="padding-right:0;">⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span></span></div>
+                 <div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div>
+                 <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  ${noteHtml}
                </div>`;
     });
@@ -1255,7 +1178,7 @@
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
                       let reason = l.category;
-                      if (l.note) reason += ` (${l.note})`; 
+                      if (l.note) reason += ` (${l.note})`; // Đưa ghi chú vào chi tiết tổng kết năm
                       
                       l.users.forEach(u => {
                           if(stats[u]) { stats[u].total += val; stats[u].chitiet[reason] = (stats[u].chitiet[reason]||0) + val; }
@@ -1322,7 +1245,7 @@
         dsDaily.filter(r => r.date === dStr).forEach(r => {
             let val = r.session === 'all' ? 1 : 0.5;
             let taskTitle = r.taskName;
-            if(r.note) taskTitle += ` (${r.note})`; 
+            if(r.note) taskTitle += ` (${r.note})`; // Đưa ghi chú vào chi tiết chu kỳ
 
             r.users.forEach(u => { 
                 if(stats[u]) { 
@@ -1359,16 +1282,6 @@
         curDate.setDate(curDate.getDate() + 1);
     }
 
-    // TỔNG KẾT ĐỘI
-    let textSummary = [];
-    if(sumNghi > 0) textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: <span style="font-size:16px;">${sumNghi}</span></span>`);
-    if(sumHoc > 0) textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: <span style="font-size:16px;">${sumHoc}</span></span>`);
-    if(sumViec > 0) textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG: <span style="font-size:16px;">${sumViec}</span></span>`);
-    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX: <span style="font-size:16px;">${sumBQTX_cycle} công</span></span>`);
-
-    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
-    document.getElementById('cycle-summary-box').style.display = 'block';
-
     let tbody = '';
     dsNhanVien.forEach(u => {
       let st = stats[u.name];
@@ -1388,6 +1301,16 @@
                 </tr>`;
     });
     
+    // RENDER TÓM TẮT ĐỘI (CHỈ HIỂN THỊ SỐ, KO HIỂN THỊ TÊN NGƯỜI)
+    let textSummary = [];
+    if(sumNghi > 0) textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: ${sumNghi}</span>`);
+    if(sumHoc > 0) textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: ${sumHoc}</span>`);
+    if(sumViec > 0) textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG: ${sumViec}</span>`);
+    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:14px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
+
+    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
+    document.getElementById('cycle-summary-box').style.display = 'block';
+
     document.querySelector('#table-tong-hop tbody').innerHTML = tbody || '<tr><td colspan="4">Chưa có nhân sự</td></tr>';
     document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td>${sumNghi}</td><td>${sumHoc}</td><td>${sumViec}</td></tr>`;
   }
