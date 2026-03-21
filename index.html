@@ -89,7 +89,7 @@
     .check-role { font-size: 11px; color: #888; font-weight: normal; display: block; margin-top: 2px; }
     .check-item.active .check-role { color: #5fa8e3; }
 
-    /* ====== DANH SÁCH BẢN GHI ====== */
+    /* ====== DANH SÁCH BẢN GHI TỐI ƯU ====== */
     .list-item { background: #fff; border-left: 4px solid #1976d2; padding: 14px; border-radius: 10px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #eee;}
     .list-item.type-hoctap { border-left-color: #00bcd4; }
     .list-item.type-viec { border-left-color: #f39c12; }
@@ -101,11 +101,11 @@
     .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
     .list-item-note { font-size: 12px; color: #7f8c8d; font-style: italic; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee; }
     
-    /* Nút Sửa / Xóa */
+    /* Nút Sửa / Xóa tròn trịa theo ảnh */
     .btn-edit-item { position: absolute; top: 12px; right: 46px; color: #f39c12; background: #fdf2e9; border: 1px solid #fae5d3; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #fdedec; border: 1px solid #fadbd8; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold;}
 
-    /* ====== TÓM TẮT TRONG NGÀY ====== */
+    /* ====== TÓM TẮT TRONG NGÀY (THU GỌN 1 DÒNG) ====== */
     .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
     .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px; color: #555; font-weight: bold;}
     .summary-day-grid div { background: #fff; padding: 12px 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
@@ -246,6 +246,22 @@
       </div>
 
       <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
+        <h3 class="card-title" style="margin-left:4px; margin-bottom:8px;">🔍 BỘ LỌC TÌM KIẾM</h3>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px; background:white; padding:12px; border-radius:12px; border:1px solid #eef2f5; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+            <div style="display:flex; gap:8px;">
+                <select id="filter-nghi-user" onchange="loadDanhSachNghi()" style="flex:1; padding:10px; font-size:13px; font-weight:bold; color:#1976d2;">
+                    <option value="all">Tất cả nhân sự</option>
+                </select>
+                <select id="filter-nghi-reason" onchange="loadDanhSachNghi()" style="flex:1; padding:10px; font-size:13px; font-weight:bold; color:#1976d2;">
+                    <option value="all">Tất cả lý do</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <input type="month" id="filter-nghi-month" onchange="loadDanhSachNghi()" style="flex:2; padding:10px; font-size:13px; font-weight:bold; color:#1976d2;">
+                <button class="btn btn-small" style="flex:1; padding:10px; margin:0; background:#ffeeee; color:#e74c3c; border:1px solid #fadbd8;" onclick="resetFilterNghi()">XÓA LỌC</button>
+            </div>
+        </div>
+
         <h3 class="card-title" style="margin-left:4px; margin-bottom:12px;">LỊCH SỬ ĐĂNG KÝ NGHỈ</h3>
         <div id="list-nghi-dai-han"></div>
       </div>
@@ -503,7 +519,7 @@
       <p id="detail-modal-subtitle" style="font-size:12px; color:#555; font-weight:bold; margin-top:0; margin-bottom:15px;"></p>
       
       <div id="detail-modal-body" style="max-height: 50vh; overflow-y: auto;">
-         </div>
+      </div>
       <button class="btn btn-primary" style="margin-top:15px;" onclick="dongModal('modal-chi-tiet-nhan-su')">ĐÓNG</button>
     </div>
   </div>
@@ -555,6 +571,32 @@
   const SES_LABELS_FULL = { 'all': 'Cả ngày', 'morning': 'Sáng', 'afternoon': 'Chiều' };
 
   function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+
+  // ==========================================
+  // LỌC BỘ TÌM KIẾM Ở TAB NGHỈ PHÉP
+  // ==========================================
+  function updateFilterOptions() {
+      let selU = document.getElementById('filter-nghi-user');
+      let oldU = selU.value;
+      let uHtml = '<option value="all">Tất cả nhân sự</option>';
+      dsNhanVien.forEach(u => uHtml += `<option value="${u.name}">${u.name}</option>`);
+      selU.innerHTML = uHtml;
+      selU.value = oldU || 'all';
+
+      let selR = document.getElementById('filter-nghi-reason');
+      let oldR = selR.value;
+      let rHtml = '<option value="all">Tất cả lý do</option>';
+      dsLoaiNghi.forEach(l => rHtml += `<option value="${l}">${l}</option>`);
+      selR.innerHTML = rHtml;
+      selR.value = oldR || 'all';
+  }
+
+  function resetFilterNghi() {
+      document.getElementById('filter-nghi-user').value = 'all';
+      document.getElementById('filter-nghi-reason').value = 'all';
+      document.getElementById('filter-nghi-month').value = '';
+      loadDanhSachNghi();
+  }
 
   // ==========================================
   // THUẬT TOÁN KIỂM TRA XUNG ĐỘT LỊCH
@@ -1123,7 +1165,23 @@
   }
 
   function loadDanhSachNghi() {
-    let grouped = Object.values(dsLeaves.reduce((acc, r) => {
+    updateFilterOptions();
+    let fUser = document.getElementById('filter-nghi-user').value;
+    let fReason = document.getElementById('filter-nghi-reason').value;
+    let fMonth = document.getElementById('filter-nghi-month').value;
+
+    let filteredLeaves = dsLeaves.filter(l => {
+        let matchU = (fUser === 'all' || l.users.includes(fUser));
+        let matchR = (fReason === 'all' || l.category === fReason);
+        let matchM = true;
+        if (fMonth) {
+            let sm = l.start.substring(0, 7); let em = l.end.substring(0, 7);
+            matchM = (sm <= fMonth && em >= fMonth) || (sm === fMonth) || (em === fMonth);
+        }
+        return matchU && matchR && matchM;
+    });
+
+    let grouped = Object.values(filteredLeaves.reduce((acc, r) => {
         let noteKey = r.note || '';
         let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end + '|' + noteKey;
         if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
@@ -1178,7 +1236,7 @@
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
                       let reason = l.category;
-                      if (l.note) reason += ` (${l.note})`; // Đưa ghi chú vào chi tiết tổng kết năm
+                      if (l.note) reason += ` (${l.note})`; 
                       
                       l.users.forEach(u => {
                           if(stats[u]) { stats[u].total += val; stats[u].chitiet[reason] = (stats[u].chitiet[reason]||0) + val; }
@@ -1245,7 +1303,7 @@
         dsDaily.filter(r => r.date === dStr).forEach(r => {
             let val = r.session === 'all' ? 1 : 0.5;
             let taskTitle = r.taskName;
-            if(r.note) taskTitle += ` (${r.note})`; // Đưa ghi chú vào chi tiết chu kỳ
+            if(r.note) taskTitle += ` (${r.note})`; 
 
             r.users.forEach(u => { 
                 if(stats[u]) { 
@@ -1301,7 +1359,7 @@
                 </tr>`;
     });
     
-    // RENDER TÓM TẮT ĐỘI (CHỈ HIỂN THỊ SỐ, KO HIỂN THỊ TÊN NGƯỜI)
+    // TỔNG KẾT ĐỘI
     let textSummary = [];
     if(sumNghi > 0) textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: ${sumNghi}</span>`);
     if(sumHoc > 0) textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: ${sumHoc}</span>`);
