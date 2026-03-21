@@ -78,7 +78,7 @@
     input:checked + .slider:before { transform: translateX(22px); }
 
     /* ====== CHECKBOX NHÂN VIÊN ====== */
-    .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 250px; overflow-y: auto; padding: 4px; }
+    .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 8px; max-height: 250px; overflow-y: auto; padding: 4px; }
     .check-item { display: flex; align-items: center; background: #f8f9fa; padding: 12px; border-radius: 10px; border: 1px solid #ddd; cursor: pointer; transition: 0.2s; margin: 0;}
     .check-item.active { background: #eaf6ff; border-color: #1976d2; color: #1976d2; }
     .check-item input { display: none; }
@@ -90,23 +90,28 @@
     .check-item.active .check-role { color: #5fa8e3; }
 
     /* ====== DANH SÁCH BẢN GHI ====== */
-    .list-item { background: #fff; border-left: 4px solid #1976d2; padding: 14px; border-radius: 8px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #eee;}
+    .list-item { background: #fff; border-left: 4px solid #1976d2; padding: 14px; border-radius: 10px; margin-bottom: 12px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #eee;}
     .list-item.type-hoctap { border-left-color: #00bcd4; }
     .list-item.type-viec { border-left-color: #f39c12; }
-    .list-item.type-nghi-auto { border-left-color: #e74c3c; background: #fffcfc; }
-    .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; padding-right: 65px;}
-    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; padding-right: 65px; }
-    .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #eee; font-weight: bold; color: #555; white-space: nowrap; margin-left: 8px; }
-    .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
+    .list-item.type-nghi-auto { border-left-color: #e74c3c; background: #fffdfd; }
     
-    .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #ffeeee; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;}
+    .list-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-right: 70px;}
+    .list-item-title { font-weight: 800; font-size: 14px; color: #333; line-height: 1.4; display: flex; align-items: center; gap: 6px; }
+    .list-item-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #eee; font-weight: bold; color: #555; white-space: nowrap; }
+    .list-item-users { font-size: 13px; color: #2c3e50; line-height: 1.5; font-weight: 600;}
+    .list-item-note { font-size: 12px; color: #7f8c8d; font-style: italic; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee; }
+    
+    /* Nút Sửa / Xóa */
     .btn-edit-item { position: absolute; top: 12px; right: 46px; color: #1976d2; background: #eaf6ff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .btn-delete-item { position: absolute; top: 12px; right: 12px; color: #e74c3c; background: #ffeeee; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;}
 
     /* ====== TÓM TẮT TRONG NGÀY ====== */
-    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 10px 12px; border-radius: 12px; margin-bottom: 12px; }
-    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; color: #555; font-weight: bold;}
-    .summary-day-grid div { background: #fff; padding: 8px 4px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .val-b { font-weight: 900; font-size: 15px; display: block; margin-top: 4px; }
+    .summary-day-box { background: #eaf6ff; border: 1px solid #b3d4fc; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
+    .summary-day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px; color: #555; font-weight: bold;}
+    .summary-day-grid div { background: #fff; padding: 12px 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+    .sum-lbl { font-size: 13px; font-weight: bold; color: #555; margin: 0;}
+    .val-b { font-weight: 900; font-size: 16px; margin: 0; }
+    
     .summary-details { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #b3d4fc; font-size: 13px; color: #444; line-height: 1.6; text-align: left; font-weight: normal; }
 
     /* ====== BẢNG TỔNG HỢP ====== */
@@ -127,7 +132,7 @@
     .quick-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; color: #555; cursor: pointer; text-align: center; transition: 0.2s;}
     .quick-btn.active { background: #1976d2; color: #fff; border-color: #1976d2; box-shadow: 0 2px 8px rgba(25,118,210,0.3); }
 
-    /* ====== DANH SÁCH CÀI ĐẶT (MỚI) ====== */
+    /* ====== DANH SÁCH CÀI ĐẶT ====== */
     .setting-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);}
     .setting-info { display: flex; flex-direction: column; gap: 2px; }
     .setting-info strong { font-size: 14px; color: #1976d2; }
@@ -136,7 +141,6 @@
     .setting-actions button { width: 30px; height: 30px; border: none; border-radius: 6px; background: #f0f4f8; color: #555; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .setting-actions button.edit { background: #fff3cd; color: #f39c12; border: 1px solid #ffe69c;}
     .setting-actions button.del { background: #fdedec; color: #e74c3c; border: 1px solid #fadbd8;}
-    .btn-toggle-list { background: #eaf6ff; color: #1976d2; border: 1px dashed #b3d4fc; padding: 10px; width: 100%; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 5px; }
 
     /* ====== TABS ====== */
     .tab-content { display: none; animation: fadeIn 0.2s ease-out; }
@@ -148,9 +152,6 @@
     .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 16px 16px 0 0; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .close-modal { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #888; cursor: pointer; line-height: 1; background: #f0f0f0; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10;}
-
-    .tag-chip { display: inline-block; background: #eaf6ff; color: #1976d2; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; margin: 0 6px 8px 0; border: 1px solid #b3d4fc; }
-    .tag-chip.task { background: #fff8e1; color: #f39c12; border-color: #ffe0b2; }
 
     /* MÀN HÌNH KHÓA */
     #lock-screen {
@@ -201,19 +202,23 @@
     </div>
 
     <div id="tab-ngay" class="tab-content active container">
-      <div class="summary-day-box">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #b3d4fc; padding-bottom:10px; margin-bottom:12px;">
-           <div style="font-weight:900; color:#1976d2; font-size:14px; text-transform:uppercase;">📊 TỔNG KẾT QUÂN SỐ</div>
-           <input type="date" id="date-picker" style="width:140px; padding:6px; font-size:14px; border:1px solid #1976d2; color:#1976d2; font-weight:bold; background:#fff;" onchange="loadDuLieuNgay()">
-        </div>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; margin-top:4px;">
+         <div style="font-weight:900; color:#1976d2; font-size:15px; display:flex; align-items:center; gap:6px;">
+            <span style="font-size:20px;">📊</span> TỔNG KẾT QUÂN SỐ
+         </div>
+         <div style="background:white; border:1px solid #1976d2; border-radius:8px; padding:6px 8px; box-shadow: 0 1px 3px rgba(25,118,210,0.1); flex-shrink:0;">
+             <input type="date" id="date-picker" style="border:none; padding:0; background:transparent; color:#1976d2; font-weight:bold; font-size:14px; outline:none; text-align:center; width:135px;" onchange="loadDuLieuNgay()">
+         </div>
+      </div>
 
+      <div class="summary-day-box" style="margin-top:0;">
         <div class="summary-day-grid">
-          <div>⛱️ Nghỉ: <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
-          <div>⚡ T.Cường: <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
-          <div>📘 Học/CT: <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
-          <div>✅ BQTX: <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
+          <div><span class="sum-lbl">⛱️ Nghỉ:</span> <span id="sum-nghi" class="val-b" style="color:#e74c3c;">0</span></div>
+          <div><span class="sum-lbl">⚡ T.Cường:</span> <span id="sum-tc" class="val-b" style="color:#f39c12;">0</span></div>
+          <div><span class="sum-lbl">📘 Học/CT:</span> <span id="sum-ht" class="val-b" style="color:#00bcd4;">0</span></div>
+          <div><span class="sum-lbl">✅ BQTX:</span> <span id="sum-bqtx" class="val-b" style="color:#27ae60;">0</span></div>
         </div>
-        
         <div class="summary-details" id="summary-details-text"></div>
       </div>
 
@@ -233,10 +238,10 @@
         <button class="btn btn-warning" onclick="moModal('modal-tang-cuong')">⚡ TĂNG CƯỜNG</button>
       </div>
 
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; padding: 0 4px;">
           <h3 class="card-title" style="margin:0; border:none; padding:0;">CHI TIẾT BÁO CÁO</h3>
-          <span id="count-records" style="font-size:12px; font-weight:bold; color:#888; background:#eee; padding:4px 10px; border-radius:12px;">0 bản ghi</span>
+          <span id="count-records" style="font-size:12px; font-weight:bold; color:#888; background:#e0e0e0; padding:4px 12px; border-radius:12px;">0 bản ghi</span>
         </div>
         <div id="list-records-today"></div>
       </div>
@@ -362,8 +367,8 @@
           <input type="text" id="input-new-role" placeholder="Chức vụ" style="flex:1;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themNhanVien()">THÊM</button>
         </div>
-        <button class="btn-toggle-list" onclick="toggleList('list-users', this)">📂 XEM DANH SÁCH</button>
-        <div id="list-users" style="display:none; max-height: 250px; overflow-y: auto; margin-top: 10px;"></div>
+        <button class="btn btn-small" style="width: 100%; margin-bottom: 10px;" onclick="toggleList('list-users', this)">📂 XEM DANH SÁCH SỬA / XÓA</button>
+        <div id="list-users" style="display:none; max-height: 400px; overflow-y: auto;"></div>
       </div>
 
       <div class="card">
@@ -372,8 +377,8 @@
           <input type="text" id="input-new-task" placeholder="Tên công việc..." style="flex:3;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themViec()">THÊM</button>
         </div>
-        <button class="btn-toggle-list" onclick="toggleList('list-tasks', this)">📂 XEM DANH SÁCH</button>
-        <div id="list-tasks" style="display:none; max-height: 250px; overflow-y: auto; margin-top: 10px;"></div>
+        <button class="btn btn-small" style="width: 100%; margin-bottom: 10px;" onclick="toggleList('list-tasks', this)">📂 XEM DANH SÁCH SỬA / XÓA</button>
+        <div id="list-tasks" style="display:none; max-height: 300px; overflow-y: auto;"></div>
       </div>
 
       <div class="card">
@@ -382,8 +387,8 @@
           <input type="text" id="input-new-leave" placeholder="Loại nghỉ..." style="flex:3;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themLoaiNghi()">THÊM</button>
         </div>
-        <button class="btn-toggle-list" onclick="toggleList('list-leaves', this)">📂 XEM DANH SÁCH</button>
-        <div id="list-leaves" style="display:none; max-height: 250px; overflow-y: auto; margin-top: 10px;"></div>
+        <button class="btn btn-small" style="width: 100%; margin-bottom: 10px;" onclick="toggleList('list-leaves', this)">📂 XEM DANH SÁCH SỬA / XÓA</button>
+        <div id="list-leaves" style="display:none; max-height: 300px; overflow-y: auto;"></div>
       </div>
 
       <button class="btn" style="background:#e74c3c; box-shadow:none; margin-top:20px;" onclick="xoaToanBoDuLieu()">⚠️ KHÔI PHỤC DỮ LIỆU GỐC</button>
@@ -431,8 +436,11 @@
         <input type="radio" id="h-aft" name="sess_hoctap" value="afternoon" onchange="updateCheckboxes('hoctap')"><label for="h-aft">Chiều</label>
       </div>
 
+      <label>3. Ghi chú (nếu có):</label>
+      <input type="text" id="txt-note-hoctap" placeholder="Ví dụ: Học chính trị...">
+
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top: 15px;">
-        <label style="margin:0;">3. Chọn nhân sự:</label>
+        <label style="margin:0;">4. Chọn nhân sự:</label>
         <button class="btn-small" onclick="selectAll('grid-user-hoctap')">☑ Chọn hết</button>
       </div>
       <div class="checkbox-grid" id="grid-user-hoctap"></div>
@@ -462,8 +470,11 @@
         <input type="radio" id="t-aft" name="sess_viec" value="afternoon" onchange="updateCheckboxes('viec')"><label for="t-aft">Chiều</label>
       </div>
 
+      <label>3. Ghi chú (nếu có):</label>
+      <input type="text" id="txt-note-viec" placeholder="Ví dụ: Cắt cỏ khu A...">
+
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top: 15px;">
-        <label style="margin:0;">3. Chọn nhân sự:</label>
+        <label style="margin:0;">4. Chọn nhân sự:</label>
         <button class="btn-small" onclick="selectAll('grid-user-viec')">☑ Chọn hết</button>
       </div>
       <div class="checkbox-grid" id="grid-user-viec"></div>
@@ -498,8 +509,11 @@
         </div>
       </div>
 
+      <label>3. Ghi chú (nếu có):</label>
+      <input type="text" id="txt-note-nghi" placeholder="Ví dụ: Giải quyết việc gia đình...">
+
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top: 15px;">
-        <label style="margin:0;">3. Chọn nhân sự (Đã lọc người bận):</label>
+        <label style="margin:0;">4. Chọn nhân sự (Đã lọc người bận):</label>
         <button class="btn-small" onclick="selectAll('grid-user-nghi')">☑ Chọn hết</button>
       </div>
       <div class="checkbox-grid" id="grid-user-nghi"></div>
@@ -557,9 +571,14 @@
   let editingId = null; 
 
   let today = new Date();
-  document.getElementById('date-picker').value = today.toISOString().split('T')[0];
-  document.getElementById('tk-nam').value = today.getFullYear();
-  document.getElementById('month-year-picker').value = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0');
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); 
+  let yyyy = today.getFullYear();
+  let todayStrLocal = yyyy + '-' + mm + '-' + dd;
+
+  document.getElementById('date-picker').value = todayStrLocal;
+  document.getElementById('tk-nam').value = yyyy;
+  document.getElementById('month-year-picker').value = yyyy + '-' + mm;
 
   const SES_LABELS = { 'all': '', 'morning': '(Sáng)', 'afternoon': '(Chiều)' };
   const SES_LABELS_FULL = { 'all': 'Cả ngày', 'morning': 'Sáng', 'afternoon': 'Chiều' };
@@ -762,13 +781,13 @@
 
       var dataDaily = dsDaily.map(r => ({
           "Ngày": r.date, "Phân loại": r.type === 'viec' ? 'Tăng cường' : 'Học tập/Công tác',
-          "Nội dung": r.taskName, "Buổi": SES_LABELS_FULL[r.session], "Nhân sự": r.users.join(', ')
+          "Nội dung": r.taskName, "Buổi": SES_LABELS_FULL[r.session], "Nhân sự": r.users.join(', '), "Ghi chú": r.note || ""
       }));
       var ws_daily = XLSX.utils.json_to_sheet(dataDaily); XLSX.utils.book_append_sheet(wb, ws_daily, "ChamCongNgay");
 
       var dataLeave = dsLeaves.map(r => ({
           "Từ ngày": r.start, "Đến ngày": r.end, "Loại nghỉ": r.category,
-          "Buổi": r.start === r.end ? SES_LABELS_FULL[r.session] : "Xuyên suốt", "Nhân sự": r.users.join(', ')
+          "Buổi": r.start === r.end ? SES_LABELS_FULL[r.session] : "Xuyên suốt", "Nhân sự": r.users.join(', '), "Ghi chú": r.note || ""
       }));
       var ws_leaves = XLSX.utils.json_to_sheet(dataLeave); XLSX.utils.book_append_sheet(wb, ws_leaves, "LichNghiPhep");
 
@@ -816,7 +835,7 @@
     if(tabId === 'tab-nghi') { updateFilterOptions(); loadDanhSachNghi(); }
     if(tabId === 'tab-tong-hop') initChuKy();
   }
-  
+
   // ==========================================
   // XỬ LÝ CÀI ĐẶT (EDIT/MOVE/DELETE)
   // ==========================================
@@ -932,18 +951,21 @@
     
     if(id === 'modal-nghi') {
       document.getElementById('btn-submit-nghi').innerText = 'LƯU BÁO CÁO';
+      document.getElementById('txt-note-nghi').value = '';
       document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join(''); 
       document.getElementById('nghi-tu').value = selectedDate; document.getElementById('nghi-den').value = selectedDate; 
       kiemTraHienThiBuoiNghi(); updateCheckboxes('nghi', []); 
     }
     if(id === 'modal-tang-cuong') {
       document.getElementById('btn-submit-viec').innerText = 'LƯU BÁO CÁO';
+      document.getElementById('txt-note-viec').value = '';
       document.getElementById('sel-loai-viec').innerHTML = dsViecTangCuong.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="khac">-- ✍️ Nhập việc khác --</option>';
       document.getElementById('wrap-viec-moi').style.display = 'none'; document.getElementById('t-all').checked = true;
       updateCheckboxes('viec', []);
     }
     if(id === 'modal-hoctap') {
       document.getElementById('btn-submit-hoctap').innerText = 'LƯU BÁO CÁO';
+      document.getElementById('txt-note-hoctap').value = '';
       document.getElementById('sel-loai-hoctap').value = 'Học tập'; document.getElementById('txt-hoctap-moi').style.display = 'none'; document.getElementById('h-all').checked = true;
       updateCheckboxes('hoctap', []);
     }
@@ -972,12 +994,15 @@
               if(validDays > 0) {
                    let dateText = l.start === l.end ? formatDateVN(l.start) : `${formatDateVN(l.start)} - ${formatDateVN(l.end)}`;
                    let sessText = l.start === l.end ? ` (${SES_LABELS_FULL[l.session]})` : '';
+                   let noteHtml = l.note ? `<div style="font-size:11px; color:#7f8c8d; margin-top:4px; font-style:italic;">📝 ${l.note}</div>` : '';
+                   
                    details.push({date: l.start, html: `<div style="padding:10px; border-left:4px solid #e74c3c; background:#fffcfc; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
                         <div style="font-weight:bold; color:#e74c3c; font-size:13px; margin-bottom:4px;">⛱️ ${l.category}${sessText}</div>
                         <div style="font-size:11px; color:#555; display:flex; justify-content:space-between;">
                             <span>📅 ${dateText}</span> 
                             <span style="color:#c0392b; font-weight:900;">+${validDays} ngày</span>
                         </div>
+                        ${noteHtml}
                    </div>`});
               }
           }
@@ -1026,6 +1051,7 @@
             document.getElementById('sel-loai-viec').value = 'khac'; document.getElementById('wrap-viec-moi').style.display = 'block'; document.getElementById('txt-viec-moi').value = r.taskName;
         }
         document.querySelector(`input[name="sess_viec"][value="${r.session}"]`).checked = true;
+        document.getElementById('txt-note-viec').value = r.note || '';
         updateCheckboxes('viec', allUsers);
         document.getElementById('btn-submit-viec').innerText = 'CẬP NHẬT';
     } 
@@ -1038,6 +1064,7 @@
             document.getElementById('sel-loai-hoctap').value = 'khac'; document.getElementById('txt-hoctap-moi').style.display = 'block'; document.getElementById('txt-hoctap-moi').value = r.taskName;
         }
         document.querySelector(`input[name="sess_hoctap"][value="${r.session}"]`).checked = true;
+        document.getElementById('txt-note-hoctap').value = r.note || '';
         updateCheckboxes('hoctap', allUsers);
         document.getElementById('btn-submit-hoctap').innerText = 'CẬP NHẬT';
     }
@@ -1055,6 +1082,7 @@
     document.getElementById('sel-loai-nghi').innerHTML = dsLoaiNghi.map(l => `<option value="${l}">${l}</option>`).join('');
     document.getElementById('sel-loai-nghi').value = r.category;
     document.getElementById('nghi-tu').value = r.start; document.getElementById('nghi-den').value = r.end;
+    document.getElementById('txt-note-nghi').value = r.note || '';
     kiemTraHienThiBuoiNghi();
     
     if (r.start === r.end) { document.querySelector(`input[name="sess_nghi"][value="${r.session}"]`).checked = true; }
@@ -1086,19 +1114,22 @@
         if (isWeekend) return; // Bỏ qua hiển thị ở Tab 1
 
         let isMulti = r.start !== r.end; let effectiveSession = isMulti ? 'multi' : r.session;
-        let key = r.category + '|' + effectiveSession; 
+        let noteKey = r.note || '';
+        let key = r.category + '|' + effectiveSession + '|' + noteKey; 
         
         let existing = groupedLeavesToday.find(x => x.key === key);
         if(!existing) { 
-            groupedLeavesToday.push({ key: key, category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users] }); 
+            groupedLeavesToday.push({ key: key, category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users], note: r.note, ids: [r.id] }); 
         } 
         else { 
+            existing.ids.push(r.id);
             r.users.forEach(u => { if(!existing.combinedUsers.includes(u)) existing.combinedUsers.push(u); }); 
         }
     });
 
     let groupedDaily = Object.values(recordsDaily.reduce((acc, r) => {
-        let key = r.type + '|' + r.taskName + '|' + r.session;
+        let noteKey = r.note || '';
+        let key = r.type + '|' + r.taskName + '|' + r.session + '|' + noteKey;
         if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
         else { acc[key].ids.push(r.id); r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
         return acc;
@@ -1155,16 +1186,22 @@
     let detailText = [];
     let tcRecords = recordsDaily.filter(r => r.type === 'viec');
     if (tcRecords.length > 0) { 
-        detailText.push(`<div style="color:#f39c12; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">⚡ Tăng cường:</div>${formatGroupedUsersBullet(tcRecords, 'taskName')}`); 
+        let htmlStr = `<div style="color:#f39c12; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">⚡ Tăng cường:</div>`;
+        htmlStr += formatGroupedUsersBullet(tcRecords, 'taskName');
+        detailText.push(htmlStr); 
     }
     
     if (!isWeekend && recordsLeave.length > 0) { 
-        detailText.push(`<div style="color:#e74c3c; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">⛱️ Nghỉ:</div>${formatGroupedUsersBullet(recordsLeave, 'category')}`); 
+        let htmlStr = `<div style="color:#e74c3c; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">⛱️ Nghỉ:</div>`;
+        htmlStr += formatGroupedUsersBullet(recordsLeave, 'category');
+        detailText.push(htmlStr); 
     }
 
     let htRecords = recordsDaily.filter(r => r.type === 'hoctap');
     if (htRecords.length > 0) { 
-        detailText.push(`<div style="color:#00bcd4; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">📘 Học tập/CT:</div>${formatGroupedUsersBullet(htRecords, 'taskName')}`); 
+        let htmlStr = `<div style="color:#00bcd4; font-weight:bold; font-size:14px; margin-top:8px; margin-bottom:4px;">📘 Học tập/CT:</div>`;
+        htmlStr += formatGroupedUsersBullet(htRecords, 'taskName');
+        detailText.push(htmlStr); 
     }
     
     document.getElementById('summary-details-text').innerHTML = detailText.length > 0 ? detailText.join('') : '<i style="color:#888;">Chưa có báo cáo chi tiết</i>';
@@ -1173,7 +1210,10 @@
     if(totalRec === 0) { html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Chưa có báo cáo nào.</div>'; }
     
     groupedLeavesToday.forEach(r => {
+      let idsStr = r.ids.join(',');
       html += `<div class="list-item type-nghi-auto" style="padding-right:14px;">
+                 <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">×</button>
                  <div class="list-item-header" style="padding-right:0;">
                      <span class="list-item-title">⛱️ Nghỉ: ${r.category}</span>
                      <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
@@ -1211,9 +1251,10 @@
     if(!taskName) { alert('Vui lòng nhập lý do/công việc!'); return; }
 
     let sess = document.querySelector(`input[name="sess_${type}"]:checked`).value;
+    let note = document.getElementById(`txt-note-${type}`).value.trim();
     
     if (editingId) { let idArr = editingId.split(','); dsDaily = dsDaily.filter(x => !idArr.includes(x.id)); editingId = null; }
-    dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users });
+    dsDaily.push({ id: Date.now().toString(), date: document.getElementById('date-picker').value, type: type, taskName: taskName, session: sess, users: users, note: note });
     saveData('cc_daily', dsDaily); dongModal(type === 'viec' ? 'modal-tang-cuong' : 'modal-hoctap'); loadDuLieuNgay();
   }
   
@@ -1238,9 +1279,10 @@
     let tu = document.getElementById('nghi-tu').value; let den = document.getElementById('nghi-den').value;
     if(den < tu) { alert('Ngày kết thúc không hợp lệ!'); return; }
     let cat = document.getElementById('sel-loai-nghi').value; let sess = document.querySelector('input[name="sess_nghi"]:checked').value;
+    let note = document.getElementById('txt-note-nghi').value.trim();
 
     if (editingId) { let idArr = editingId.split(','); dsLeaves = dsLeaves.filter(x => !idArr.includes(x.id)); editingId = null; }
-    dsLeaves.push({ id: Date.now().toString(), start: tu, end: den, category: cat, session: sess, users: users });
+    dsLeaves.push({ id: Date.now().toString(), start: tu, end: den, category: cat, session: sess, users: users, note: note });
     
     saveData('cc_leaves_data', dsLeaves); dongModal('modal-nghi'); loadDanhSachNghi();
     if(document.getElementById('tab-ngay').classList.contains('active')) loadDuLieuNgay();
@@ -1264,7 +1306,8 @@
     });
 
     let grouped = Object.values(filteredLeaves.reduce((acc, r) => {
-        let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end;
+        let noteKey = r.note || '';
+        let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end + '|' + noteKey;
         if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
         else { acc[key].ids.push(r.id); r.users.forEach(u => { if(!acc[key].combinedUsers.includes(u)) acc[key].combinedUsers.push(u); }); }
         return acc;
@@ -1280,13 +1323,15 @@
       else { let d1 = new Date(r.start); let d2 = new Date(r.end); let dayDiff = Math.round((d2 - d1) / (1000 * 3600 * 24)) + 1; durationText = dayDiff + " ngày"; }
 
       let idsStr = r.ids.join(',');
+      let noteHtml = r.note ? `<div class="list-item-note">📝 ${r.note}</div>` : '';
 
       html += `<div class="list-item type-nghi-auto">
                  <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
-                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">×</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
                  <div class="list-item-header"><span class="list-item-title" style="padding-right:0;">⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span></span></div>
                  <div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div>
                  <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
+                 ${noteHtml}
                </div>`;
     });
     document.getElementById('list-nghi-dai-han').innerHTML = html;
@@ -1314,8 +1359,11 @@
               while(cur <= end) {
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
+                      let reason = l.category;
+                      if (l.note) reason += ` (${l.note})`; 
+                      
                       l.users.forEach(u => {
-                          if(stats[u]) { stats[u].total += val; stats[u].chitiet[l.category] = (stats[u].chitiet[l.category]||0) + val; }
+                          if(stats[u]) { stats[u].total += val; stats[u].chitiet[reason] = (stats[u].chitiet[reason]||0) + val; }
                       });
                   }
                   cur.setDate(cur.getDate()+1);
@@ -1326,7 +1374,7 @@
       let tbody = '';
       dsNhanVien.forEach(u => {
           let st = stats[u.name];
-          let str = Object.keys(st.chitiet).map(k=>`• ${k}: ${st.chitiet[k]}`).join('<br>');
+          let str = Object.keys(st.chitiet).map(k=>`• <span style="color:#555;">${k}:</span> ${st.chitiet[k]}`).join('<br>');
           
           let detailBtn = st.total > 0 ? `<div style="margin-top:6px; text-align:left;"><span onclick="xemChiTietNghiNam('${u.name}', '${yearStr}')" style="background:#eaf6ff; color:#1976d2; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:6px; border:1px solid #b3d4fc; cursor:pointer;">Xem lịch 📅</span></div>` : '';
 
@@ -1340,7 +1388,7 @@
   }
 
   // ==========================================
-  // TAB TỔNG HỢP CHU KỲ (BỎ QUA T7, CN KHI TÍNH CÔNG/PHÉP)
+  // TAB TỔNG HỢP CHU KỲ
   // ==========================================
   function clearQuickActive() { document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active')); }
   function chonThangTuyChinh() {
@@ -1373,7 +1421,7 @@
     let stats = {}; dsNhanVien.forEach(u => { stats[u.name] = { nghiTotal: 0, hocTotal: 0, viecTotal: 0, chiTietNghi: {}, chiTietViec: {}, chiTietHoc: {} }; });
     let curDate = new Date(start); let endDate = new Date(end);
     let sumNghi = 0, sumHoc = 0, sumViec = 0, sumBQTX_cycle = 0;
-    
+
     let globalTaskStats = {}; let globalHocStats = {}; let globalNghiStats = {};
 
     while(curDate <= endDate) {
@@ -1388,20 +1436,25 @@
 
         dsDaily.filter(r => r.date === dStr).forEach(r => {
             let val = r.session === 'all' ? 1 : 0.5;
+            let taskTitle = r.taskName;
+            if(r.note) taskTitle += ` (${r.note})`; // Đưa ghi chú vào chi tiết chu kỳ
+
             r.users.forEach(u => { 
                 if(stats[u]) { 
                     dailyAbsence[u] += val;
                     if(r.type === 'hoctap') { 
                         stats[u].hocTotal += val; sumHoc += val; 
-                        stats[u].chiTietHoc[r.taskName] = (stats[u].chiTietHoc[r.taskName]||0) + val;
-                        if(!globalHocStats[r.taskName]) globalHocStats[r.taskName] = {total:0, users:{}};
-                        globalHocStats[r.taskName].total += val; globalHocStats[r.taskName].users[u] = (globalHocStats[r.taskName].users[u]||0) + val;
+                        stats[u].chiTietHoc[taskTitle] = (stats[u].chiTietHoc[taskTitle]||0) + val;
+                        
+                        if(!globalHocStats[taskTitle]) globalHocStats[taskTitle] = {total:0, users:{}};
+                        globalHocStats[taskTitle].total += val; globalHocStats[taskTitle].users[u] = (globalHocStats[taskTitle].users[u]||0) + val;
                     } 
                     if(r.type === 'viec') { 
                         stats[u].viecTotal += val; sumViec += val; 
-                        stats[u].chiTietViec[r.taskName] = (stats[u].chiTietViec[r.taskName]||0) + val;
-                        if(!globalTaskStats[r.taskName]) globalTaskStats[r.taskName] = {total:0, users:{}};
-                        globalTaskStats[r.taskName].total += val; globalTaskStats[r.taskName].users[u] = (globalTaskStats[r.taskName].users[u]||0) + val;
+                        stats[u].chiTietViec[taskTitle] = (stats[u].chiTietViec[taskTitle]||0) + val;
+                        
+                        if(!globalTaskStats[taskTitle]) globalTaskStats[taskTitle] = {total:0, users:{}};
+                        globalTaskStats[taskTitle].total += val; globalTaskStats[taskTitle].users[u] = (globalTaskStats[taskTitle].users[u]||0) + val;
                     } 
                 } 
             });
@@ -1409,14 +1462,18 @@
 
         dsLeaves.filter(l => dStr >= l.start && dStr <= l.end).forEach(l => {
             let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1; 
+            let catTitle = l.category;
+            if(l.note) catTitle += ` (${l.note})`;
+
             l.users.forEach(u => { 
                 if(stats[u]) { 
                     dailyAbsence[u] += val;
                     if(!isWeekend) {
                         stats[u].nghiTotal += val; sumNghi += val; 
-                        stats[u].chiTietNghi[l.category] = (stats[u].chiTietNghi[l.category]||0) + val;
-                        if(!globalNghiStats[l.category]) globalNghiStats[l.category] = {total:0, users:{}};
-                        globalNghiStats[l.category].total += val; globalNghiStats[l.category].users[u] = (globalNghiStats[l.category].users[u]||0) + val;
+                        stats[u].chiTietNghi[catTitle] = (stats[u].chiTietNghi[catTitle]||0) + val;
+                        
+                        if(!globalNghiStats[catTitle]) globalNghiStats[catTitle] = {total:0, users:{}};
+                        globalNghiStats[catTitle].total += val; globalNghiStats[catTitle].users[u] = (globalNghiStats[catTitle].users[u]||0) + val;
                     }
                 } 
             });
@@ -1444,23 +1501,23 @@
     let tbody = '';
     dsNhanVien.forEach(u => {
       let st = stats[u.name];
-      let strNghi = Object.keys(st.chiTietNghi).map(k=>`&bull; ${k}: ${st.chiTietNghi[k]}`).join('<br>');
-      let strHoc = Object.keys(st.chiTietHoc).map(k=>`&bull; ${k}: ${st.chiTietHoc[k]}`).join('<br>');
-      let strViec = Object.keys(st.chiTietViec).map(k=>`&bull; ${k}: ${st.chiTietViec[k]}`).join('<br>');
+      let strNghi = Object.keys(st.chiTietNghi).map(k=>`&bull; <span style="color:#555;">${k}:</span> ${st.chiTietNghi[k]}`).join('<br>');
+      let strHoc = Object.keys(st.chiTietHoc).map(k=>`&bull; <span style="color:#555;">${k}:</span> ${st.chiTietHoc[k]}`).join('<br>');
+      let strViec = Object.keys(st.chiTietViec).map(k=>`&bull; <span style="color:#555;">${k}:</span> ${st.chiTietViec[k]}`).join('<br>');
       
       let cellNghi = st.nghiTotal > 0 ? `<div class="main-val">${st.nghiTotal}</div><div class="detail-text">${strNghi}</div>` : `<div style="color:#ccc">-</div>`;
       let cellHoc = st.hocTotal > 0 ? `<div class="main-val">${st.hocTotal}</div><div class="detail-text">${strHoc}</div>` : `<div style="color:#ccc">-</div>`;
       let cellViec = st.viecTotal > 0 ? `<div class="main-val">${st.viecTotal}</div><div class="detail-text">${strViec}</div>` : `<div style="color:#ccc">-</div>`;
 
+      // Trả bảng tổng hợp về tĩnh, không có nút "Xem Lịch"
       tbody += `<tr>
-                  <td class="td-left" style="vertical-align:middle;">
-                     ${u.name}
-                  </td>
+                  <td class="td-left" style="vertical-align:middle;">${u.name}</td>
                   <td class="td-number">${cellNghi}</td>
                   <td class="td-hoctap">${cellHoc}</td>
                   <td class="td-task">${cellViec}</td>
                 </tr>`;
     });
+    
     document.querySelector('#table-tong-hop tbody').innerHTML = tbody || '<tr><td colspan="4">Chưa có nhân sự</td></tr>';
     document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td>${sumNghi}</td><td>${sumHoc}</td><td>${sumViec}</td></tr>`;
   }
