@@ -35,7 +35,7 @@
     .nav-icon { font-size: 24px; margin-bottom: 4px; transition: 0.2s; }
     .nav-btn.active .nav-icon { transform: scale(1.15); }
 
-    .container { padding: 12px; max-width: 800px; margin: 0 auto; }
+    .container { padding: 12px 10px; max-width: 800px; margin: 0 auto; }
     .card { background: white; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #eef2f5;}
     .card-title { font-size: 14px; font-weight: 800; color: #1976d2; border-bottom: 2px solid #eaf6ff; padding-bottom: 8px; margin-bottom: 12px; margin-top: 0; text-transform: uppercase; }
 
@@ -131,6 +131,16 @@
     .quick-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; color: #555; cursor: pointer; text-align: center; transition: 0.2s;}
     .quick-btn.active { background: #1976d2; color: #fff; border-color: #1976d2; box-shadow: 0 2px 8px rgba(25,118,210,0.3); }
 
+    /* ====== DANH SÁCH CÀI ĐẶT (MỚI) ====== */
+    .setting-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);}
+    .setting-info { display: flex; flex-direction: column; gap: 2px; }
+    .setting-info strong { font-size: 14px; color: #1976d2; }
+    .setting-info span { font-size: 11px; color: #888; }
+    .setting-actions { display: flex; gap: 4px; }
+    .setting-actions button { width: 30px; height: 30px; border: none; border-radius: 6px; background: #f0f4f8; color: #555; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .setting-actions button.edit { background: #fff3cd; color: #f39c12; border: 1px solid #ffe69c;}
+    .setting-actions button.del { background: #fdedec; color: #e74c3c; border: 1px solid #fadbd8;}
+
     /* ====== TABS ====== */
     .tab-content { display: none; animation: fadeIn 0.2s ease-out; }
     .tab-content.active { display: block; }
@@ -141,9 +151,6 @@
     .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 16px 16px 0 0; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .close-modal { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #888; cursor: pointer; line-height: 1; background: #f0f0f0; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10;}
-
-    .tag-chip { display: inline-block; background: #eaf6ff; color: #1976d2; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; margin: 0 6px 8px 0; border: 1px solid #b3d4fc; }
-    .tag-chip.task { background: #fff8e1; color: #f39c12; border-color: #ffe0b2; }
 
     /* MÀN HÌNH KHÓA */
     #lock-screen {
@@ -246,6 +253,24 @@
       </div>
 
       <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
+        <h3 class="card-title" style="margin-left:4px; margin-bottom:8px;">🔍 BỘ LỌC TÌM KIẾM</h3>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px; background:white; padding:15px; border-radius:12px; border:1px solid #eef2f5; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+            <div style="display:flex; gap:8px;">
+                <select id="filter-nghi-user" onchange="loadDanhSachNghi()" style="flex:1; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
+                    <option value="all">Tất cả nhân sự</option>
+                </select>
+                <select id="filter-nghi-reason" onchange="loadDanhSachNghi()" style="flex:1; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
+                    <option value="all">Tất cả lý do</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <input type="month" id="filter-nghi-month" onchange="loadDanhSachNghi()" style="flex:2; padding:12px; font-size:13px; font-weight:bold; color:#1976d2;">
+                <button class="btn btn-small" style="flex:1; padding:12px; margin:0; background:#ffeeee; color:#e74c3c; border:1px solid #fadbd8;" onclick="resetFilterNghi()">XÓA LỌC</button>
+            </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:transparent; border:none; padding:0; box-shadow:none; margin-top: 15px;">
         <h3 class="card-title" style="margin-left:4px; margin-bottom:12px;">LỊCH SỬ ĐĂNG KÝ NGHỈ</h3>
         <div id="list-nghi-dai-han"></div>
       </div>
@@ -275,8 +300,8 @@
         <button class="btn btn-primary" onclick="xemTongHop()" style="margin-top: 15px;">📊 TẠO BẢNG TỔNG HỢP</button>
       </div>
 
-      <div id="cycle-summary-box" class="summary-day-box" style="display:none; margin-bottom: 12px;">
-          <div style="font-weight: 900; color: #1976d2; font-size: 14px; text-align: center; border-bottom: 1px solid #b3d4fc; padding-bottom: 10px; margin-bottom: 10px;">📊 TỔNG KẾT TOÀN ĐỘI TRONG KỲ</div>
+      <div id="cycle-summary-box" class="card" style="display:none; margin-bottom: 15px; background: #fdfdfd; border: 1px solid #b3d4fc;">
+          <div style="font-weight: 900; color: #1976d2; font-size: 14px; text-align: center; border-bottom: 1px solid #b3d4fc; padding-bottom: 10px; margin-bottom: 12px;">📊 TỔNG KẾT TOÀN ĐỘI TRONG KỲ</div>
           <div id="cycle-summary-text" style="font-size: 13px; color: #333; line-height: 1.6; text-align:left;"></div>
       </div>
 
@@ -331,7 +356,7 @@
           <button class="btn btn-primary" onclick="document.getElementById('import-file').click()">📤 PHỤC HỒI</button>
         </div>
         <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importBackupJSON(event)">
-        <button class="btn" style="background:#fff; color:#1976d2; border:1px solid #1976d2; margin-top: 10px;" onclick="xuatDuLieuRaExcel()">Xuất Excel Báo Cáo</button>
+        <button class="btn btn-outline" style="margin-top: 10px; padding: 12px; font-size:13px;" onclick="xuatDuLieuRaExcel()">XUẤT EXCEL BÁO CÁO</button>
       </div>
 
       <div class="card">
@@ -341,7 +366,7 @@
           <input type="text" id="input-new-role" placeholder="Chức vụ" style="flex:1;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themNhanVien()">THÊM</button>
         </div>
-        <div id="list-users" style="max-height: 250px; overflow-y: auto;"></div>
+        <div id="list-users" style="max-height: 400px; overflow-y: auto;"></div>
       </div>
 
       <div class="card">
@@ -350,7 +375,7 @@
           <input type="text" id="input-new-task" placeholder="Tên công việc..." style="flex:3;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themViec()">THÊM</button>
         </div>
-        <div id="list-tasks"></div>
+        <div id="list-tasks" style="max-height: 300px; overflow-y: auto;"></div>
       </div>
 
       <div class="card">
@@ -359,7 +384,7 @@
           <input type="text" id="input-new-leave" placeholder="Loại nghỉ..." style="flex:3;">
           <button class="btn btn-primary" style="flex:1; padding:12px 0;" onclick="themLoaiNghi()">THÊM</button>
         </div>
-        <div id="list-leaves"></div>
+        <div id="list-leaves" style="max-height: 300px; overflow-y: auto;"></div>
       </div>
 
       <button class="btn" style="background:#e74c3c; box-shadow:none; margin-top:20px;" onclick="xoaToanBoDuLieu()">⚠️ KHÔI PHỤC DỮ LIỆU GỐC</button>
@@ -496,18 +521,6 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="modal-chi-tiet-nhan-su">
-    <div class="modal-content" style="background: #f9fbff;">
-      <div class="close-modal" onclick="dongModal('modal-chi-tiet-nhan-su')">&times;</div>
-      <h3 id="detail-modal-title" style="margin-top:0; font-size:16px; color:#1976d2; border-bottom:2px solid #b3d4fc; padding-bottom:8px; text-transform:uppercase;">CHI TIẾT LỊCH NGHỈ</h3>
-      <p id="detail-modal-subtitle" style="font-size:12px; color:#555; font-weight:bold; margin-top:0; margin-bottom:15px;"></p>
-      
-      <div id="detail-modal-body" style="max-height: 50vh; overflow-y: auto;">
-         </div>
-      <button class="btn btn-primary" style="margin-top:15px;" onclick="dongModal('modal-chi-tiet-nhan-su')">ĐÓNG</button>
-    </div>
-  </div>
-
 <script>
   // ==========================================
   // KHỞI TẠO DỮ LIỆU MẶC ĐỊNH
@@ -555,6 +568,32 @@
   const SES_LABELS_FULL = { 'all': 'Cả ngày', 'morning': 'Sáng', 'afternoon': 'Chiều' };
 
   function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+
+  // ==========================================
+  // BỘ LỌC TÌM KIẾM Ở TAB NGHỈ PHÉP
+  // ==========================================
+  function updateFilterOptions() {
+      let selU = document.getElementById('filter-nghi-user');
+      let oldU = selU.value;
+      let uHtml = '<option value="all">Tất cả nhân sự</option>';
+      dsNhanVien.forEach(u => uHtml += `<option value="${u.name}">${u.name}</option>`);
+      selU.innerHTML = uHtml;
+      selU.value = oldU || 'all';
+
+      let selR = document.getElementById('filter-nghi-reason');
+      let oldR = selR.value;
+      let rHtml = '<option value="all">Tất cả lý do</option>';
+      dsLoaiNghi.forEach(l => rHtml += `<option value="${l}">${l}</option>`);
+      selR.innerHTML = rHtml;
+      selR.value = oldR || 'all';
+  }
+
+  function resetFilterNghi() {
+      document.getElementById('filter-nghi-user').value = 'all';
+      document.getElementById('filter-nghi-reason').value = 'all';
+      document.getElementById('filter-nghi-month').value = '';
+      loadDanhSachNghi();
+  }
 
   // ==========================================
   // THUẬT TOÁN KIỂM TRA XUNG ĐỘT LỊCH
@@ -777,12 +816,106 @@
 
     if(tabId === 'tab-cai-dat') loadCaiDat();
     if(tabId === 'tab-ngay') loadDuLieuNgay();
-    if(tabId === 'tab-nghi') loadDanhSachNghi();
+    if(tabId === 'tab-nghi') { updateFilterOptions(); loadDanhSachNghi(); }
     if(tabId === 'tab-tong-hop') initChuKy();
   }
 
   // ==========================================
-  // XỬ LÝ MODAL (POPUP FORM) & XEM CHI TIẾT
+  // XỬ LÝ CÀI ĐẶT (EDIT/MOVE)
+  // ==========================================
+  function loadCaiDat() {
+    document.getElementById('toggle-security').checked = isSecurityEnabled;
+    document.getElementById('btn-setup-faceid').style.display = (isSecurityEnabled && window.PublicKeyCredential) ? 'block' : 'none';
+
+    let htmlUsers = '';
+    dsNhanVien.forEach((u, i) => {
+      htmlUsers += `<div class="setting-item">
+                      <div class="setting-info"><strong>${u.name}</strong><span>${u.role || 'Thành viên'}</span></div>
+                      <div class="setting-actions">
+                        <button onclick="moveUser(${i}, -1)">▲</button>
+                        <button onclick="moveUser(${i}, 1)">▼</button>
+                        <button class="edit" onclick="editUser(${i})">✏️</button>
+                        <button class="del" onclick="xoaNhanVien(${i})">✖</button>
+                      </div>
+                    </div>`;
+    });
+    document.getElementById('list-users').innerHTML = htmlUsers;
+
+    let htmlTasks = '';
+    dsViecTangCuong.forEach((t, i) => {
+      htmlTasks += `<div class="setting-item">
+                      <div class="setting-info"><strong>${t}</strong></div>
+                      <div class="setting-actions">
+                        <button onclick="moveTask(${i}, -1)">▲</button>
+                        <button onclick="moveTask(${i}, 1)">▼</button>
+                        <button class="edit" onclick="editTask(${i})">✏️</button>
+                        <button class="del" onclick="xoaViec(${i})">✖</button>
+                      </div>
+                    </div>`;
+    });
+    document.getElementById('list-tasks').innerHTML = htmlTasks;
+
+    let htmlLeaves = '';
+    dsLoaiNghi.forEach((l, i) => {
+      htmlLeaves += `<div class="setting-item">
+                      <div class="setting-info"><strong>${l}</strong></div>
+                      <div class="setting-actions">
+                        <button onclick="moveLeave(${i}, -1)">▲</button>
+                        <button onclick="moveLeave(${i}, 1)">▼</button>
+                        <button class="edit" onclick="editLeave(${i})">✏️</button>
+                        <button class="del" onclick="xoaLoaiNghi(${i})">✖</button>
+                      </div>
+                    </div>`;
+    });
+    document.getElementById('list-leaves').innerHTML = htmlLeaves;
+  }
+
+  function themNhanVien() { let n = document.getElementById('input-new-user').value.trim(); let r = document.getElementById('input-new-role').value.trim(); if(n && !dsNhanVien.some(u => u.name === n)) { dsNhanVien.push({name: n, role: r}); saveData('cc_users', dsNhanVien); document.getElementById('input-new-user').value = ''; document.getElementById('input-new-role').value = ''; loadCaiDat(); } }
+  function xoaNhanVien(i) { if(confirm("Xóa nhân sự này?")) { dsNhanVien.splice(i, 1); saveData('cc_users', dsNhanVien); loadCaiDat(); } }
+  function editUser(i) { 
+      let newName = prompt("Nhập tên mới:", dsNhanVien[i].name);
+      if (newName !== null && newName.trim() !== "") {
+          let newRole = prompt("Nhập chức vụ mới:", dsNhanVien[i].role);
+          let oldName = dsNhanVien[i].name; newName = newName.trim();
+          dsNhanVien[i].name = newName; dsNhanVien[i].role = newRole !== null ? newRole.trim() : "";
+          if (oldName !== newName) {
+              dsDaily.forEach(r => { let idx = r.users.indexOf(oldName); if (idx > -1) r.users[idx] = newName; });
+              dsLeaves.forEach(r => { let idx = r.users.indexOf(oldName); if (idx > -1) r.users[idx] = newName; });
+              saveData('cc_daily', dsDaily); saveData('cc_leaves_data', dsLeaves);
+          }
+          saveData('cc_users', dsNhanVien); loadCaiDat();
+      }
+  }
+  function moveUser(i, dir) { if (i + dir < 0 || i + dir >= dsNhanVien.length) return; let temp = dsNhanVien[i]; dsNhanVien[i] = dsNhanVien[i + dir]; dsNhanVien[i + dir] = temp; saveData('cc_users', dsNhanVien); loadCaiDat(); }
+
+  function themViec() { let v = document.getElementById('input-new-task').value.trim(); if(v && !dsViecTangCuong.includes(v)) { dsViecTangCuong.push(v); saveData('cc_tasks', dsViecTangCuong); document.getElementById('input-new-task').value = ''; loadCaiDat(); } }
+  function xoaViec(i) { if(confirm("Xóa mẫu việc này?")) { dsViecTangCuong.splice(i, 1); saveData('cc_tasks', dsViecTangCuong); loadCaiDat(); } }
+  function editTask(i) {
+      let newVal = prompt("Sửa tên công việc:", dsViecTangCuong[i]);
+      if (newVal !== null && newVal.trim() !== "") {
+          let oldVal = dsViecTangCuong[i]; dsViecTangCuong[i] = newVal.trim();
+          dsDaily.forEach(r => { if(r.type === 'viec' && r.taskName === oldVal) r.taskName = newVal.trim(); });
+          saveData('cc_daily', dsDaily); saveData('cc_tasks', dsViecTangCuong); loadCaiDat();
+      }
+  }
+  function moveTask(i, dir) { if (i + dir < 0 || i + dir >= dsViecTangCuong.length) return; let temp = dsViecTangCuong[i]; dsViecTangCuong[i] = dsViecTangCuong[i + dir]; dsViecTangCuong[i + dir] = temp; saveData('cc_tasks', dsViecTangCuong); loadCaiDat(); }
+
+  function themLoaiNghi() { let v = document.getElementById('input-new-leave').value.trim(); if(v && !dsLoaiNghi.includes(v)) { dsLoaiNghi.push(v); saveData('cc_leaves', dsLoaiNghi); document.getElementById('input-new-leave').value = ''; loadCaiDat(); } }
+  function xoaLoaiNghi(i) { if(confirm("Xóa lý do nghỉ này?")) { dsLoaiNghi.splice(i, 1); saveData('cc_leaves', dsLoaiNghi); loadCaiDat(); } }
+  function editLeave(i) {
+      let newVal = prompt("Sửa lý do nghỉ:", dsLoaiNghi[i]);
+      if (newVal !== null && newVal.trim() !== "") {
+          let oldVal = dsLoaiNghi[i]; dsLoaiNghi[i] = newVal.trim();
+          dsLeaves.forEach(r => { if(r.category === oldVal) r.category = newVal.trim(); });
+          saveData('cc_leaves_data', dsLeaves); saveData('cc_leaves', dsLoaiNghi); loadCaiDat();
+      }
+  }
+  function moveLeave(i, dir) { if (i + dir < 0 || i + dir >= dsLoaiNghi.length) return; let temp = dsLoaiNghi[i]; dsLoaiNghi[i] = dsLoaiNghi[i + dir]; dsLoaiNghi[i + dir] = temp; saveData('cc_leaves', dsLoaiNghi); loadCaiDat(); }
+
+  function xoaToanBoDuLieu() { if(confirm("Khôi phục toàn bộ danh sách về mặc định và XÓA SẠCH Lịch sử chấm công?")) { localStorage.clear(); location.reload(); } }
+
+  // ==========================================
+  // XỬ LÝ MODAL (POPUP FORM)
   // ==========================================
   document.getElementById('sel-loai-hoctap').addEventListener('change', function() { document.getElementById('txt-hoctap-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
   document.getElementById('sel-loai-viec').addEventListener('change', function() { document.getElementById('wrap-viec-moi').style.display = this.value === 'khac' ? 'block' : 'none'; });
@@ -818,64 +951,7 @@
   }
 
   function dongModal(id) { editingId = null; document.getElementById(id).style.display = 'none'; }
-
   function formatDateVN(isoStr) { let d = new Date(isoStr); return `${('0'+d.getDate()).slice(-2)}/${('0'+(d.getMonth()+1)).slice(-2)}/${d.getFullYear()}`; }
-
-  // ------ HÀM XEM CHI TIẾT NGHỈ NĂM ------
-  function xemChiTietNghiNam(userName, yearStr) {
-      let details = [];
-      let leaveBlocks = dsLeaves.filter(l => l.users.includes(userName));
-      leaveBlocks.forEach(l => {
-          let startY = l.start.substring(0,4); let endY = l.end.substring(0,4);
-          if(startY === yearStr || endY === yearStr) {
-              let cur = new Date(Math.max(new Date(l.start), new Date(`${yearStr}-01-01`)));
-              let end = new Date(Math.min(new Date(l.end), new Date(`${yearStr}-12-31`)));
-              let validDays = 0;
-              while(cur <= end) {
-                   validDays += (l.start === l.end && l.session !== 'all') ? 0.5 : 1; 
-                   cur.setDate(cur.getDate()+1);
-              }
-              if(validDays > 0) {
-                   let dateText = l.start === l.end ? formatDateVN(l.start) : `${formatDateVN(l.start)} - ${formatDateVN(l.end)}`;
-                   let sessText = l.start === l.end ? ` (${SES_LABELS_FULL[l.session]})` : '';
-                   let noteHtml = l.note ? `<div style="font-size:11px; color:#7f8c8d; margin-top:4px; font-style:italic;">📝 ${l.note}</div>` : '';
-                   
-                   details.push({date: l.start, html: `<div style="padding:10px; border-left:4px solid #e74c3c; background:#fffcfc; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eee;">
-                        <div style="font-weight:bold; color:#e74c3c; font-size:13px; margin-bottom:4px;">⛱️ ${l.category}${sessText}</div>
-                        <div style="font-size:11px; color:#555; display:flex; justify-content:space-between;">
-                            <span>📅 ${dateText}</span> 
-                            <span style="color:#c0392b; font-weight:900;">+${validDays} ngày</span>
-                        </div>
-                        ${noteHtml}
-                   </div>`});
-              }
-          }
-      });
-
-      details.sort((a,b) => new Date(b.date) - new Date(a.date));
-      document.getElementById('detail-modal-title').innerText = `CHI TIẾT LỊCH NGHỈ`;
-      document.getElementById('detail-modal-subtitle').innerText = `Nhân sự: ${userName.toUpperCase()} (Năm ${yearStr})`;
-      document.getElementById('detail-modal-body').innerHTML = details.length ? details.map(d=>d.html).join('') : '<div style="padding:20px; text-align:center; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Không có dữ liệu nghỉ phép trong năm này</div>';
-      document.getElementById('modal-chi-tiet-nhan-su').style.display = 'flex';
-  }
-
-  function formatGroupedUsers(records, categoryField, isLeave = false) {
-      let groups = {};
-      records.forEach(r => {
-          let cat = r[categoryField]; 
-          if(r.note) cat += ` (${r.note})`; // Thêm ghi chú vào loại để gom nhóm chi tiết ở báo cáo
-          
-          let sessTag = (r.session === 'all' || (isLeave && r.start !== r.end)) ? '' : ` ${SES_LABELS[r.session]}`;
-          r.users.forEach(u => { 
-              if(!groups[cat]) groups[cat] = [];
-              groups[cat].push(`${u}${sessTag}`); 
-          });
-      });
-      return Object.keys(groups).map(k => {
-          let uniqueUsers = [...new Set(groups[k])];
-          return `&bull; <span style="color:#555;">${k}:</span> ${uniqueUsers.join(', ')}`;
-      }).join('<br>');
-  }
 
   // ==========================================
   // CẬP NHẬT (SỬA) BẢN GHI TỪ THẺ GỘP CHUNG
@@ -964,9 +1040,10 @@
         
         let existing = groupedLeavesToday.find(x => x.key === key);
         if(!existing) { 
-            groupedLeavesToday.push({ key: key, category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users], note: r.note }); 
+            groupedLeavesToday.push({ key: key, category: r.category, sessionText: isMulti ? 'Xuyên suốt' : SES_LABELS_FULL[r.session], combinedUsers: [...r.users], note: r.note, ids: [r.id] }); 
         } 
         else { 
+            existing.ids.push(r.id);
             r.users.forEach(u => { if(!existing.combinedUsers.includes(u)) existing.combinedUsers.push(u); }); 
         }
     });
@@ -1026,27 +1103,18 @@
     document.getElementById('sum-nghi').innerText = sumNghi; document.getElementById('sum-tc').innerText = sumTC;
     document.getElementById('sum-ht').innerText = sumHT; document.getElementById('sum-bqtx').innerText = sumBQTX;
 
-    let detailText = [];
-    let tcRecords = recordsDaily.filter(r => r.type === 'viec');
-    if (tcRecords.length > 0) { detailText.push(`<span style="color:#f39c12; font-weight:bold;">⚡ Tăng cường:</span><br>${formatGroupedUsers(tcRecords, 'taskName', false)}`); }
-    let htRecords = recordsDaily.filter(r => r.type === 'hoctap');
-    if (htRecords.length > 0) { detailText.push(`<span style="color:#00bcd4; font-weight:bold;">📘 Học tập/CT:</span><br>${formatGroupedUsers(htRecords, 'taskName', false)}`); }
-    
-    if (!isWeekend && recordsLeave.length > 0) { 
-        detailText.push(`<span style="color:#e74c3c; font-weight:bold;">⛱️ Nghỉ:</span><br>${formatGroupedUsers(recordsLeave, 'category', true)}`); 
-    }
-    
-    document.getElementById('summary-details-text').innerHTML = detailText.length > 0 ? detailText.join('<div style="margin-top:6px;"></div>') : '<i style="color:#888;">Chưa có báo cáo chi tiết</i>';
-
     let html = '';
     if(totalRec === 0) { html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Chưa có báo cáo nào.</div>'; }
     
     groupedLeavesToday.forEach(r => {
       let noteHtml = r.note ? `<div class="list-item-note">📝 ${r.note}</div>` : '';
-      html += `<div class="list-item type-nghi-auto" style="padding-right:14px;">
-                 <div class="list-item-header" style="padding-right:0;">
-                     <span class="list-item-title">⛱️ Nghỉ: ${r.category}</span>
-                     <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
+      let idsStr = r.ids.join(',');
+      html += `<div class="list-item type-nghi-auto">
+                 <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
+                 <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
+                 <div class="list-item-header">
+                    <span class="list-item-title">⛱️ Nghỉ: ${r.category}</span>
+                    <span class="list-item-badge" style="background:#fadbd8; color:#c0392b;">${r.sessionText}</span>
                  </div>
                  <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  ${noteHtml}
@@ -1060,7 +1128,10 @@
         html += `<div class="list-item type-hoctap">
                    <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'hoctap')">✏️</button>
                    <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
-                   <div class="list-item-header"><span class="list-item-title">📘 ${r.taskName}</span><span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span></div>
+                   <div class="list-item-header">
+                      <span class="list-item-title">📘 ${r.taskName}</span>
+                      <span class="list-item-badge" style="background:#e0f7fa; color:#0097a7;">${sessionText}</span>
+                   </div>
                    <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                    ${noteHtml}
                  </div>`;
@@ -1068,7 +1139,10 @@
         html += `<div class="list-item type-viec">
                    <button class="btn-edit-item" onclick="suaRecordDaily('${idsStr}', 'viec')">✏️</button>
                    <button class="btn-delete-item" onclick="xoaRecordDaily('${idsStr}')">✖</button>
-                   <div class="list-item-header"><span class="list-item-title">⚡ T.Cường: ${r.taskName}</span><span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span></div>
+                   <div class="list-item-header">
+                      <span class="list-item-title">⚡ T.Cường: ${r.taskName}</span>
+                      <span class="list-item-badge" style="background:#ffe0b2; color:#d35400;">${sessionText}</span>
+                   </div>
                    <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                    ${noteHtml}
                  </div>`;
@@ -1123,7 +1197,23 @@
   }
 
   function loadDanhSachNghi() {
-    let grouped = Object.values(dsLeaves.reduce((acc, r) => {
+    updateFilterOptions();
+    let fUser = document.getElementById('filter-nghi-user').value;
+    let fReason = document.getElementById('filter-nghi-reason').value;
+    let fMonth = document.getElementById('filter-nghi-month').value;
+
+    let filteredLeaves = dsLeaves.filter(l => {
+        let matchU = (fUser === 'all' || l.users.includes(fUser));
+        let matchR = (fReason === 'all' || l.category === fReason);
+        let matchM = true;
+        if (fMonth) {
+            let sm = l.start.substring(0, 7); let em = l.end.substring(0, 7);
+            matchM = (sm <= fMonth && em >= fMonth) || (sm === fMonth) || (em === fMonth);
+        }
+        return matchU && matchR && matchM;
+    });
+
+    let grouped = Object.values(filteredLeaves.reduce((acc, r) => {
         let noteKey = r.note || '';
         let key = r.category + '|' + r.session + '|' + r.start + '|' + r.end + '|' + noteKey;
         if(!acc[key]) acc[key] = { ...r, ids: [r.id], combinedUsers: [...r.users] };
@@ -1146,7 +1236,11 @@
       html += `<div class="list-item type-nghi-auto">
                  <button class="btn-edit-item" onclick="suaLeave('${idsStr}')">✏️</button>
                  <button class="btn-delete-item" onclick="xoaLeave('${idsStr}')">✖</button>
-                 <div class="list-item-header"><span class="list-item-title" style="padding-right:0;">⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span></span></div>
+                 <div class="list-item-header">
+                    <span class="list-item-title" style="padding-right:0;">
+                       ⛱️ ${r.category} <span style="color:#1976d2; font-size:13px; font-weight:900;">- ${durationText}</span>
+                    </span>
+                 </div>
                  <div style="font-size:12px; color:#c0392b; margin-bottom:6px; font-weight:bold;">📅 ${dateText}</div>
                  <div class="list-item-users">👤 ${r.combinedUsers.join(', ')}</div>
                  ${noteHtml}
@@ -1178,7 +1272,7 @@
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
                       let reason = l.category;
-                      if (l.note) reason += ` (${l.note})`; // Đưa ghi chú vào chi tiết tổng kết năm
+                      if (l.note) reason += ` (${l.note})`; 
                       
                       l.users.forEach(u => {
                           if(stats[u]) { stats[u].total += val; stats[u].chitiet[reason] = (stats[u].chitiet[reason]||0) + val; }
@@ -1194,12 +1288,10 @@
           let st = stats[u.name];
           let str = Object.keys(st.chitiet).map(k=>`• <span style="color:#555;">${k}:</span> ${st.chitiet[k]}`).join('<br>');
           
-          let detailBtn = st.total > 0 ? `<div style="margin-top:6px; text-align:left;"><span onclick="xemChiTietNghiNam('${u.name}', '${yearStr}')" style="background:#eaf6ff; color:#1976d2; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:6px; border:1px solid #b3d4fc; cursor:pointer;">Xem lịch 📅</span></div>` : '';
-
           tbody += `<tr>
                       <td style="text-align:left; font-weight:bold; font-size:13px; vertical-align:middle;">${u.name}</td>
                       <td style="color:#e74c3c; font-weight:bold; font-size:15px; text-align:center; vertical-align:middle;">${st.total > 0 ? st.total : '-'}</td>
-                      <td style="text-align:left; font-size:12px; color:#666; line-height:1.4; padding:8px 4px;">${str}${detailBtn}</td>
+                      <td style="text-align:left; font-size:12px; color:#666; line-height:1.4; padding:8px 4px;">${str}</td>
                     </tr>`;
       });
       document.querySelector('#table-thongke-nam tbody').innerHTML = tbody;
@@ -1233,6 +1325,8 @@
     let curDate = new Date(start); let endDate = new Date(end);
     let sumNghi = 0, sumHoc = 0, sumViec = 0, sumBQTX_cycle = 0;
 
+    let globalTaskStats = {}; let globalHocStats = {}; let globalNghiStats = {};
+
     while(curDate <= endDate) {
         let dStr = curDate.toISOString().split('T')[0];
         let dayOfWeek = curDate.getDay();
@@ -1245,13 +1339,25 @@
         dsDaily.filter(r => r.date === dStr).forEach(r => {
             let val = r.session === 'all' ? 1 : 0.5;
             let taskTitle = r.taskName;
-            if(r.note) taskTitle += ` (${r.note})`; // Đưa ghi chú vào chi tiết chu kỳ
+            if(r.note) taskTitle += ` (${r.note})`; 
 
             r.users.forEach(u => { 
                 if(stats[u]) { 
                     dailyAbsence[u] += val;
-                    if(r.type === 'hoctap') { stats[u].hocTotal += val; sumHoc += val; stats[u].chiTietHoc[taskTitle] = (stats[u].chiTietHoc[taskTitle]||0) + val; } 
-                    if(r.type === 'viec') { stats[u].viecTotal += val; sumViec += val; stats[u].chiTietViec[taskTitle] = (stats[u].chiTietViec[taskTitle]||0) + val; } 
+                    if(r.type === 'hoctap') { 
+                        stats[u].hocTotal += val; sumHoc += val; 
+                        stats[u].chiTietHoc[taskTitle] = (stats[u].chiTietHoc[taskTitle]||0) + val;
+                        
+                        if(!globalHocStats[taskTitle]) globalHocStats[taskTitle] = {total:0, users:{}};
+                        globalHocStats[taskTitle].total += val; globalHocStats[taskTitle].users[u] = (globalHocStats[taskTitle].users[u]||0) + val;
+                    } 
+                    if(r.type === 'viec') { 
+                        stats[u].viecTotal += val; sumViec += val; 
+                        stats[u].chiTietViec[taskTitle] = (stats[u].chiTietViec[taskTitle]||0) + val;
+                        
+                        if(!globalTaskStats[taskTitle]) globalTaskStats[taskTitle] = {total:0, users:{}};
+                        globalTaskStats[taskTitle].total += val; globalTaskStats[taskTitle].users[u] = (globalTaskStats[taskTitle].users[u]||0) + val;
+                    } 
                 } 
             });
         });
@@ -1267,6 +1373,9 @@
                     if(!isWeekend) {
                         stats[u].nghiTotal += val; sumNghi += val; 
                         stats[u].chiTietNghi[catTitle] = (stats[u].chiTietNghi[catTitle]||0) + val;
+                        
+                        if(!globalNghiStats[catTitle]) globalNghiStats[catTitle] = {total:0, users:{}};
+                        globalNghiStats[catTitle].total += val; globalNghiStats[catTitle].users[u] = (globalNghiStats[catTitle].users[u]||0) + val;
                     }
                 } 
             });
@@ -1281,6 +1390,37 @@
 
         curDate.setDate(curDate.getDate() + 1);
     }
+
+    let textSummary = [];
+    
+    if(Object.keys(globalNghiStats).length > 0) { 
+        let detailHtml = Object.keys(globalNghiStats).map(k => {
+            let userArr = Object.keys(globalNghiStats[k].users).map(u => `${u}: ${globalNghiStats[k].users[u]}`);
+            return `&bull; <b style="color:#2c3e50;">${k}: ${globalNghiStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span>`;
+        }).join('<br>');
+        textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: ${sumNghi}</span><br>${detailHtml}`); 
+    }
+    
+    if(Object.keys(globalTaskStats).length > 0) { 
+        let detailHtml = Object.keys(globalTaskStats).map(k => {
+            let userArr = Object.keys(globalTaskStats[k].users).map(u => `${u}: ${globalTaskStats[k].users[u]}`);
+            return `&bull; <b style="color:#2c3e50;">${k}: ${globalTaskStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span>`;
+        }).join('<br>');
+        textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG: ${sumViec}</span><br>${detailHtml}`); 
+    }
+    
+    if(Object.keys(globalHocStats).length > 0) { 
+        let detailHtml = Object.keys(globalHocStats).map(k => {
+            let userArr = Object.keys(globalHocStats[k].users).map(u => `${u}: ${globalHocStats[k].users[u]}`);
+            return `&bull; <b style="color:#2c3e50;">${k}: ${globalHocStats[k].total}</b> <span style="font-size:12px; color:#666; font-weight:normal;">[${userArr.join('; ')}]</span>`;
+        }).join('<br>');
+        textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: ${sumHoc}</span><br>${detailHtml}`); 
+    }
+    
+    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:15px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
+
+    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:8px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
+    document.getElementById('cycle-summary-box').style.display = 'block';
 
     let tbody = '';
     dsNhanVien.forEach(u => {
@@ -1301,16 +1441,6 @@
                 </tr>`;
     });
     
-    // RENDER TÓM TẮT ĐỘI (CHỈ HIỂN THỊ SỐ, KO HIỂN THỊ TÊN NGƯỜI)
-    let textSummary = [];
-    if(sumNghi > 0) textSummary.push(`<span style="color:#e74c3c; font-weight:900;">⛱️ NGHỈ: ${sumNghi}</span>`);
-    if(sumHoc > 0) textSummary.push(`<span style="color:#00bcd4; font-weight:900;">📘 HỌC TẬP/CT: ${sumHoc}</span>`);
-    if(sumViec > 0) textSummary.push(`<span style="color:#f39c12; font-weight:900;">⚡ TĂNG CƯỜNG: ${sumViec}</span>`);
-    textSummary.push(`<span style="color:#27ae60; font-weight:900;">✅ TỔNG BQTX:</span> <span style="font-size:14px; font-weight:bold; color:#2c3e50;">${sumBQTX_cycle} công</span>`);
-
-    document.getElementById('cycle-summary-text').innerHTML = textSummary.length > 0 ? textSummary.join('<br><div style="margin-top:6px;"></div>') : '<i style="color:#888;">Không có dữ liệu trong chu kỳ này</i>';
-    document.getElementById('cycle-summary-box').style.display = 'block';
-
     document.querySelector('#table-tong-hop tbody').innerHTML = tbody || '<tr><td colspan="4">Chưa có nhân sự</td></tr>';
     document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td>${sumNghi}</td><td>${sumHoc}</td><td>${sumViec}</td></tr>`;
   }
