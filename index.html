@@ -1857,7 +1857,7 @@
       dailyRecs.filter(r => r.type === 'khac').forEach(r => {
           let loai = dsKhac.find(x => x.name === r.taskName);
           let sym = (loai && loai.symbol && loai.symbol.trim() !== '') ? loai.symbol.trim() : '+';
-          applyData(r.session, sym, 'work');
+          applyData(r.session, sym, 'khac');
       });
 
       // 3. Việc (Tăng cường - Ghi đè TẤT CẢ, luôn tính công)
