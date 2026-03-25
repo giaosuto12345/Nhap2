@@ -132,9 +132,10 @@
     th, td { padding: 8px 4px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; vertical-align: top; word-break: break-word;}
     th { background: #eaf6ff; color: #1976d2; font-weight: 800; position: sticky; top: 0; font-size: 10px; text-transform: uppercase; }
     td.td-left { text-align: left; font-weight: 800; color: #333; font-size: 13px; width: 25%;}
-    td.td-number { color: #e74c3c; width: 25%; font-weight: bold;}
-    td.td-khac { color: #00bcd4; width: 25%; font-weight: bold;}
-    td.td-task { color: #f39c12; width: 25%; font-weight: bold;}
+    td.td-number { color: #e74c3c; width: 18%; font-weight: bold;}
+    td.td-khac { color: #00bcd4; width: 18%; font-weight: bold;}
+    td.td-task { color: #f39c12; width: 18%; font-weight: bold;}
+    td.td-total { color: #27ae60; width: 21%; font-weight: bold; background-color: #f4fbff;} /* Thêm cột tổng công */
     tr.total-row td { background: #fdf2e9; font-weight: 900; color: #d35400; font-size: 14px; }
     .main-val { font-weight: 900; font-size: 15px; margin-bottom: 4px;}
     .detail-text { font-size: 11px; color: #666; font-weight: normal; display: block; line-height: 1.4; text-align: left;}
@@ -161,7 +162,7 @@
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .close-modal { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #888; cursor: pointer; line-height: 1; background: #f0f0f0; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10;}
 
-    /* ====== MODAL BẢNG CHẤM CÔNG CHI TIẾT (SỬA LỖI ÉP CỘT IOS) ====== */
+    /* ====== MODAL BẢNG CHẤM CÔNG CHI TIẾT ====== */
     .modal-bcc { align-items: center; padding: 10px; }
     .modal-content-bcc { border-radius: 12px; height: 95vh; max-height: 900px; padding: 15px; display: flex; flex-direction: column; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; }
     
@@ -293,7 +294,7 @@
       <div id="wrap-lam-cuoi-tuan" style="display:none; justify-content:space-between; align-items:center; background:#fff9e6; padding:12px 14px; border-radius:10px; border:1px solid #ffe0b2; margin-bottom:14px;">
           <div>
             <span style="font-weight:bold; color:#d35400; font-size:14px;">🌟 Làm việc ngày nghỉ</span>
-            <span style="display:block; font-size:11px; color:#d35400; margin-top:2px;">Bật công tắc để tính công BQTX</span>
+            <span style="display:block; font-size:11px; color:#d35400; margin-top:2px;">Bật công tắc để tính công BQTX chung</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="chk-lam-cuoi-tuan" onchange="toggleCuoiTuan()">
@@ -396,13 +397,14 @@
             <thead>
               <tr>
                 <th>NHÂN SỰ</th>
+                <th>TỔNG CÔNG<br><span style="font-size:10px; font-weight:normal; color:#888;">(Ngày)</span></th>
                 <th>SỐ NGHỈ<br><span style="font-size:10px; font-weight:normal; color:#888;">(Ngày)</span></th>
                 <th>KHÁC<br><span style="font-size:10px; font-weight:normal; color:#888;">(Công)</span></th>
                 <th>T.CƯỜNG<br><span style="font-size:10px; font-weight:normal; color:#888;">(Công)</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr><td colspan="4" style="padding: 30px; color:#888; text-align:center;">Vui lòng bấm "Tạo Bảng Tổng Hợp"</td></tr>
+              <tr><td colspan="5" style="padding: 30px; color:#888; text-align:center;">Vui lòng bấm "Tạo Bảng Tổng Hợp"</td></tr>
             </tbody>
             <tfoot id="table-footer"></tfoot>
           </table>
@@ -1162,8 +1164,14 @@
       leaveBlocks.forEach(l => {
           let startY = l.start.substring(0,4); let endY = l.end.substring(0,4);
           if(startY === yearStr || endY === yearStr) {
-              let cur = new Date(Math.max(new Date(l.start), new Date(`${yearStr}-01-01`)));
-              let end = new Date(Math.min(new Date(l.end), new Date(`${yearStr}-12-31`)));
+              let p1 = l.start.split('-'); let cur = new Date(p1[0], p1[1]-1, p1[2]);
+              let curLimit = new Date(yearStr, 0, 1);
+              if(cur < curLimit) cur = curLimit;
+
+              let p2 = l.end.split('-'); let end = new Date(p2[0], p2[1]-1, p2[2]);
+              let endLimit = new Date(yearStr, 11, 31);
+              if(end > endLimit) end = endLimit;
+
               let validDays = 0;
               while(cur <= end) {
                    validDays += (l.start === l.end && l.session !== 'all') ? 0.5 : 1; 
@@ -1186,7 +1194,7 @@
           }
       });
 
-      details.sort((a,b) => new Date(b.date) - new Date(a.date));
+      details.sort((a,b) => new Date(b.date.split('-')[0], b.date.split('-')[1]-1, b.date.split('-')[2]) - new Date(a.date.split('-')[0], a.date.split('-')[1]-1, a.date.split('-')[2]));
       document.getElementById('detail-modal-title').innerText = `CHI TIẾT LỊCH NGHỈ`;
       document.getElementById('detail-modal-subtitle').innerText = `Nhân sự: ${userName.toUpperCase()} (Năm ${yearStr})`;
       document.getElementById('detail-modal-body').innerHTML = details.length ? details.map(d=>d.html).join('') : '<div style="padding:20px; text-align:center; color:#888; font-size:13px; background:#f9f9f9; border-radius:8px;">Không có dữ liệu nghỉ phép trong năm này</div>';
@@ -1285,7 +1293,8 @@
 
     let groupedLeavesToday = [];
     recordsLeave.forEach(r => {
-        let dObj = new Date(targetDate);
+        let p = targetDate.split('-');
+        let dObj = new Date(p[0], p[1]-1, p[2]);
         let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
         let isWorkingDay = true;
         if(isWeekend && !dsWeekendWork.includes(targetDate)) { isWorkingDay = false; }
@@ -1317,7 +1326,8 @@
     let totalRec = groupedDaily.length + groupedLeavesToday.length;
     document.getElementById('count-records').innerText = `${totalRec} bản ghi`;
 
-    let dObj = new Date(targetDate);
+    let p = targetDate.split('-');
+    let dObj = new Date(p[0], p[1]-1, p[2]);
     let isWeekend = (dObj.getDay() === 0 || dObj.getDay() === 6);
     let isWorkingDay = true;
 
@@ -1498,14 +1508,23 @@
         return acc;
     }, {}));
 
-    let html = ''; let sorted = grouped.sort((a,b) => new Date(b.start) - new Date(a.start));
+    let html = ''; 
+    let sorted = grouped.sort((a,b) => {
+      let pA = a.start.split('-'); let pB = b.start.split('-');
+      return new Date(pB[0], pB[1]-1, pB[2]) - new Date(pA[0], pA[1]-1, pA[2]);
+    });
+    
     if(sorted.length === 0) html = '<div style="text-align:center; padding:20px; color:#888; font-size:13px;">Chưa có lịch nghỉ nào.</div>';
     
     sorted.forEach(r => {
       let dateText = r.start === r.end ? formatDateVN(r.start) : `${formatDateVN(r.start)} - ${formatDateVN(r.end)}`;
       let durationText = "";
       if (r.start === r.end) { durationText = (r.session === 'all') ? "1 ngày" : "0.5 ngày"; } 
-      else { let d1 = new Date(r.start); let d2 = new Date(r.end); let dayDiff = Math.round((d2 - d1) / (1000 * 3600 * 24)) + 1; durationText = dayDiff + " ngày"; }
+      else { 
+          let p1 = r.start.split('-'); let d1 = new Date(p1[0], p1[1]-1, p1[2]); 
+          let p2 = r.end.split('-'); let d2 = new Date(p2[0], p2[1]-1, p2[2]); 
+          let dayDiff = Math.round((d2 - d1) / (1000 * 3600 * 24)) + 1; durationText = dayDiff + " ngày"; 
+      }
 
       let idsStr = r.ids.join(',');
       let noteHtml = r.note ? `<div class="list-item-note">📝 ${r.note}</div>` : '';
@@ -1540,7 +1559,9 @@
       dsLeaves.forEach(l => {
           let startY = l.start.substring(0,4); let endY = l.end.substring(0,4);
           if(startY === yearStr || endY === yearStr) {
-              let cur = new Date(l.start); let end = new Date(l.end);
+              let p1 = l.start.split('-'); let cur = new Date(p1[0], p1[1]-1, p1[2]); 
+              let p2 = l.end.split('-'); let end = new Date(p2[0], p2[1]-1, p2[2]);
+              
               while(cur <= end) {
                   if(cur.getFullYear().toString() === yearStr) {
                       let val = (l.start === l.end && l.session !== 'all') ? 0.5 : 1;
@@ -1584,7 +1605,7 @@
   function capNhatLabelTuDate() {
       let val = document.getElementById('cycle-start').value;
       if (!val) return;
-      let d = new Date(val);
+      let p = val.split('-'); let d = new Date(p[0], p[1]-1, p[2]);
       let wInfo = getWeekNumber(d);
       document.getElementById('btn-lbl-tuan').innerHTML = `▾ Tuần ${wInfo.week} / ${wInfo.year}`;
       document.getElementById('btn-lbl-thang').innerHTML = `▾ Tháng ${d.getMonth()+1} / ${d.getFullYear()}`;
@@ -1656,12 +1677,13 @@
   function initChuKy() { 
       let savedEnd = localStorage.getItem('cc_last_end_date'); 
       if(savedEnd) { 
-          let nextStart = new Date(savedEnd); nextStart.setDate(nextStart.getDate() + 1); 
+          let p = savedEnd.split('-'); let nextStart = new Date(p[0], p[1]-1, p[2]); 
+          nextStart.setDate(nextStart.getDate() + 1); 
           document.getElementById('cycle-start').value = formatIsoLocal(nextStart); 
           let end = new Date(nextStart); end.setMonth(end.getMonth() + 1); end.setDate(end.getDate() - 1);
           document.getElementById('cycle-end').value = formatIsoLocal(end);
           capNhatLabelTuDate();
-          setActiveFilter(''); // Tắt xanh khi là tùy chỉnh cũ
+          setActiveFilter('');
       } else {
           chonTuanNay();
       }
@@ -1673,13 +1695,16 @@
     localStorage.setItem('cc_last_end_date', end);
 
     let stats = {}; dsNhanVien.forEach(u => { stats[u.name] = { nghiTotal: 0, khacTotal: 0, viecTotal: 0, chiTietNghi: {}, chiTietViec: {}, chiTietKhac: {} }; });
-    let curDate = new Date(start); let endDate = new Date(end);
+    let p1 = start.split('-'); let curDate = new Date(p1[0], p1[1]-1, p1[2]); 
+    let p2 = end.split('-'); let endDate = new Date(p2[0], p2[1]-1, p2[2]);
     let sumNghi = 0, sumKhac = 0, sumViec = 0;
 
     let globalTaskStats = {}; let globalKhacStats = {}; let globalNghiStats = {};
+    let daysInRange = [];
 
     while(curDate <= endDate) {
         let dStr = formatIsoLocal(curDate);
+        daysInRange.push(dStr);
         
         let dayOfWeek = curDate.getDay();
         let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
@@ -1765,28 +1790,35 @@
       let strKhac = Object.keys(st.chiTietKhac).map(k=>`&bull; ${k}: ${st.chiTietKhac[k]}`).join('<br>');
       let strViec = Object.keys(st.chiTietViec).map(k=>`&bull; ${k}: ${st.chiTietViec[k]}`).join('<br>');
       
+      // Tính Cột Tổng công (được bổ sung thêm để đồng bộ với Bảng chấm công)
+      let tongCongSum = 0;
+      daysInRange.forEach(d => { tongCongSum += getDayData(u, d).sumVal; });
+      let cellTongCong = `<div class="main-val" style="color:#27ae60;">${Number(tongCongSum.toFixed(1))}</div>`;
+
       let cellNghi = st.nghiTotal > 0 ? `<div class="main-val">${st.nghiTotal}</div><div class="detail-text">${strNghi}</div>` : `<div style="color:#ccc">-</div>`;
       let cellKhac = st.khacTotal > 0 ? `<div class="main-val">${st.khacTotal}</div><div class="detail-text">${strKhac}</div>` : `<div style="color:#ccc">-</div>`;
       let cellViec = st.viecTotal > 0 ? `<div class="main-val">${st.viecTotal}</div><div class="detail-text">${strViec}</div>` : `<div style="color:#ccc">-</div>`;
 
       tbody += `<tr>
                   <td class="td-left" style="vertical-align:middle;">${u.name}</td>
+                  <td class="td-total">${cellTongCong}</td>
                   <td class="td-number">${cellNghi}</td>
                   <td class="td-khac">${cellKhac}</td>
                   <td class="td-task">${cellViec}</td>
                 </tr>`;
     });
     
-    document.querySelector('#table-tong-hop tbody').innerHTML = tbody || '<tr><td colspan="4">Chưa có nhân sự</td></tr>';
-    document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td>${sumNghi}</td><td>${sumKhac}</td><td>${sumViec}</td></tr>`;
+    document.querySelector('#table-tong-hop tbody').innerHTML = tbody || '<tr><td colspan="5">Chưa có nhân sự</td></tr>';
+    document.getElementById('table-footer').innerHTML = `<tr class="total-row"><td>TỔNG ĐỘI</td><td></td><td>${sumNghi}</td><td>${sumKhac}</td><td>${sumViec}</td></tr>`;
   }
 
   // ==========================================
-  // THUẬT TOÁN SINH BẢNG CHẤM CÔNG CHI TIẾT (XỬ LÝ TRẮNG CUỐI TUẦN & TÍNH TỔNG CHUẨN)
+  // THUẬT TOÁN SINH BẢNG CHẤM CÔNG CHI TIẾT (ĐÃ FIX LỖI GHI ĐÈ)
   // ==========================================
   function getDayData(user, dateStr) {
       let isWorkingDay = true;
-      let dObj = new Date(dateStr);
+      let p = dateStr.split('-');
+      let dObj = new Date(p[0], p[1]-1, p[2]);
       let dayOfWeek = dObj.getDay();
       
       // Nếu là Thứ 7, CN và không bật "Làm cuối tuần" thì isWorkingDay = false
@@ -1808,17 +1840,10 @@
       let dailyRecs = dsDaily.filter(r => r.date === dateStr && r.users.includes(user.name));
       let leaveRecs = dsLeaves.filter(l => dateStr >= l.start && dateStr <= l.end && l.users.includes(user.name));
 
-      // 1. Việc (luôn ghi đè nếu có, coi như đi làm)
-      dailyRecs.filter(r => r.type === 'viec').forEach(r => applyData(r.session, '+', 'work'));
+      // LỖI Ở BẢN CŨ LÀ CHẠY NGHỈ SAU CÙNG -> GHI ĐÈ VIỆC/TĂNG CƯỜNG
+      // Bản này đã đổi lại thứ tự: Nghỉ dài hạn -> Tác vụ cụ thể trong ngày đè lên (nếu có làm)
 
-      // 2. Khác (Lấy ký hiệu, KHÔNG có ký hiệu -> mặc định là đi làm '+')
-      dailyRecs.filter(r => r.type === 'khac').forEach(r => {
-          let loai = dsKhac.find(x => x.name === r.taskName);
-          let sym = (loai && loai.symbol && loai.symbol.trim() !== '') ? loai.symbol.trim() : '+';
-          applyData(r.session, sym, 'work');
-      });
-
-      // 3. Nghỉ (CHỈ áp dụng nếu là ngày làm việc. Cuối tuần ko làm thì ko ghi P)
+      // 1. Nghỉ (Ưu tiên thấp nhất - Ghi đè lên Base Default)
       if (isWorkingDay) {
           leaveRecs.forEach(l => {
               let loai = dsLoaiNghi.find(x => x.name === l.category);
@@ -1828,6 +1853,16 @@
           });
       }
 
+      // 2. Khác (Ghi đè Nghỉ nếu được điều động đi làm khác)
+      dailyRecs.filter(r => r.type === 'khac').forEach(r => {
+          let loai = dsKhac.find(x => x.name === r.taskName);
+          let sym = (loai && loai.symbol && loai.symbol.trim() !== '') ? loai.symbol.trim() : '+';
+          applyData(r.session, sym, 'work');
+      });
+
+      // 3. Việc (Tăng cường - Ghi đè TẤT CẢ, luôn tính công)
+      dailyRecs.filter(r => r.type === 'viec').forEach(r => applyData(r.session, '+', 'work'));
+
       // TÍNH TỔNG CÔNG (Chỉ type='work' mới được tính điểm)
       let sumVal = 0;
       if (morType === 'work') sumVal += 0.5;
@@ -1835,22 +1870,15 @@
 
       let html = '';
       if (morSym === aftSym) {
-          html = morSym;
+          html = morSym || ''; // Rỗng thì không in gì
       } else {
-          // Mã HTML vẽ phân số dọc chuẩn SGK
-          const frac = `<span style="display:inline-flex; flex-direction:column; vertical-align:middle; font-size:10px; font-weight:900; line-height:1.1; margin-left:2px;"><span style="border-bottom:1.5px solid currentColor; padding:0 1px;">1</span><span style="padding:0 1px;">2</span></span>`;
-          
-          let types = [];
-          if (morSym !== '' && morSym !== '+') types.push(morSym);
-          if (aftSym !== '' && aftSym !== '+' && aftSym !== morSym) types.push(aftSym);
-
-          if (types.length === 0) {
-              html = frac;
-          } else if (types.length === 1) {
-              html = types[0] + frac;
-          } else {
-              html = morSym + '/' + aftSym;
-          }
+          // Bỏ cách hiển thị 'frac' SGK khó hiểu, dùng Phân số trực quan (Sáng / Chiều)
+          let m = morSym === '' ? '&nbsp;' : morSym;
+          let a = aftSym === '' ? '&nbsp;' : aftSym;
+          html = `<span style="display:inline-flex; flex-direction:column; justify-content:center; align-items:center; vertical-align:middle; font-size:10px; font-weight:900; line-height:1.2;">
+                    <span style="border-bottom:1px solid currentColor; padding:0 3px; width:100%; text-align:center;">${m}</span>
+                    <span style="padding:0 3px; width:100%; text-align:center;">${a}</span>
+                  </span>`;
       }
 
       // Format màu hiển thị
@@ -1867,8 +1895,8 @@
       let end = document.getElementById('cycle-end').value;
       if (!start || !end) { alert("Vui lòng Bấm TẠO BẢNG TỔNG HỢP trước!"); return; }
 
-      let startDate = new Date(start);
-      let endDate = new Date(end);
+      let p1 = start.split('-'); let startDate = new Date(p1[0], p1[1]-1, p1[2]);
+      let p2 = end.split('-'); let endDate = new Date(p2[0], p2[1]-1, p2[2]);
 
       let titleStr = "BẢNG CHẤM CÔNG";
       let activeFilter = document.querySelector('.c-btn-solid.active') || document.querySelector('.c-btn-dash.active');
@@ -1884,7 +1912,7 @@
           <th class="col-sticky" style="min-width:130px; text-align:left; padding-left:10px;">Họ và tên</th>
           <th style="min-width:80px; background:#eaf6ff; color:#1976d2; position:sticky; top:0; z-index:10;">Chức vụ</th>`;
 
-      let curDate = new Date(start);
+      let curDate = new Date(startDate);
       let days = [];
       while(curDate <= endDate) {
           days.push(formatIsoLocal(curDate));
@@ -1905,7 +1933,8 @@
               rowHtml += `<td style="color:${dayData.color}; font-size:15px; padding: 10px 4px;">${dayData.html}</td>`;
               rowSum += dayData.sumVal;
           });
-          rowHtml += `<td style="font-weight:900; color:#d35400; background:#fff9e6; font-size:15px;">${rowSum}</td></tr>`;
+          // Làm tròn fix lỗi thập phân JS
+          rowHtml += `<td style="font-weight:900; color:#d35400; background:#fff9e6; font-size:15px;">${Number(rowSum.toFixed(1))}</td></tr>`;
           tbodyHtml += rowHtml;
       });
 
