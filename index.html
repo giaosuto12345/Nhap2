@@ -1847,17 +1847,17 @@
       if (isWorkingDay) {
           leaveRecs.forEach(l => {
               let loai = dsLoaiNghi.find(x => x.name === l.category);
-              let sym = (loai && loai.symbol && loai.symbol.trim() !== '') ? loai.symbol.trim() : '+';
+              let sym = (loai && loai.symbol && loai.symbol.trim() !== '') ? loai.symbol.trim() : l.category.charAt(0).toUpperCase();
               let s = (l.start === l.end) ? l.session : 'all';
-              applyData(s, sym, 'leave');
+              applyData(s, sym, sym === '+' ? 'work' : 'leave');
           });
       }
 
       // 2. Khác (Ghi đè Nghỉ nếu được điều động đi làm khác)
       dailyRecs.filter(r => r.type === 'khac').forEach(r => {
           let loai = dsKhac.find(x => x.name === r.taskName);
-          let sym = (loai && loai.symbol && loai.symbol.trim() !== '') ? loai.symbol.trim() : '+';
-          applyData(r.session, sym, 'khac');
+          let sym = (loai && loai.symbol && loai.symbol.trim() !== '') ? loai.symbol.trim() : r.taskName.charAt(0).toUpperCase();
+          applyData(r.session, sym, sym === '+' ? 'work' : 'khac');
       });
 
       // 3. Việc (Tăng cường - Ghi đè TẤT CẢ, luôn tính công)
